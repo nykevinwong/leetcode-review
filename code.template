@@ -1,0 +1,11 @@
+
+<div id="@CODE_ID" name="@CODE_ID" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;">
+<code class="language-java">
+@CODE_TEXT
+</code>
+</pre>
+</div>
+
+

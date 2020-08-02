@@ -1,0 +1,18 @@
+var codeIDs = [@ARRAY];
+var editors = [];
+
+for(var i = 0; i < codeIDs.length; i++) 
+{
+    var id = "code_" + codeIDs[i];
+
+    var editor = CodeMirror.fromTextArea(id, {
+        lineNumbers: true,
+        viewportMargin: Infinity,        
+        parserfile: ["../contrib/java/js/tokenizejava.js","../contrib/java/js/parsejava.js"],
+        stylesheet: "css/javacolors.css",
+        path: "../../js/"
+    });
+
+    editors.push(editor);
+
+}
