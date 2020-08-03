@@ -1,11 +1,11 @@
 
 <div id="@CODE_ID" name="@CODE_ID" class="center">
 <a class=".title"></a>
-<pre  style="overflow:hidden;">
+<pre  style="overflow:hidden;"  data-label="my-label-button-@CODE_ID">
 <code class="language-java">
 @CODE_TEXT
 </code>
 </pre>
 </div>
 
-
+<template id="my-label-button-@CODE_ID"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
