@@ -1,0 +1,745 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Atomic Habit</title>
+    <link rel="stylesheet" type="text/css" href="prism.css" />
+    <style>
+      .center {
+          margin: auto;
+          width: 820px;
+          border: 1px solid black;
+          padding: 0 0 0 0;
+          font-size: 11px;
+          line-height: 14px;
+        }
+
+      .noscrollbar {
+        overflow: hidden;
+      }
+
+      
+    </style>
+		<script src="prism.js" type="text/javascript"></script>
+		<script src="main.js" type="text/javascript"></script>
+
+<script>
+
+
+  </script>
+	</head>
+	<body>
+	
+  <!-- table of contents -->
+	<ul>
+    <li id="li_1" name="li_1" data-id="98"><input type="checkbox" id="checkbox_1" name="checkbox_1" /><a href="#code_1">LEETCODE 1</a></li>
+<li id="li_2" name="li_2" data-id="94"><input type="checkbox" id="checkbox_2" name="checkbox_2" /><a href="#code_2">LEETCODE 2</a></li>
+<li id="li_3" name="li_3" data-id="297"><input type="checkbox" id="checkbox_3" name="checkbox_3" /><a href="#code_3">LEETCODE 3</a></li>
+<li id="li_4" name="li_4" data-id="285"><input type="checkbox" id="checkbox_4" name="checkbox_4" /><a href="#code_4">LEETCODE 4</a></li>
+<li id="li_5" name="li_5" data-id="250"><input type="checkbox" id="checkbox_5" name="checkbox_5" /><a href="#code_5">LEETCODE 5</a></li>
+<li id="li_6" name="li_6" data-id="236"><input type="checkbox" id="checkbox_6" name="checkbox_6" /><a href="#code_6">LEETCODE 6</a></li>
+<li id="li_7" name="li_7" data-id="145"><input type="checkbox" id="checkbox_7" name="checkbox_7" /><a href="#code_7">LEETCODE 7</a></li>
+<li id="li_8" name="li_8" data-id="144"><input type="checkbox" id="checkbox_8" name="checkbox_8" /><a href="#code_8">LEETCODE 8</a></li>
+<li id="li_9" name="li_9" data-id="117"><input type="checkbox" id="checkbox_9" name="checkbox_9" /><a href="#code_9">LEETCODE 9</a></li>
+<li id="li_10" name="li_10" data-id="116"><input type="checkbox" id="checkbox_10" name="checkbox_10" /><a href="#code_10">LEETCODE 10</a></li>
+<li id="li_11" name="li_11" data-id="112"><input type="checkbox" id="checkbox_11" name="checkbox_11" /><a href="#code_11">LEETCODE 11</a></li>
+<li id="li_12" name="li_12" data-id="106"><input type="checkbox" id="checkbox_12" name="checkbox_12" /><a href="#code_12">LEETCODE 12</a></li>
+<li id="li_13" name="li_13" data-id="105"><input type="checkbox" id="checkbox_13" name="checkbox_13" /><a href="#code_13">LEETCODE 13</a></li>
+<li id="li_14" name="li_14" data-id="104"><input type="checkbox" id="checkbox_14" name="checkbox_14" /><a href="#code_14">LEETCODE 14</a></li>
+<li id="li_15" name="li_15" data-id="102"><input type="checkbox" id="checkbox_15" name="checkbox_15" /><a href="#code_15">LEETCODE 15</a></li>
+<li id="li_16" name="li_16" data-id="101"><input type="checkbox" id="checkbox_16" name="checkbox_16" /><a href="#code_16">LEETCODE 16</a></li>
+
+  </ul>
+  
+  
+<div id="code_1" name="code_1" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_1">
+<code class="language-java">
+/*
+有效的二元搜尋樹的特性是
+(1)當前節點值大於左節點值及左子樹所有節點值，當前節點值小於右節點值及右子樹所有節點值.
+(2)左右子樹必須是有效元二元搜尋樹，當前節點才是個有效二元樹.
+(3)一個空節點是一個有效的二元搜尋樹.
+(4)二元搜尋樹的左右邊界檢查可用Integer/Long Warpper Class,而且空值代表無限大.
+*/
+    public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, null, null); // null means infinity here.
+    }
+    
+    public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
+    {
+        if(root==null) return true;
+        
+        if( (leftBound==null || leftBound &lt; root.val) &amp;&amp; (rightBound==null || root.val &lt; rightBound) )
+        {
+            return isValidBST(root.left, leftBound, root.val) &amp;&amp;
+                    isValidBST(root.right, root.val, rightBound);
+        }
+        
+        return false;
+    }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_1"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_2" name="code_2" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_2">
+<code class="language-java">
+import java.util.List;
+public List&lt;Integer&gt; inorderTraversal(TreeNode root)
+{
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+    dfs(root, res);
+    return res;
+}
+
+public void dfs(TreeNode root, List&lt;Integer&gt; res)
+{
+    if(root==null) return;
+    dfs(root.left);
+    res.add(root.val);
+    dfs(root.right);
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_2"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_3" name="code_3" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_3">
+<code class="language-java">
+public String serialize(TreeNode root) {
+    if(root==null) return &quot;&quot;;
+    Queue&lt;TreeNode&gt; q= new LinkedList&lt;&gt;();
+    StringBuilder sb = new StringBuilder();
+    
+    if(root!=null) q.offer(root);
+    
+    while(!q.isEmpty())
+    {
+        TreeNode node = q.poll();
+        
+        if(node==null) 
+        {
+            sb.append(&quot;null,&quot;);
+        }
+        else
+        {
+            sb.append(node.val + &quot;,&quot;);
+            q.offer(node.left);
+            q.offer(node.right);
+        }
+    }
+
+    sb.deleteCharAt(sb.length()-1);
+    return sb.toString();
+}
+ 
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    if(data==&quot;&quot;) return null;
+    String[] arr = data.split(&quot;,&quot;);
+    
+    TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+    Queue&lt;TreeNode&gt; q= new LinkedList&lt;&gt;();
+    
+    q.offer(root);
+    
+    for(int i=1; i &lt; arr.length;i++)
+    {
+        TreeNode node = q.poll();
+        
+        node.left = (arr[i].equals(&quot;null&quot;)) ? null: new TreeNode(Integer.parseInt(arr[i]));
+        i++;
+        node.right = (arr[i].equals(&quot;null&quot;)) ? null: new TreeNode(Integer.parseInt(arr[i]));
+        if(node.left!=null) q.offer(node.left);
+        if(node.right!=null) q.offer(node.right);
+    }
+    
+    return root;
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_3"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_4" name="code_4" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_4">
+<code class="language-java">
+package codes;
+
+public class 285_inorder-sucessor-in-BST {
+    
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_4"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_5" name="code_5" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_5">
+<code class="language-java">
+/*
+geek-for-geek solution
+
+單值樹根節點值與左右節點值相同，代表此樹是根節點. 以此後序遍歷整個樹.
+單值樹(uniValue) 空節點代表一個有效節點，傳回真。但節點不代表一個樹，不能計算成一個uniValue.
+單值樹題用排除法及後序遍歷來解比較容易.
+
+七言絕句:
+單值樹根左右等     //題目及單值樹特性1 
+空節點真不為樹     //單值樹空節點特性
+後序遍歷排除解     //RECURSIVE解法
+所有孩值為當值.    //如果是多元樹，要記得這點.
+任一假非單值樹
+當值非左值為假
+當值非右值為假
+計樹數量傳回真
+*/
+
+  public int countUnivalSubtrees(TreeNode root) {
+    // Write your solution here
+    int[] count = new int[1];
+     isUniValueSubTree(root,count);
+     return count[0];
+  }
+
+// apply bottom-up/postorder traversal approach
+  public boolean isUniValueSubTree(TreeNode root, int[] count)
+  {
+      if(root==null) return true;
+
+      boolean left = isUniValueSubTree(root.left, count);
+      boolean right = isUniValueSubTree(root.right, count);
+
+        // If any of the subtrees is not singly, then this 
+        // cannot be singly. 
+
+      if(left==false || right == false) return false;
+      if(root.left!=null &amp;&amp; root.left.key != root.key) return false;
+      if(root.right!=null &amp;&amp; root.right.key != root.key) return false;
+
+      /// now the root's val and its value on left and right are the same.
+      count[0]++;
+      return true;
+  }
+
+boolean isUniValueSubTree(TreeNode node, int[] count)  
+    { 
+        // Return false to indicate NULL 
+        if (node == null) 
+            return true; 
+           
+        // Recursively count in left and right subtrees also 
+        boolean left = countSingleRec(node.left, count); 
+        boolean right = countSingleRec(node.right, count); 
+   
+        // If any of the subtrees is not singly, then this 
+        // cannot be singly. 
+        if (left == false || right == false) 
+            return false; 
+   
+        // If left subtree is singly and non-empty, but data 
+        // doesn't match 
+        if (node.left != null &amp;&amp; node.val != node.left.val) 
+            return false; 
+   
+        // Same for right subtree 
+        if (node.right != null &amp;&amp; node.val != node.right.val) 
+            return false; 
+   
+        // If none of the above conditions is true, then 
+        // tree rooted under root is single valued, increment 
+        // count and return true. 
+        count[0]++; 
+        return true; 
+    } 
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_5"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_6" name="code_6" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_6">
+<code class="language-java">
+/*
+要找的節點都必須存在二元樹中，才能用此方法
+
+查左右節點雙空，傳回空。
+查任一空時，傳回不空。可以下面檢查.
+if(left==null || right==null) // 00,01,10 covers 3 cases // return null or the other value.
+            return (left==null) ? right:left;
+
+use both top-down &amp; bottom-up approach
+*/
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {        
+        // this approach won't work if p or q doesn't exist in the binary tree
+       if(root==null) return null;
+        if(root==p || root==q) return root;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        // return null for both null
+        // return the one while the other is null.
+        if(left==null || right==null) // 00,01,10 covers 3 cases // return null or the other value.
+            return (left==null) ? right:left;
+         
+        return root;      // must use root since we want to ensure the top most ancestor is the answer  
+    }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_6"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_7" name="code_7" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_7">
+<code class="language-java">
+import java.util.List;
+public List&lt;Integer&gt; postorderTraversal(TreeNode root)
+{
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+    dfs(root, res);
+    return res;
+}
+
+public void dfs(TreeNode root, List&lt;Integer&gt; res)
+{
+    if(root==null) return;
+    dfs(root.left);
+    dfs(root.right);
+    res.add(root.val);
+}
+
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_7"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_8" name="code_8" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_8">
+<code class="language-java">
+import java.util.List;
+public List&lt;Integer&gt; preorderTraversal(TreeNode root)
+{
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+    dfs(root, res);
+    return res;
+}
+
+public void dfs(TreeNode root, List&lt;Integer&gt; res)
+{
+    if(root==null) return;
+    res.add(root.val);
+    dfs(root.left);
+    dfs(root.right);
+}
+
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_8"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_9" name="code_9" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_9">
+<code class="language-java">
+public static Node connect(Node root) {
+    Node nextHead = new Node(0);
+    nextHead.next = root;
+    while(nextHead.next != null){
+     Node tail = nextHead;
+     Node n = nextHead.next;
+     nextHead.next = null;
+     for(; n != null; n = n.next){
+      if(n.left != null){
+       tail.next = n.left;
+       tail = tail.next;
+      }
+      
+      if(n.right != null){
+       tail.next = n.right; 
+       tail = tail.next;
+      }
+     }
+    }
+          return root;
+   }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_9"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_10" name="code_10" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_10">
+<code class="language-java">
+/*空間 complexity 為 O(1) 的解法
+
+選定二元樹的向右指標
+填二元樹右Next
+
+左節點層序Next指標遍歷: 
+*/
+    public Node connect(Node root) {
+        if (root==null) return null;
+        
+        Node leftMost = root, node = null;
+        
+        while (leftMost.left!=null) {
+            node = leftMost;
+            while (node!=null) {
+                node.left.next = node.right;
+                if (node.next!= null) node.right.next = node.next.left;
+                node = node.next;
+            }
+            // go to beginning node of next level
+            leftMost = leftMost.left;
+        }
+        
+        return root;         
+    }
+
+//暴力解: BFS 層序遍歷
+
+    public Node connect(Node root) {
+        if (root==null) return null;
+        
+        Queue&lt;Node&gt; q = new LinkedList&lt;&gt;();
+        
+        if(root!=null) q.offer(root);
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            Node prev = null;
+            for(int i=0;i&lt;size;i++)
+            {
+                Node node = q.poll();                
+                if(prev!=null) prev.next = node;                
+                prev = node;
+                
+                if(node.left!=null) q.offer(node.left);
+                if(node.right!=null) q.offer(node.right);
+            }                        
+        }
+        return root;
+    }
+
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_10"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_11" name="code_11" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_11">
+<code class="language-java">
+import java.util.Stack;
+//top-down, preorder travesal approach
+public boolean hasPathSum(TreeNode root, int sum) {
+    if(root==null) return false;
+    
+    sum-=root.val;
+    
+    if(root.left==null &amp;&amp; root.right==null)
+        return sum==0;
+    
+    return hasPathSum(root.left, sum) | hasPathSum(root.right, sum);        
+}
+
+//iterative solution:
+
+public boolean hasPathSum(TreeNode root, int sum) {
+        Stack&lt;Object[]&gt; s = new Stack&lt;&gt;();
+        
+        if(root!=null) s.push(pair(root, sum));
+    
+        while(!s.isEmpty())
+        {
+            Object[] nodes = s.pop();
+            TreeNode node = (TreeNode)nodes[0];
+                                          
+            Integer curSum = (Integer)nodes[1] -  node.val;
+            
+            if(node.left==null &amp;&amp; node.right==null &amp;&amp; curSum==0) return true;
+            
+            // you must push right node first before left node when you want to process left first and then right.
+            // preorder traversal always process left first and then right.
+            if(node.right!=null) s.push(pair(node.right,curSum) );
+            if(node.left!=null) s.push(pair(node.left,curSum));
+        }
+    
+    return false;
+}
+
+public Object[] pair(TreeNode a, Integer sum)
+{
+    return new Object[] { a, sum};
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_11"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_12" name="code_12" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_12">
+<code class="language-java">
+public TreeNode buildTree(int[] inorder, int[] postorder)
+{
+  Map&lt;Integer,Integer&gt; m = new HashMap&lt;&gt;();
+  
+  for(int i=0;i&lt; inorder.length;i++) { m.put(inorder[i],i); }
+  
+  return buildTree(inorder, postorder, 0, inorder.length-1, 0, postorder.length-1, m);
+}
+
+/*               
+ [1 2 3 7 8 9 5]
+     
+     
+ [1 2 3 5 7 8 9]
+ 
+ next subTree interval in recusive calls
+ 
+ post left Tree (poStart, poStart + leftTreeLen -1 )
+ post right Tree (poStart + leftTreeLen, poEnd -1 )
+ 
+ in left Tree (inStart, rootIndex -1)
+ in right Tree(rootIndex+1, inEnd)
+ 
+*/
+
+public TreeNode buildTree(int[] inorder, int[] postorder, int inStart, int inEnd, int poStart, int poEnd, Map&lt;Integer,Integer&gt; m)
+{
+ // When it's out of index boundary
+ if(inStart &gt; inEnd || poStart &gt; poEnd) return null;
+ 
+ TreeNode node = new TreeNode(postorder[poEnd]);
+ int rootIndex = m.get(postorder[poEnd]);
+ int leftTreeLen = rootIndex - inStart;
+ int rightTreeLen = inEnd - rootIndex;
+ 
+ node.left = buildTree(inorder, postorder,
+        inStart, rootIndex -1,
+        poStart, poStart + leftTreeLen -1, m);
+        
+ 
+ node.right = buildTree(inorder, postorder,
+         rootIndex+1, inEnd,
+         poStart + leftTreeLen, poEnd -1, m);
+       
+
+ return node;
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_12"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_13" name="code_13" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_13">
+<code class="language-java">
+/*
+區間長度公式為兩數差的絕對值+1.
+公式不受基底起始索引值的影嚮.
+
+中序陣列元素值對索引對照表對解中序陣列題可能有用.
+
+中序陣列左右子樹大小:
+零基底陣列表示是從左到右。索引值從0到n.
+中序陣列右子樹的區間大小 inLeftTreeLen = 陣列右邊界索引值 -  中序當前根節點索引值.
+中序陣列右子樹的區間大小 inRightTreeLen= 中序當前根節點索引值 - 陣列右邊界索引值.
+
+
+停止或防止區間操作的條件:
+某區間start 至 end，防止或停止區間外的操作可用 if(start &gt; end) 來檢查並停止.
+如果有多個區間，則任何區間符合防止操作條件就可停止.
+
+中序左右子樹區間範圍:
+如果已知中序節點索引值rootIndex, 左子樹為 (inStart, rootIndex-1)，右子樹為(rootIndex+1, inEnd).
+
+前序陣列左右子樹區間範圍:
+ 左子樹為(preStart+1, preEnd - 右子樹大小) , 右子樹為 (preEnd- 右子樹大小+1, preEnd)
+
+後序陣列左右子樹區間範圍:
+ 左子樹為(postStart, postStart+左子樹大小-1) , 右子樹為 (poStart+左子樹大小, postEnd-1)
+
+node.left = buildTree(inorder, postorder,
+        inStart, rootIndex -1,
+        poStart, poStart + leftTreeLen -1, m);
+        
+ 
+ node.right = buildTree(inorder, postorder,
+         rootIndex+1, inEnd,
+         poStart + leftTreeLen, poEnd -1, m);
+       
+*/
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        Map&lt;Integer,Integer&gt; inPos = new HashMap&lt;Integer,Integer&gt;();
+        
+        for(int i=0;i&lt; inorder.length;i++)
+        {
+            inPos.put(inorder[i], i);
+        }
+        
+        return buildTree(inorder, preorder, 0, inorder.length-1, 0, preorder.length-1, inPos);
+    }
+    
+    public TreeNode buildTree(int[] inorder, int[] preorder, int inStart, int inEnd, int preStart, int preEnd,  Map&lt;Integer,Integer&gt; inPos)
+    {
+        if(inStart &gt; inEnd || preStart &gt; preEnd ) return null;
+        TreeNode node = new TreeNode(preorder[preStart]);
+        int rootIndex = inPos.get(preorder[preStart]);  
+        int rightTreeLen = inEnd - rootIndex;
+        int leftTreeLen = rootIndex - inStart;
+       
+        node.left = buildTree(inorder, preorder, 
+                              inStart, rootIndex-1, 
+                               preStart+1,  preEnd - rightTreeLen, inPos);      
+        node.right = buildTree(inorder, preorder, 
+                              rootIndex + 1, inEnd,  
+                               preEnd- rightTreeLen + 1, preEnd, inPos);
+        
+        return node;
+    }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_13"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_14" name="code_14" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_14">
+<code class="language-java">
+import java.lang.Math;
+public int maxDepth(TreeNode node)
+{
+    //bottom-up/postorder recusrive approach
+    
+    if(node==null) return 0;
+    
+    int leftMax = maxDepth(node.left);
+    int rightMax = maxDepth(node.right);
+    
+    return Math.max(leftMax, rightMax) + 1;
+}
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_14"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_15" name="code_15" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_15">
+<code class="language-java">
+import java.util.List;
+//Recursive approach.
+   public  List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+        List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+        levelOrder(root, res, 0);
+        return res;
+    }
+    
+    public void levelOrder(TreeNode root, List&lt;List&lt;Integer&gt;&gt; res, int level) {
+        if(root==null) return;
+        if(res.size()==level) res.add(new ArrayList&lt;Integer&gt;());
+        
+        res.get(level).add(root.val);
+
+        levelOrder(root.left, res, level+1);
+        levelOrder(root.right, res, level+1);
+    }
+
+// iterative approach
+    public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+        Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+        List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+        
+        if(root!=null) q.offer(root);
+        
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            List&lt;Integer&gt; l = new ArrayList&lt;&gt;();
+            for(int i=0;i&lt;size;i++)
+            {
+                TreeNode node = q.poll();
+                l.add(node.val);
+                if(node.left!=null) q.offer(node.left);
+                if(node.right!=null) q.offer(node.right);
+            }
+            
+            res.add(l);
+        }
+        return res;
+    }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_15"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+<div id="code_16" name="code_16" class="center">
+<a class=".title"></a>
+<pre  style="overflow:hidden;"  data-label="my-label-button-code_16">
+<code class="language-java">
+
+/*
+   有效的鏡像對稱二元樹所需條件:
+   (1) 樹根節點或子樹根節點與自已對稱，函式可以傳兩個同一根節點，自已比較自已.
+   (2) 當前左節點值等於當前右節點值.
+   (3) 當前左節點的右值與當前右節點的左值相等。反之  
+        
+例子:當前左右節點同時都空值時，當前節點也是有效鏡像二元子樹.
+       當前左右節點只有一個為空值，代表不相等，不是有效鏡像二元子樹。    
+       
+*/
+    public boolean isSymmetric(TreeNode root) {
+        return isMirror(root, root);
+    }
+    
+    public boolean isMirror(TreeNode left, TreeNode right)
+    {
+        if(left == null &amp;&amp; right == null) return true;
+        if(left==null || right == null) return false;
+        
+        return (left.val == right.val) &amp;&amp; 
+            isMirror(left.left, right.right) &amp;&amp;
+            isMirror(left.right,right.left);
+    }
+</code>
+</pre>
+</div>
+
+<template id="my-label-button-code_16"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
+
+
+  
+	</body>
+</html>
