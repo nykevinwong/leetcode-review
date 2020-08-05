@@ -358,7 +358,17 @@ public class CreatePage
 
     public static void main(String[] args) throws IOException
     {
-        File dir = new File("codes");
+        if(args.length < 2) {
+        
+            System.out.println("CreatePage [input folder] [output filename]");
+            return;
+        }
+        String inputFolder = args[0];
+        String outputFile = args[1];
+
+        System.out.println("Input Folder:" + inputFolder + ", Output file:" + outputFile);
+
+        File dir = new File(inputFolder);
         File[] filesList = dir.listFiles(new FilenameFilter() { 
                  public boolean accept(File dir, String filename)
                       { return filename.endsWith(".java"); }
@@ -418,7 +428,7 @@ public class CreatePage
             indexContent = indexTemplate.replace("@TOC_ITEMS",tocItemContent.toString())
             .replace("@CODES", codeContent.toString());
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter("index.html", false));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
             writer.append( indexContent);
             
             writer.close();

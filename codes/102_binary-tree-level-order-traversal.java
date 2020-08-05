@@ -1,4 +1,13 @@
 import java.util.List;
+
+/*
+ 無限大樹無法使用dfs. dfs將無限地往下搜尋第一個或某路徑，而用光記憶體而出錯.
+ 無限大樹可用bfs一層一層搜，但必須有一個bounded branching factor限制最大範圍.
+ 
+ 深度為2的樹，無限多孩，二grand child樹。
+ 這種樹可用dfs，因為一個樹根節支只有兩層，但無法使用bfs，因無一層就無限多孩。
+
+*/
 //Recursive approach.
    public  List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
