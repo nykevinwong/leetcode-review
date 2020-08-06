@@ -39,7 +39,9 @@ leetcodes = [];
 
           let firstLeetCodeItem = leetcodes[dataIDs[0]];
           let liAnchor = document.querySelector("#" + liID + " > a");
+          let text = liAnchor.textContent;
           liAnchor.textContent = dataIDs[0] + ". " + firstLeetCodeItem.question__title_slug;
+          if(text.length > 0) liAnchor.textContent+= " (" + text + ")";
 
           let codeAnchor = document.querySelector("#" + codeID + " > a");
           let problemUrl = "https://leetcode.com/problems/" + firstLeetCodeItem.question__title_slug;

@@ -413,7 +413,7 @@ public class CreatePage
                     .replace("@CODE_ID", codeId)
                     .replace("@ID", checkboxId)
                     .replace("@NAME", checkboxId)
-                    .replace("@TEXT", text)
+                    .replace("@TEXT", names.length>=3 ? names[2].replace(".java",""):"")
                     .replace("@DATA-ID", names[0])
                     .replace("@TOC_ID", tocID);
 
