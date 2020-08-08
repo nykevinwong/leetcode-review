@@ -453,6 +453,7 @@ public class CreatePage
 
                     if(isLeetCode==true)
                     {
+                        if(names.length>=3)
                         names[2] = names[2].replace(".java","");
                     }
                     else
