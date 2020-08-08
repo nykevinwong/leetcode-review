@@ -1,6 +1,6 @@
 
 <div id="@CODE_ID" name="@CODE_ID" class="center">
-<a class=".title"></a>
+<a class=".title">@CODE_TITLE</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-@CODE_ID">
 <code class="language-java">
 @CODE_TEXT

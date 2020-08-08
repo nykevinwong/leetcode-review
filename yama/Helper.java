@@ -1,18 +1,7 @@
+import java.util.*;
 
-import java.util.List;
-import java.util.Arrays;
 
-interface IInterviewQuestion
-{
-    public void performTest();
-}
-
-interface IImportTechnique
-{
-    public void performTest();
-}
-
-public class Helper
+class Helper
 {
     public static <T>  void equals(List<T> left, T[] right, String msg)
     {       

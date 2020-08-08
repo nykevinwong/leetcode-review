@@ -18,6 +18,10 @@
         overflow: hidden;
       }
 
+      .token.number {
+        color: lightblue;
+      }
+
       
     </style>
 		<script src="prism.js" type="text/javascript"></script>

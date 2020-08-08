@@ -339,6 +339,47 @@ class StringUtils
 
 public class CreatePage
 {
+    public static boolean IsIgnoreFile(String name)
+    {
+
+        String[] ignores= new String[] {"Node","Helper","YamaInterview","IInterviewQuestion","IImportTechnique"};
+
+        for(String s : ignores)
+        {
+            if(s.equalsIgnoreCase(name))
+            {
+                System.out.println(name + " [NOT PROCESSED!!]");
+                return true;
+            }
+        }
+
+
+        System.out.println(name + " [YES]");
+        return false;
+    }
+
+    public static String PascalToRegularName(String name)
+    {
+        StringBuilder sb = new StringBuilder();
+        char prev = '0';
+        for(char c: name.toCharArray())
+        {
+            if(Character.isUpperCase(c) && sb.length() > 0)
+            {
+                sb.append(" ");
+            }
+            else if(Character.isDigit(c) && Character.isLetter(prev) && sb.length() > 0)
+            {
+                sb.append(" ");
+            }
+
+            prev = c;
+
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     public static String readWholeText(String filepath)
     {
         String content = "";
@@ -391,12 +432,37 @@ public class CreatePage
             codeContent.setLength(0);    
 
             int count =0;
+            Boolean isLeetCode = null;
             for (File file : filesList) {
                 if (file.isFile()) {
 
                     String[] names = file.getName().split("_");
+
+                    if(isLeetCode==null)
+                    {
+                        try
+                        {
+                        Integer.parseInt(names[0]);
+                        isLeetCode = true;
+                        }
+                        catch(NumberFormatException e)
+                        {
+                            isLeetCode  = false;
+                        }
+                    }
+
+                    if(isLeetCode==true)
+                    {
+                        names[2] = names[2].replace(".java","");
+                    }
+                    else
+                    {
+                        names[0] = names[0].replace(".java","");
+                        if(IsIgnoreFile(names[0])) continue;
+                    }
+
                     count++;
-                    System.out.print("(" +count + ") Processing " + file.getCanonicalPath() + "...");
+                    System.out.println("(" +count + ") Processing " + file.getCanonicalPath() + "...");
 
                     String codeId = "code_" + count;
                     String divId = codeId;
@@ -404,7 +470,6 @@ public class CreatePage
                     String tocID = "li_" + count;
                     
                     String orignalCode = readWholeText(file.getCanonicalPath());
-                    String text = "LEETCODE " + count;
                     String code = codeTemplate.replace("@DIV_ID",divId)
                     .replace("@CODE_ID", codeId)
                     .replace("@CODE_TEXT", StringUtils.encodeHtml(orignalCode));
@@ -413,9 +478,24 @@ public class CreatePage
                     .replace("@CODE_ID", codeId)
                     .replace("@ID", checkboxId)
                     .replace("@NAME", checkboxId)
-                    .replace("@TEXT", names.length>=3 ? names[2].replace(".java",""):"")
-                    .replace("@DATA-ID", names[0])
                     .replace("@TOC_ID", tocID);
+            
+                    if(isLeetCode)
+                    {
+                    tocItem = tocItem.replace("@DATA-ID", names[0])
+                    .replace("@TEXT", names.length>=3 ? names[2]:"");
+
+                       code = code.replace("@CODE_TITLE","");
+                    }
+                    else
+                    {
+                        String titleName = PascalToRegularName(names[0]);
+                        tocItem = tocItem.replace("@DATA-ID", "")
+                        .replace("@TEXT", titleName );    
+
+                        code = code.replace("@CODE_TITLE", titleName);
+                    }
+
 
                     codeContent.append(code);
                     tocItemContent.append(tocItem);

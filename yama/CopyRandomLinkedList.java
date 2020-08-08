@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-class CopyRandomLinkedList  implements IInterviewQuestion {
+public class CopyRandomLinkedList  implements IInterviewQuestion {
     public Node copyRandomListWithDummyNode(Node head)   {
         if(head==null) return null;        
         HashMap<Node, Node> m = new HashMap<Node, Node>();

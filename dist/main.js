@@ -37,6 +37,10 @@ leetcodes = [];
 
           console.log(dataIDs);
 
+          if(dataIDs.length===1) { 
+            console.log("no leetcode number.")
+            break; }
+
           let firstLeetCodeItem = leetcodes[dataIDs[0]];
           let liAnchor = document.querySelector("#" + liID + " > a");
           let text = liAnchor.textContent;
