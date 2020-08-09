@@ -343,7 +343,7 @@ public class CreatePage
     public static boolean IsIgnoreFile(String name)
     {
 
-        String[] ignores= new String[] {"Node","Helper","YamaInterview","IInterviewQuestion","IImportTechnique"};
+        String[] ignores= new String[] {"Node","Helper","YamaInterview","IInterviewQuestion","IImportTechnique","TreeNode"};
 
         for(String s : ignores)
         {
@@ -397,21 +397,10 @@ public class CreatePage
         return content;
     }
 
-    public static String RemoveMethodBlock(String code, String name)
+    public static String RemoveMethodBlock(String code, String name, String blocktoRemove)
     {
-        if(name!="") return code;
 
-        String[] ignores= new String[] {"BinarySearch",
-        "minimumRoute",
-        "TreasureIsland",
-        "TreasureIsland2",
-        "TopKFrequentlyMentionedKeywords",
-        "SubTreeWithMaximumAverage",
-        "SubstringsOfSizeKwithKDistinctChars",
-        "SubstringsOfExactlyKDistinctChars",
-        "SubarraysWithKDifferentIntegers",
-        "SearchSuggestionSystem",
-        "SearchMatrix"};
+        String[] ignores= new String[] {"JavaCollections","BinarySearch","MinimumCostToConnectRope"};
 
         for(String s : ignores)
         {
@@ -422,7 +411,7 @@ public class CreatePage
         }
 
         Stack<Character> s = new Stack<>();
-        int pos = code.indexOf("performTest");       
+        int pos = code.indexOf(blocktoRemove);       
         if(pos==-1) return code;
         pos = code.indexOf("{", pos);
         if(pos==-1) return code;
@@ -529,7 +518,8 @@ public class CreatePage
 
                     if(isLeetCode==false)
                     {
-                        orignalCode = RemoveMethodBlock(orignalCode, names[0]);
+                        orignalCode = RemoveMethodBlock(orignalCode, names[0],"performTest");
+                        orignalCode = RemoveMethodBlock(orignalCode, names[0],"String toString()");
                     }
 
                     String code = codeTemplate.replace("@DIV_ID",divId)

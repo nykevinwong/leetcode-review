@@ -36,7 +36,7 @@ class SubtreeOfAnotherTree implements IInterviewQuestion
         System.out.println("is Subtree? " + traverse(s, t));
         TreeNode s0 = TreeNode.createBinaryTreeFromArray(new Integer[]{3,4,5,1,2,null,null,0});
         TreeNode t0= TreeNode.createBinaryTreeFromArray(new Integer[]{4,1,2});
-        System.out.println("is Subtree? false = " + traverse(s0, t0));
+        System.out.println("is Subtree? false => (expect false) " + traverse(s0, t0));
         TreeNode s1 = TreeNode.createBinaryTreeFromArray(new Integer[]{1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,2});
         TreeNode t1 = TreeNode.createBinaryTreeFromArray(new Integer[]{1,null,1,null,1,null,1,null,1,null,1,2});
         System.out.println("is Subtree? " + traverse(s1, t1));

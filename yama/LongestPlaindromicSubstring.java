@@ -57,10 +57,10 @@ class LongestPlaindromicSubstring implements IInterviewQuestion {
     public void performTest()
     {
         Helper.equals(longestPalindrome("babad"),  "bab", " longest plaindrome ?" );
-        Helper.equals(longestPalindrome("cbbd"),  "bab", " longest plaindrome ?" );
+        Helper.equals(longestPalindrome("cbbd"),  "cbbd", " longest plaindrome ?" );
 
         Helper.equals(longestPalindrome_ExpandFromCenter("babad"),  "bab", "(EXPAND from Center) longest plaindrome ?" );
-        Helper.equals(longestPalindrome_ExpandFromCenter("cbbd"),  "bab", "(EXPAND from Center)  longest plaindrome ?" );
+        Helper.equals(longestPalindrome_ExpandFromCenter("cbbd"),  "cbbd", "(EXPAND from Center)  longest plaindrome ?" );
     }
 
     public String toString() { 
