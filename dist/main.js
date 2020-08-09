@@ -37,7 +37,7 @@ leetcodes = [];
 
           console.log(dataIDs);
 
-          if(dataIDs.length===1) { 
+          if(dataIDs.length===1 && dataIDs[0]=="") { 
             console.log("no leetcode number.")
             break; }
 

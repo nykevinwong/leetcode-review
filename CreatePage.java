@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Stack;
  
 class StringUtils
 {
@@ -396,6 +397,60 @@ public class CreatePage
         return content;
     }
 
+    public static String RemoveMethodBlock(String code, String name)
+    {
+        if(name!="") return code;
+
+        String[] ignores= new String[] {"BinarySearch",
+        "minimumRoute",
+        "TreasureIsland",
+        "TreasureIsland2",
+        "TopKFrequentlyMentionedKeywords",
+        "SubTreeWithMaximumAverage",
+        "SubstringsOfSizeKwithKDistinctChars",
+        "SubstringsOfExactlyKDistinctChars",
+        "SubarraysWithKDifferentIntegers",
+        "SearchSuggestionSystem",
+        "SearchMatrix"};
+
+        for(String s : ignores)
+        {
+            if(s.equalsIgnoreCase(name))
+            {
+                return code;
+            }
+        }
+
+        Stack<Character> s = new Stack<>();
+        int pos = code.indexOf("performTest");       
+        if(pos==-1) return code;
+        pos = code.indexOf("{", pos);
+        if(pos==-1) return code;
+
+        int start = pos;
+        int end = -1;
+        for(int i=pos; pos < code.length();i++)
+        {
+            char c = code.charAt(i);
+            if(c=='{') s.push(c);
+            if(c=='}')
+            {
+                if(s.isEmpty()) return code; // not found
+                if(s.peek()=='{') s.pop();
+            }
+
+            if(s.isEmpty()) 
+            {
+                end = i;
+                break;
+            }
+        }
+
+        if(!s.isEmpty()) return code;
+        System.out.println("cut this part->" + code.substring(pos,end+1));
+       return code.substring(0, pos) + code.substring(end+1);
+    }
+
 
     public static void main(String[] args) throws IOException
     {
@@ -471,6 +526,12 @@ public class CreatePage
                     String tocID = "li_" + count;
                     
                     String orignalCode = readWholeText(file.getCanonicalPath());
+
+                    if(isLeetCode==false)
+                    {
+                        orignalCode = RemoveMethodBlock(orignalCode, names[0]);
+                    }
+
                     String code = codeTemplate.replace("@DIV_ID",divId)
                     .replace("@CODE_ID", codeId)
                     .replace("@CODE_TEXT", StringUtils.encodeHtml(orignalCode));
