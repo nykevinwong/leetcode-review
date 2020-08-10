@@ -81,7 +81,7 @@
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_32">
 <code class="language-java">
 import java.util.*;
-class FindNUniqueIntegersSumUpToZero implements IInterviewQuestion {
+class FindNUniqueIntegersSumUpToZero  {
 
     public int[] sumZero(int n) {
         
@@ -142,7 +142,7 @@ class Window&lt;E&gt;
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_12">
 <code class="language-java">
 
-public class SearchMatrix implements IInterviewQuestion
+public class SearchMatrix 
 {
     public boolean searchMatrix(int[][] matrix, int target) {
         if(matrix==null || matrix.length==0 || matrix[0].length==0 ) return false;
@@ -172,7 +172,7 @@ public class SearchMatrix implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_29">
 <code class="language-java">
 import java.util.List;
-class GenerateParentheses implements IInterviewQuestion {
+class GenerateParentheses  {
     
     public List&lt;String&gt; generateParentheses(int n) {
         List&lt;String&gt; res = new ArrayList&lt;&gt;();
@@ -202,7 +202,7 @@ class GenerateParentheses implements IInterviewQuestion {
 <a class=".title">Nth Geometric Progression</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_19">
 <code class="language-java">
-class NthGeometricProgression implements IInterviewQuestion  {
+class NthGeometricProgression   {
 
     public char[] getNthGP(double secondTerm, double thirdTerm, int nth)
     {
@@ -235,7 +235,7 @@ class NthGeometricProgression implements IInterviewQuestion  {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_9">
 <code class="language-java">
 
-class SubstringsOfExactlyKDistinctChars implements IInterviewQuestion
+class SubstringsOfExactlyKDistinctChars 
 {
 
     public int substringswithExactlyKDistinctChars(String s, int K)
@@ -268,7 +268,7 @@ class SubstringsOfExactlyKDistinctChars implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_16">
 <code class="language-java">
 
-public class PartitionLabel implements IInterviewQuestion
+public class PartitionLabel 
 {
     public List&lt;Integer&gt; partitionLabels(String S) {
         int[] last = new int[26];
@@ -305,7 +305,7 @@ public class PartitionLabel implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_14">
 <code class="language-java">
 
-public class ReorderDataInLogFile implements IInterviewQuestion
+public class ReorderDataInLogFile 
 {
     public String[] reorderLogFiles(String[] logs) {
         Arrays.sort(logs, (log1, log2) -&gt; {
@@ -336,7 +336,7 @@ public class ReorderDataInLogFile implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_7">
 <code class="language-java">
 
-class SubtreeOfAnotherTree implements IInterviewQuestion
+class SubtreeOfAnotherTree 
 {
     public boolean isSubtree(TreeNode s, TreeNode t) {        
         return traverse(s, t);
@@ -378,7 +378,7 @@ class SubtreeOfAnotherTree implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_23">
 <code class="language-java">
 
-class MergeTwoSortedList implements IInterviewQuestion
+class MergeTwoSortedList 
 {
     public Node mergeTwoLists(Node l1, Node l2) {
         Node dummy = new Node(0);
@@ -424,7 +424,7 @@ class MergeTwoSortedList implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_10">
 <code class="language-java">
 import java.util.*;
-class SubarraysWithKDifferentIntegers implements IInterviewQuestion
+class SubarraysWithKDifferentIntegers 
 {
     //Longest SubString With K Distinct Characters
 
@@ -465,7 +465,7 @@ class SubarraysWithKDifferentIntegers implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_24">
 <code class="language-java">
 import java.util.*;
-class MergeIntervals implements IInterviewQuestion
+class MergeIntervals 
 {
     public int[][] merge(int[][] intervals) {
 		if (intervals== null || intervals.length &lt;= 1) return intervals;
@@ -505,7 +505,7 @@ class MergeIntervals implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_20">
 <code class="language-java">
 
-class MostCommonWord implements IInterviewQuestion
+class MostCommonWord 
 {
     public String mostCommonWord(String paragraph, String[] banned) {
         String[] words = paragraph.split(&quot;\\W+&quot;); // split by all non-character. + means more than one non-character can be used. 
@@ -547,7 +547,7 @@ class MostCommonWord implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_8">
 <code class="language-java">
 import java.util.ArrayList;
-class SubstringsOfSizeKwithKDistinctChars implements IInterviewQuestion
+class SubstringsOfSizeKwithKDistinctChars 
 {
     public List&lt;String&gt; substringsOfSizeKwithKDistinctChars(String s, int k)
     {
@@ -591,7 +591,7 @@ class SubstringsOfSizeKwithKDistinctChars implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_30">
 <code class="language-java">
 
-public class FindUniquePairsWithGivenSum implements IInterviewQuestion
+public class FindUniquePairsWithGivenSum 
 {
     public List&lt;List&lt;Integer&gt;&gt; findUniquePairsWithGivenSum(int[] nums, int target)
     {
@@ -634,7 +634,7 @@ public class FindUniquePairsWithGivenSum implements IInterviewQuestion
 <code class="language-java">
 import java.util.PriorityQueue;
 
-class MinimumCostToConnectRope implements IInterviewQuestion
+class MinimumCostToConnectRope 
 {
     public int minCostToConnectRope(int[] ropes)
     {
@@ -676,7 +676,7 @@ class MinimumCostToConnectRope implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_15">
 <code class="language-java">
 import java.util.HashSet;
-class PrisonCellsAfterNDays implements IInterviewQuestion {
+class PrisonCellsAfterNDays  {
 
     public int[] prisonAfterNDays(int[] cells, int N) {
         if(cells==null || cells.length == 0 || N &lt;= 0) return cells;
@@ -730,7 +730,7 @@ class PrisonCellsAfterNDays implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_35">
 <code class="language-java">
 import java.util.HashMap;
-public class CopyRandomLinkedList  implements IInterviewQuestion {
+public class CopyRandomLinkedList   {
     public Node copyRandomListWithDummyNode(Node head)   {
         if(head==null) return null;        
         HashMap&lt;Node, Node&gt; m = new HashMap&lt;Node, Node&gt;();
@@ -781,7 +781,7 @@ public class CopyRandomLinkedList  implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_31">
 <code class="language-java">
 
-public class FindPairWithGivenSum implements IInterviewQuestion
+public class FindPairWithGivenSum 
 {
     public List&lt;List&lt;Integer&gt;&gt; findPairWithGivenSum(int[] nums, int target)
     {
@@ -832,7 +832,7 @@ public class FindPairWithGivenSum implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_11">
 <code class="language-java">
 
-public class SearchSuggestionSystem implements IInterviewQuestion {
+public class SearchSuggestionSystem  {
     // System Design interview for auto suggestions: https://www.youtube.com/watch?v=xrYTjaK5QVM
     // https://leetcode.com/problems/search-suggestions-system
      class Trie {
@@ -882,7 +882,7 @@ public class SearchSuggestionSystem implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_3">
 <code class="language-java">
 import java.util.LinkedList;
-class TreasureIsland2 implements IInterviewQuestion
+class TreasureIsland2 
 {
     public int minimumRoute(char[][] maze)
     {
@@ -944,7 +944,7 @@ class TreasureIsland2 implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_18">
 <code class="language-java">
 
-public class NumberOfClusters implements IInterviewQuestion {
+public class NumberOfClusters  {
     // questions: https://www.glassdoor.com/Interview/Problem-2d-grid-each-node-has-1-colors-find-number-of-clusters-of-a-given-color-red-blue-green-blue-gre-QTN_2930567.htm
     // https://leetcode.com/problems/number-of-islands/
     public int[] numberOfClusters(char[][] grid) {
@@ -997,7 +997,7 @@ public class NumberOfClusters implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_33">
 <code class="language-java">
 
-class FavoriteGenres implements IInterviewQuestion
+class FavoriteGenres 
 {
     public Map&lt;String, List&lt;String&gt;&gt; favoriteGenres(Map&lt;String, List&lt;String&gt;&gt; userSongs, Map&lt;String, List&lt;String&gt;&gt; songGenres)
     {
@@ -1057,7 +1057,7 @@ class FavoriteGenres implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_6">
 <code class="language-java">
 
-class SubTreeWithMaximumAverage implements IInterviewQuestion
+class SubTreeWithMaximumAverage 
 {
     class RefValue
     {
@@ -1118,7 +1118,7 @@ class SubTreeWithMaximumAverage implements IInterviewQuestion
 <a class=".title">Longest Plaindromic Substring</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_26">
 <code class="language-java">
-class LongestPlaindromicSubstring implements IInterviewQuestion {
+class LongestPlaindromicSubstring  {
 
     public String longestPalindrome(String s) {
         if(s==null || s.length() &lt; 2) return s;
@@ -1187,7 +1187,7 @@ class LongestPlaindromicSubstring implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_13">
 <code class="language-java">
 import java.util.LinkedList;
-public class RottinOranges  implements IInterviewQuestion {
+public class RottinOranges   {
     //https://leetcode.com/problems/rotting-oranges/
     // Zombie in Matrix: https://leetcode.com/discuss/interview-question/411357/
     // Minium hours to send file to all available servers
@@ -1248,7 +1248,7 @@ public class RottinOranges  implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_27">
 <code class="language-java">
 import java.util.Arrays;
-class KClosetPointstoOrigin implements IInterviewQuestion  {
+class KClosetPointstoOrigin   {
 
     public int[][] KClosetPoints_Sort(int[][] points, int K) {
         Arrays.sort(points, (p1, p2) -&gt; (p1[0]*p1[0] +p1[1]*p1[1]) - (p2[0]*p2[0] +p2[1]*p2[1]) );
@@ -1320,7 +1320,7 @@ class KClosetPointstoOrigin implements IInterviewQuestion  {
 <a class=".title">Binary Search</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_36">
 <code class="language-java">
-public class BinarySearch implements IInterviewQuestion, IImportTechnique 
+public class BinarySearch , IImportTechnique 
 {
 
     public int binarySearch(int[] arr, int key, boolean lowerBound)
@@ -1446,7 +1446,7 @@ class UF {
     public boolean connected(int x, int y) { return find(x)==find(y); }
 }
 
-class MinCostToConnectAllNodesOrRepairEdges implements IInterviewQuestion {
+class MinCostToConnectAllNodesOrRepairEdges  {
 
     public static int minCost(int n, int[][] edges, int[][] newEdges) {
         UF uf = new UF(n + 1); // + 1 because nodes are 1-based
@@ -1491,7 +1491,7 @@ class MinCostToConnectAllNodesOrRepairEdges implements IInterviewQuestion {
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_5">
 <code class="language-java">
 
-public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
+public class TopKFrequentlyMentionedKeywords 
 {   // related problems:
     // https://leetcode.com/problems/top-k-frequent-words/
     // https://leetcode.com/problems/top-k-frequent-elements/
@@ -1559,7 +1559,7 @@ public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_4">
 <code class="language-java">
 import java.util.ArrayList;
-class TreasureIsland implements IInterviewQuestion
+class TreasureIsland 
 {
     public List&lt;int[]&gt; minimumRoute(char[][] maze)
     {
@@ -1655,7 +1655,7 @@ class TreasureIsland implements IInterviewQuestion
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_25">
 <code class="language-java">
 
-class LongestStringWithThreeConsecutiveCharacters  implements IInterviewQuestion {
+class LongestStringWithThreeConsecutiveCharacters   {
     
     // only work for leetcode 1405. Longest Happy String. at most 3 characters. not a general solution
     public void LongestStringWithAtMostKChar(Map&lt;Character, int[]&gt; map, int K, StringBuilder result) {
@@ -1888,7 +1888,7 @@ public static void main(String[] args)
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_17">
 <code class="language-java">
 import java.util.*;
-class OptimalUtilization implements IInterviewQuestion
+class OptimalUtilization 
 { // quite correct result.
 
     public int binarySearch(int[][] sorted, int target, boolean lowerBound)
@@ -2074,7 +2074,7 @@ import java.util.Map;
 
 
 
-public class CriticalRoutersOrConnections implements IInterviewQuestion 
+public class CriticalRoutersOrConnections  
 {
     class Graph&lt;T&gt;
     {
@@ -2251,7 +2251,7 @@ import java.util.Queue;
 import java.util.Iterator;
 
 
-public class JavaCollections implements IInterviewQuestion, IImportTechnique  {
+public class JavaCollections , IImportTechnique  {
     public void performTest()
     {
         System.out.println(&quot;Priorty Queue:&quot;);

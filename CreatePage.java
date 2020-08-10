@@ -605,6 +605,7 @@ public class CreatePage
                         .replace("@TEXT", titleName );    
 
                         code = code.replace("@CODE_TITLE", titleName);
+                        code = code.replace("implements IInterviewQuestion","");
                     }
 
 
