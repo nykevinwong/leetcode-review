@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.PriorityQueue;
  
 class StringUtils
 {
@@ -397,10 +398,59 @@ public class CreatePage
         return content;
     }
 
+    public static boolean isEmptyLine(String line)
+    {
+        if(line.contains("import")) return true;
+        if(line.contains("public String toString") ||
+        line.contains("public void performTest") ) return true;
+        return false;
+    }
+
+    public static String mergeEmptyLinesintoOne(String code, String name) throws Exception
+    {
+        String[] ignores= new String[] {"JavaCollections","BinarySearch","MinimumCostToConnectRope","CriticalRoutersOrConnections"};
+
+        for(String s : ignores)
+        {
+            if(s.equalsIgnoreCase(name))
+            {
+                return code;
+            }
+        }
+
+        BufferedReader bufferedReader = new BufferedReader(new StringReader(code));
+        int count = 0;
+        String line = bufferedReader.readLine();
+        String prevLine = null;
+        StringBuilder sb = new StringBuilder();
+
+        while(line != null) {
+
+            if(line != null && (line.trim().length()==0 || isEmptyLine(line) )  &&
+               prevLine !=null &&  (prevLine.trim().length()==0 || isEmptyLine(prevLine) ) )
+            {
+                //ignore this duplicate line to merge them into one
+
+            }
+            else
+            {
+
+                sb.append(line +"\n");
+            }
+            prevLine = line;
+
+            line = bufferedReader.readLine();           
+        }
+
+        bufferedReader.close();
+        System.out.println(name + " has " + count + " empty lines.");
+        return sb.toString();
+    }
+
     public static String RemoveMethodBlock(String code, String name, String blocktoRemove)
     {
 
-        String[] ignores= new String[] {"JavaCollections","BinarySearch","MinimumCostToConnectRope"};
+        String[] ignores= new String[] {"JavaCollections","BinarySearch","MinimumCostToConnectRope","CriticalRoutersOrConnections"};
 
         for(String s : ignores)
         {
@@ -470,6 +520,9 @@ public class CreatePage
         try
         {
             System.out.println("Reading files...");
+
+            PriorityQueue<String[]> minHeap = new PriorityQueue<>( (a,b) -> a[0].length()-b[0].length());
+
             StringBuilder codeContent = new StringBuilder();
             StringBuilder tocItemContent = new StringBuilder();
             tocItemContent.setLength(0);
@@ -520,11 +573,17 @@ public class CreatePage
                     {
                         orignalCode = RemoveMethodBlock(orignalCode, names[0],"performTest");
                         orignalCode = RemoveMethodBlock(orignalCode, names[0],"String toString()");
+                        orignalCode = mergeEmptyLinesintoOne(orignalCode, names[0]);
                     }
 
                     String code = codeTemplate.replace("@DIV_ID",divId)
                     .replace("@CODE_ID", codeId)
                     .replace("@CODE_TEXT", StringUtils.encodeHtml(orignalCode));
+
+                    if(names[0].equals("117"))
+                    {
+                        System.out.println("Debug:"+ StringUtils.encodeHtml(orignalCode));
+                    }
 
                     String tocItem = tocItemTemplate.replace("@DIV_ID","#"+divId)
                     .replace("@CODE_ID", codeId)
@@ -549,13 +608,21 @@ public class CreatePage
                     }
 
 
-                    codeContent.append(code);
-                    tocItemContent.append(tocItem);
-    
+                   // codeContent.append(code);
+                  //  tocItemContent.append(tocItem);
+                    minHeap.add(new String[]{code,tocItem});
                     
                 }
             };
 
+            while(!minHeap.isEmpty())
+            {
+                String[] data =minHeap.poll();
+                String code = data[0];
+                String tocItem = data[1];
+                codeContent.append(code);
+                tocItemContent.append(tocItem);
+            }
 
             indexContent = indexTemplate.replace("@TOC_ITEMS",tocItemContent.toString())
             .replace("@CODES", codeContent.toString());
