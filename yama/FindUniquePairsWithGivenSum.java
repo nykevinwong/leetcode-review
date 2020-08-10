@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
-
+/*  @@DESCRIPTION
+Amazon 題: 最大值的兩數之和.
+找出一組陣列中總和為90的兩數. 如果有超過一組兩數，傳回有單個最大值的那組.  同一元素不可從覆使用.
+*/
 public class FindUniquePairsWithGivenSum implements IInterviewQuestion
 {
     public List<List<Integer>> findUniquePairsWithGivenSum(int[] nums, int target)

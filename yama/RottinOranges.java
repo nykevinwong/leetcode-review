@@ -1,6 +1,13 @@
 import java.util.LinkedList;
 import java.util.Queue;
-
+/* @@DESCRIPTION
+994. Rotting Oranges 爛橙子
+給一個九宮格或更大的宮格.裡面有相鄰的橙子，也可能有不相鄰的橙子或沒有橙子。
+每一分鐘，爛橙子會弄爛四方相鄰新橙子. 算出爛橙子弄爛所有橙子所需時間。不可能全部弄爛就傳回負一.
+解法是使用廣度優先搜索，將爛橙子座標當成起始佇列元素. 計算新橙子個數。 每一佇列迴圈周期，針對所有欄橙子的四方查是否有新橙子，有就弄爛放入佇列，個數減一. 
+所需分鐘加一. 如果新橙子不為零，代表不可能全部弄爛.
+ 
+*/
 
 public class RottinOranges  implements IInterviewQuestion {
     //https://leetcode.com/problems/rotting-oranges/

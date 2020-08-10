@@ -6,7 +6,7 @@ import java.util.Stack;
 
 
 class TreasureIsland implements IInterviewQuestion
-{
+{   //求並印出一起點至一終點的最短路徑
     public List<int[]> minimumRoute(char[][] maze)
     {
         Queue<int[]> q = new LinkedList<>();

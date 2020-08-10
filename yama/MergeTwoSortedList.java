@@ -1,5 +1,6 @@
-
-
+/*  @@DESCRIPTION
+Merge Two Sorted LinkedList. 合併兩個有序鍊接表.
+*/
 class MergeTwoSortedList implements IInterviewQuestion
 {
     public Node mergeTwoLists(Node l1, Node l2) {

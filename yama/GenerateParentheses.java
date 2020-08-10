@@ -1,6 +1,10 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/*  @@DESCRIPTION
+generate parenthesis. 產生有效的雙括號.
+*/
+
 class GenerateParentheses implements IInterviewQuestion {
     
     public List<String> generateParentheses(int n) {

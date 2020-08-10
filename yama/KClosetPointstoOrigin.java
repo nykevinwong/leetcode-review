@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
+/*  @@DESCRIPTION
+K Close Potins to Origin. 離原點最近的K個點.
+*/
 class KClosetPointstoOrigin implements IInterviewQuestion  {
 
     public int[][] KClosetPoints_Sort(int[][] points, int K) {

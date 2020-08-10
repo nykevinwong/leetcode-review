@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
+/*  @@DESCRIPTION
+Amazon 題:最喜愛的歌曲風格.
+給一堆個人喜愛的歌曲名單. 也給你告訴每個歌曲的風格. 請輸出每個人最喜愛的歌曲風格.
+*/
+
 class FavoriteGenres implements IInterviewQuestion
 {
     public Map<String, List<String>> favoriteGenres(Map<String, List<String>> userSongs, Map<String, List<String>> songGenres)

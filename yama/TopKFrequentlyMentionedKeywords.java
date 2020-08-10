@@ -9,7 +9,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
-
+/* @@DESCRIPTION
+692. TOP K Frequent words. 前K個最高頻字或元素.
+給一堆可能從覆的關鍵字，一堆評價文章。找出前K個最高頻字.同頻字要依照字母順序排.
+解法是將每個評價文轉成小寫並拆成字組存入HashSet排除從覆字.儲存每字出現字數到對照表。
+依出現次數由大排到小. 取前K個。
+更快的方法是，使用最小堆積優先佇列. 用K log(K)的方法，讓佇列只留下最高頻字數的前K個.
+將佇列提出的順序反轉就是前K個.
+*/
 
 public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
 {   // related problems:

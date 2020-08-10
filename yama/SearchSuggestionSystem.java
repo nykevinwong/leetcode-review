@@ -4,6 +4,12 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/* @@DESCRIPTION
+1268. Search Suggestion System 搜索推荐系統. 建議列表. 自動完成表.
+在每次打入一個字母時，下拉選單會自動提示最接近當前輸入關鍵字字首的產品名稱.最多提示三個產品，並按照字母順序。
+可用對應26個字母的字首樹資料結構來解決這題. 每個字首樹節點還得儲存當前字首對應的產品推荐表以方便快速查尋.
+產品清單必須排序後，才存入字首樹中。
+*/
 
 public class SearchSuggestionSystem implements IInterviewQuestion {
     // System Design interview for auto suggestions: https://www.youtube.com/watch?v=xrYTjaK5QVM

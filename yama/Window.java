@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.util.HashMap;
 
+//記錄某物品(數字，字元，字串或物件，事件等等)出現的次數.也同時計算到底有多少種不同種類的物品(the number of type)
 class Window<E>
 {
     Map<E,Integer> m = new HashMap<>();

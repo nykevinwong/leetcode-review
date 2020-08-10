@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 class TreasureIsland2 implements IInterviewQuestion
-{
+{   //求從某起點至其中一個終點的最短步數
     public int minimumRoute(char[][] maze)
     {
         Queue<int[]> q = new LinkedList<>();
@@ -53,10 +53,10 @@ class TreasureIsland2 implements IInterviewQuestion
     public void performTest()
     {
         int minStep = minimumRoute(new char[][] {
-            {'S','O','O','S','S'},
-            {'D','O','D','O','D'},
-            {'O','O','O','O','O'},
-            {'X','D','D','O','O'},
+            {'S','O','O','S','S'}, // S:起點
+            {'D','O','D','O','D'}, // x:終點
+            {'O','O','O','O','O'}, // O: 可走的路
+            {'X','D','D','O','O'}, // D:路障或已走的路
             {'X','D','D','D','O'},
         });
 

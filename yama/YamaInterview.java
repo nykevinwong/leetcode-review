@@ -72,83 +72,6 @@ class NaryTreeNode {
     }
 }
 
-class SubarraysWithKDifferentIntegers implements IInterviewQuestion
-{
-    //Longest SubString With K Distinct Characters
-
-    
-    public int subarraysWithKDistinct(int[] A, int K) {        
-        Window<Integer> w1 = new Window<Integer>();
-        Window<Integer> w2 = new Window<Integer>();
-        int left1=0, left2 =0;
-        int count = 0;
-        
-        for(int i=0;i < A.length;++i)
-        {
-            int x = A[i];
-            w1.add(x);
-            w2.add(x);
-            
-            while(w1.kinds() > K )
-                w1.remove(A[left1++]);
-            
-            while(w2.kinds() >= K )
-                w2.remove(A[left2++]);
-            
-            count+= left2-left1;            
-        }
-        
-        return count;
-    }
-
-    public void performTest()
-    {
-        Helper.equals( subarraysWithKDistinct(new int[]{1,2,1,2,3}, 2) , 7, "{1,2,1,2,3} = ");
-        Helper.equals( subarraysWithKDistinct(new int[]{1,2,1,3,4}, 3) , 3, "{1,2,1,3,4} = ");
-
-    }
-
-    public String toString() { 
-        return "Subarrays with K Different Integers (*) [https://leetcode.com/problems/subarrays-with-k-different-integers/]";
-    }
-
- }
-
-
-
-class NthGeometricProgression implements IInterviewQuestion  {
-
-    public char[] getNthGP(double secondTerm, double thirdTerm, int nth)
-    {
-        double r = thirdTerm/ secondTerm;
-        double a = secondTerm/r;
-        double result = a*Math.pow(r, nth-1);
-        String str = String.valueOf(result);
-        int pos = str.indexOf('.');
-
-        if(pos > 0) // trim up to 
-        {
-           int decimalPlaces = 3;
-           str = str.substring(0, Math.min(pos+decimalPlaces+1, str.length())); 
-        }
-
-    //    System.out.println("res => [" + str + "]");
-        return str.toCharArray();
-    }
-
-    public void performTest()
-    {
-        Helper.equals(String.valueOf( getNthGP(1,2,4) ), "4.0", "seoncd Term:1, thrid Term: 2, Find 4th Term = ? ");
-    }
-
-    public String toString() { 
-        return "Nth Geometric Progression ([I]*) [https://leetcode.com/discuss/interview-question/432213/]";
-    }
-}
-
-
-
-
 
 
 
@@ -200,6 +123,9 @@ public class YamaInterview
         int count = 1;
         int technique = 1;
         for(IInterviewQuestion q: questions) { 
+
+            if(args.length==1 && !q.getClass().getName().equalsIgnoreCase(args[0]) ) continue;
+
             if(q instanceof IImportTechnique)
             {
                 System.out.println("*** TECHNIQUE " + technique + " *** " + q);
@@ -213,15 +139,7 @@ public class YamaInterview
                 System.out.println("\n---------------------------\n");
             }
         }
-        for(IInterviewQuestion q: questions) { 
-            if(q instanceof OptimalUtilization)
-            {
-                System.out.println("\n**********************************\n");
-                q.performTest(); count=99999;
-                System.out.println("\n**********************************\n");
 
-            }
-        }
 
     }
 }

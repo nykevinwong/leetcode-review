@@ -580,7 +580,7 @@ public class CreatePage
                     .replace("@CODE_ID", codeId)
                     .replace("@CODE_TEXT", StringUtils.encodeHtml(orignalCode));
 
-                    if(names[0].equals("117"))
+                    if(names[0].equals("144"))
                     {
                         System.out.println("Debug:"+ StringUtils.encodeHtml(orignalCode));
                     }
@@ -609,13 +609,13 @@ public class CreatePage
                     }
 
 
-                   // codeContent.append(code);
-                  //  tocItemContent.append(tocItem);
-                    minHeap.add(new String[]{code,tocItem});
+                    codeContent.append(code);
+                    tocItemContent.append(tocItem);
+                //    minHeap.add(new String[]{new String(code), new String(tocItem) });
                     
                 }
-            };
-
+            }
+/*
             while(!minHeap.isEmpty())
             {
                 String[] data =minHeap.poll();
@@ -623,14 +623,14 @@ public class CreatePage
                 String tocItem = data[1];
                 codeContent.append(code);
                 tocItemContent.append(tocItem);
-            }
+            } */
 
             indexContent = indexTemplate.replace("@TOC_ITEMS",tocItemContent.toString())
             .replace("@CODES", codeContent.toString());
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, false));
             writer.append( indexContent);
-            
+            writer.flush();
             writer.close();
             
             System.out.println("\nDone Combining!!");

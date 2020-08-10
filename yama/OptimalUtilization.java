@@ -1,5 +1,10 @@
 import java.util.*;
 
+/*  @@DESCRIPTION
+Amazon 題: Optimal Utilization. 最佳效用值. 
+兩組陣列，每組選一數字，找出小於等於並最接近目標數的兩數之和。
+解法可用左右雙指標最佳解,二元搜尋或TreeMap.
+*/
 class OptimalUtilization implements IInterviewQuestion
 { // quite correct result.
 

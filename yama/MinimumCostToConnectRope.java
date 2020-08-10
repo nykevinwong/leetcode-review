@@ -1,5 +1,13 @@
 import java.util.PriorityQueue;
 
+/*  @@DESCRIPTION
+Amazon 題: 連接所有繩子的最小成本
+有一堆不同長度的繩子. 每次連接兩繩子的成本就是兩繩長度總和.
+請問連接所有繩子的最小成本為何?
+由於最小成本必定是要每次都只連接兩個最短繩子,解法是用最小堆積優先佇列存入所有繩長度.
+每次取出兩最短繩長度相加. 新連成的繩子也可能還是最短繩之一,所以要把新繩子長度再放入佇列. 這樣一直計算下去，最後所有相加的總和就是最小成本。
+*/
+
 class MinimumCostToConnectRope implements IInterviewQuestion
 {
     public int minCostToConnectRope(int[] ropes)

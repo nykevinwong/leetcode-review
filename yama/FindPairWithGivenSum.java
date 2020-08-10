@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
-
+/*  @@DESCRIPTION
+Amazon 題:多組的兩數之和.
+找出一組陣列中總和為90的兩數. 如果有超過一組兩數，傳回每一組. 同一元素不可從覆使用.
+*/
 public class FindPairWithGivenSum implements IInterviewQuestion
 {
     public List<List<Integer>> findPairWithGivenSum(int[] nums, int target)

@@ -1,10 +1,12 @@
 
-
-
 import java.util.HashSet;
 import java.util.HashMap;
 
-
+/*  @@DESCRIPTION
+Amazon 題: 最常用字.
+給一段文章及禁用字清單. 找出文章中非禁用字的最高頻字.
+最佳解是不能排序。將禁用字轉小寫存入HashSet排除從覆字。文章轉小寫拆成字組. 針對非禁用字計數. 不斷地更新當前最大值及當前最高頻字.
+*/
 class MostCommonWord implements IInterviewQuestion
 {
     public String mostCommonWord(String paragraph, String[] banned) {

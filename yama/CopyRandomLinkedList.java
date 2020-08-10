@@ -1,5 +1,9 @@
 import java.util.HashMap;
 
+/*  @@DESCRIPTION
+Copy Random LinkedList. 拷貝帶有指向其它節點的鍊接表.
+*/
+
 public class CopyRandomLinkedList  implements IInterviewQuestion {
     public Node copyRandomListWithDummyNode(Node head)   {
         if(head==null) return null;        
