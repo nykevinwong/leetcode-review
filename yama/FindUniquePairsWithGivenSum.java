@@ -12,7 +12,7 @@ Amazon 題: 最大值的兩數之和. 但陣列中的數字是可以重覆的
 public class FindUniquePairsWithGivenSum implements IInterviewQuestion
 {
     public List<List<Integer>> findUniquePairsWithGivenSum(int[] nums, int target)
-    {
+    {  //存對應數查照表，陣列上的各數可能是另一數的對應數。一陣列可以多個同一數字元素。
         Map<Integer, List<Integer>> pos = new HashMap<>();
         List<List<Integer>> res = new ArrayList<>();
         for(int i=0;i<nums.length;i++) 
