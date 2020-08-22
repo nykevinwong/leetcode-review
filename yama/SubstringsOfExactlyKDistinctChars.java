@@ -7,8 +7,8 @@ class SubstringsOfExactlyKDistinctChars implements IInterviewQuestion
 
     public int substringswithExactlyKDistinctChars(String s, int K)
     {
-        Window<Character> w1 = new Window<Character>();
-        Window<Character> w2 = new Window<Character>();
+        CategoryCounter<Character> w1 = new CategoryCounter<Character>();
+        CategoryCounter<Character> w2 = new CategoryCounter<Character>();
         int count = 0, left1=0, left2 = 0;
         for(int i=0;i<s.length();i++)
         {

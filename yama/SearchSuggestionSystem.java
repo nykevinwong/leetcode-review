@@ -14,37 +14,39 @@ import java.util.LinkedList;
 public class SearchSuggestionSystem implements IInterviewQuestion {
     // System Design interview for auto suggestions: https://www.youtube.com/watch?v=xrYTjaK5QVM
     // https://leetcode.com/problems/search-suggestions-system
-     class Trie {
+     class Trie { // 26字母的Trie樹結構
      Trie[] sub = new Trie[26];
-     List<String> suggestion = new LinkedList<>();
+     List<String> suggestion = new LinkedList<>();//每個節點存至該子字串的產品
      }
  
      // autocomplete/typehead
      // suggest 3 items based on a searchWord currently typed.
+     // 根據當前產品搜尋關鍵字，建議至少3個產品。
      public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-         Arrays.sort(products);
+         Arrays.sort(products); // 產品必須照字母排序先.
          
          List<List<String>> res = new ArrayList<>();
          Trie root = new Trie();
-         for(String p: products) // pre-compute suggest list based on sorted order
+         for(String p: products) //每個產品照字母排序，存入對應的Trie樹節點位置.
          {
-             Trie r = root;
+             Trie r = root;//取得Tire樹根節點位置
              for(char c : p.toCharArray())
              {
-                 if(r.sub[c-'a']==null) r.sub[c-'a'] = new Trie();
+                 if(r.sub[c-'a']==null) r.sub[c-'a'] = new Trie(); // 建立當前Tire樹所需要對應字母的Tire樹
  
-                 r = r.sub[c-'a'];
-                 
+                 r = r.sub[c-'a'];// 取得當前字母對應的Tire樹位置。
+                 // 如果建議的產品小於三個，繼續加到表中。
                  if(r.suggestion.size() < 3) r.suggestion.add(p);
              }
          }
          
-         for(char c: searchWord.toCharArray())
+         for(char c: searchWord.toCharArray())//遍歷產品搜尋關鍵字的每個字元
          {
-             if(root!=null) root = root.sub[c-'a'];
+             if(root!=null) root = root.sub[c-'a']; // 取得當前字母對應的Tire樹
+             // 沒有就存空表，不然存當前字母對應Tire樹推
              res.add( (root==null) ? Arrays.asList() : root.suggestion);
          }
-         
+         //答案有對應同一關鍵字中，每個區間的搜尋結果.
          return res;
      }
  

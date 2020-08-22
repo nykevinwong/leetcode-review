@@ -1,19 +1,20 @@
 
 public class SearchMatrix implements IInterviewQuestion
-{
+{   // o(n):排除解法
     public boolean searchMatrix(int[][] matrix, int target) {
+        //二維陣列為空值，或大小為零，就傳回找不到此值。
         if(matrix==null || matrix.length==0 || matrix[0].length==0 ) return false;
-        int col = matrix[0].length-1;
-        int row = 0;
+        int col = matrix[0].length-1;//最右邊的位置
+        int row = 0;//第一行
         
         while(row < matrix.length && col >= 0)
         {
-            if(matrix[row][col]==target) return true;
-            if(matrix[row][col] < target) row++;
-            else col--;
+            if(matrix[row][col]==target) return true; //找到該值
+            if(matrix[row][col] < target) row++; // 排除此行
+            else col--; // 排除此列
         }
         
-        return false;
+        return false; //找不到該值
     }
 
     public void performTest()

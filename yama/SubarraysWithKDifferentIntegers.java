@@ -5,8 +5,8 @@ class SubarraysWithKDifferentIntegers implements IInterviewQuestion
 
     
     public int subarraysWithKDistinct(int[] A, int K) {        
-        Window<Integer> w1 = new Window<Integer>();
-        Window<Integer> w2 = new Window<Integer>();
+        CategoryCounter<Integer> w1 = new CategoryCounter<Integer>();
+        CategoryCounter<Integer> w2 = new CategoryCounter<Integer>();
         int left1=0, left2 =0;
         int count = 0;
         
