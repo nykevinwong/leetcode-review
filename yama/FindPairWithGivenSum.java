@@ -17,31 +17,30 @@ public class FindPairWithGivenSum implements IInterviewQuestion
         List<List<Integer>> res = new ArrayList<>();
         int max = Integer.MIN_VALUE;
 
-    
         for(int i=0;i<nums.length;i++) 
         { 
-            List<Integer> ls = pos.get(target-nums[i]);
+            List<Integer> ls = pos.get(target-nums[i]);// 查是否對應的數存在
 
-            if(ls!= null && ls.size() > 0)
+            if(ls!= null && ls.size() > 0) //在當前數之前，有相對應的數存在
             {
-                    int idx1 = ls.get(0); // this one shall be smaller index.                    
-                    int idx2 = i; // current one is always largest index since this index has not put into hash map yet.
-                    int curMax = Math.max(nums[idx1],nums[idx2]);
+                    int idx1 = ls.get(0); // 在對照表裡的數是在當前數之前存的，索引值肯定較小。                   
+                    int idx2 = i; // 當前索引值
+                    int curMax = Math.max(nums[idx1],nums[idx2]); // 兩者取較大數值
 
-                    ls.remove(0);
+                    ls.remove(0); // 清除當前符合條件，不需要再使用.
                     
-                    if(curMax > max)
-                    {
+                    if(curMax > max) // 如果該值是全局最大值, 這就是答案.
+                    { 
                         max = curMax;
-                        res.clear();
-                        res.add(Arrays.asList(idx1,idx2));
+                        res.clear(); // 只要全局最大值答案，清除之前的已經不符合的答案.
+                        res.add(Arrays.asList(idx1,idx2)); //答案格式必需照索引值大小排.
                     }
 
             }
             else
-            {
+            {  //如果對應的數不存在，記錄當前數，並存下索引位置.
                 pos.put(nums[i], pos.getOrDefault(nums[i], new ArrayList<Integer>()) );
-                pos.get(nums[i]).add(i);
+                pos.get(nums[i]).add(i); // 由於陣列內的整數可以重覆出現，用ArrayList存每個位置.
             }
         }
 

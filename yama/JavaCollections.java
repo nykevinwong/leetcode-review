@@ -13,33 +13,32 @@ public class JavaCollections implements IInterviewQuestion, IImportTechnique  {
     public void performTest()
     {
         System.out.println("Priorty Queue:");
-        PriorityQueue<Integer> pq=new PriorityQueue<>(); // min heap/priority queue by deafult
+        PriorityQueue<Integer> pq=new PriorityQueue<>(); // 預設的PQ是最小值堆積(Min Heap)，小排到大，意味著小值先出.
         int[] points = new int[] { 1,10,3,6,5,8,7,4,9,2}; int K = 3;
 
-        for(int pValue: points) { pq.offer(pValue); }
+        for(int pValue: points) { pq.offer(pValue); } //存入最小值堆積，讓堆積自已排.
 
-        // print heap array content (in an array order)
+        // 印出堆積的內容，這方法只印出內部陣列的順序，不是最堆積的順序.
         for(Integer p: pq) { System.out.print(p+ " "); } System.out.println();        
 
-        // how to iterate through PriorityQueue without affectint pq heap content
-        Iterator itr = pq.iterator(); 
+        Iterator itr = pq.iterator();          // 用代器，同上.
         while (itr.hasNext()) { System.out.print(itr.next()+ " ");  } System.out.println();
-       
+        // 印出照堆積順序排列的值.
         while(pq.size() > 0) { System.out.print(pq.poll()+ " "); } System.out.println();
 
-        Queue<Integer> pq2=new PriorityQueue<>(Collections.reverseOrder()); // max heap/priority queue
-
-        for(int pValue: points) { pq2.offer(pValue); }
+        // 最大堆積，revereOrder只適用 primitive type.
+        Queue<Integer> pq2=new PriorityQueue<>(Collections.reverseOrder()); 
+        
+        for(int pValue: points) { pq2.offer(pValue); } //存入最大值堆積，讓堆積自已排.
+        // 印出照堆積順序排列的值.
         while(pq2.size() > 0) { System.out.print(pq2.poll()+ " "); } System.out.println();
    
-        // a trick to stay N*log(k) time complexity for Max Priority Queue to get top k minimum in descending order (max-heap max first out)
-        // without this trick, it's N*log(N) time complexity.
-        // Min Priority Queue = N*log(N) since you need to put all numbers into the pq first.
-        // Min Priority Queue with the trick won't work since you will get top k max in an ascending order. (min-heap min first out)
+        // 使用最大堆積取得最小K個數的 N*log(K) time complexity 技巧.
+        // 最大堆積，由小排到大. 邊加入值， 堆積大於K個，就提出最大值.。最後最小的K個
         for(int pValue: points) 
         {
-            pq2.offer(pValue);
-            if(pq2.size() > K)  pq2.poll();
+            pq2.offer(pValue); //邊加入值
+            if(pq2.size() > K)  pq2.poll(); // 堆積大於K個，就提出最大值.
         }
 
         // print the result        

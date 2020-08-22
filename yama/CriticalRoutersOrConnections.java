@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class CriticalRoutersOrConnections implements IInterviewQuestion 
-{
+{   // 找出圖上關節點的程式
     class Graph<T>
     {
         private Map<T, List<T>> adjList = new HashMap<>();
@@ -18,7 +18,7 @@ public class CriticalRoutersOrConnections implements IInterviewQuestion
         public void addEdges(T[][] edges)
         {
             for(int i=0;i<edges.length;i++)
-            {
+            {   // 將二維陣列的值，轉成無向圖的雙向節點
                 addEdge(edges[i][0], edges[i][1]);
             }
         }
@@ -30,15 +30,15 @@ public class CriticalRoutersOrConnections implements IInterviewQuestion
 
         public void addEdge(T u, T v)
         {
-            addEdge(u, v, true);
+            addEdge(u, v, true); // 建立無向圖(雙向圖)
         }
 
         public void addEdge(T u, T v, boolean biDir)
         {
-            adjList.put(u, adjList.getOrDefault(u, new ArrayList<T>()));
+            adjList.put(u, adjList.getOrDefault(u, new ArrayList<T>())); 
             adjList.get(u).add(v);
             if(biDir)
-            {
+            {   //空值就先建立強型ArrayList，然後存值
                 adjList.put(v, adjList.getOrDefault(v, new ArrayList<T>()));
                 adjList.get(v).add(u);
             }
@@ -52,12 +52,12 @@ public class CriticalRoutersOrConnections implements IInterviewQuestion
             disc.put(node, time);
             low.put(node, time);
                         
-            for(T adjNode: adjList.get(node))
+            for(T adjNode: adjList.get(node)) //遍歷鄰接節點
             {
-                if(visited.get(adjNode)==false)
+                if(visited.get(adjNode)==false) // 若未訪問該鄰接節點
                 {
-                    children++;
-                    parent.put(adjNode,node);
+                    children++; //計算當前主節點有多少孩節點
+                    parent.put(adjNode,node); //當前鄰接節點的父親是當前主節點
                     findCutPoints(adjNode, visited, parent, disc, low, ap, bridges);
                     low.put(node, Math.min(low.get(node), low.get(adjNode) ) );
                     
@@ -90,17 +90,17 @@ public class CriticalRoutersOrConnections implements IInterviewQuestion
         public Set<T> findCutPoints()
         {
             Map<T, Boolean> visited = new HashMap<>();
-            Map<T, T> parent= new HashMap<>();
+            Map<T, T> parent= new HashMap<>();  //每個節點的父鄰節節點,就是第一個訪問此點的節點.
             Map<T, Integer> low= new HashMap<>();
-            Map<T, Integer> disc= new HashMap<>();
+            Map<T, Integer> disc= new HashMap<>(); //存每個節點是第幾個被訪問的?
             Set<T> ap = new HashSet<T>();
-            time = 0;
-            for(T node: adjList.keySet())
+            time = 0;// 共有多少節點被訪問，0可代表該節點是第一個被訪問的.
+            for(T node: adjList.keySet()) //為每節點預設
             {
-                visited.put(node, false);
-                parent.put(node, null); // root by deafult
-                low.put(node, 0);
-                disc.put(node, 0);
+                visited.put(node, false); // 設成從未訪問過
+                parent.put(node, null); // root by deafult，自已是自己父親.
+                low.put(node, 0);  
+                disc.put(node, 0); // 該節點是第幾個被訪問?這是未知的。
             }
     
             for(T node: adjList.keySet())

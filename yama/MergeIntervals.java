@@ -5,25 +5,27 @@ class MergeIntervals implements IInterviewQuestion
     public int[][] merge(int[][] intervals) {
 		if (intervals== null || intervals.length <= 1) return intervals;
 
-		// Sort by ascending starting point
+		// 區間排序用起點排，若兩起點相等，用終點排序。
 		Arrays.sort(intervals, (i,j) -> i[0]==j[0] ? i[1]-j[1]:i[0]-j[0]);
 
 		LinkedList<int[]> llRes = new LinkedList<>();
-		llRes.add(intervals[0]);
+		llRes.add(intervals[0]); // 標兵,簡化邏輯,減少程式碼檢查
         
 		for (int i=1;i < intervals.length;i++) {
-            int[] merged = llRes.getLast();                        
-			if (intervals[i][0] <= merged[1]) // Overlapping intervals
-            {
-                llRes.removeLast();
-				merged[1] = Math.max(merged[1], intervals[i][1]);
-                llRes.addLast(merged);
+            int[] merged = llRes.getLast();   
+            //上面排序後，前起點必定小於當前起點.                     
+			if (intervals[i][0] <= merged[1])// 前個終點大於當前起點，兩區間相交(overlapped)
+            { // 已知排序後，合併區間
+				merged[1] = Math.max(merged[1], intervals[i][1]); 
+                // 將最後一個換成合併好的區間.
+                llRes.removeLast(); 
+               llRes.addLast(merged);
             }
-			else { // disjoint intervals                          
+			else { // 不相交區間 disjoint intervals                          
 				llRes.add(intervals[i]);
 			}
 		}
-
+        //轉換linked List成陣列
 		return llRes.toArray(new int[llRes.size()][]);
     }
 

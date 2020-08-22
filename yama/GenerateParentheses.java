@@ -15,12 +15,12 @@ class GenerateParentheses implements IInterviewQuestion {
     
     public void dfs(String s, int left, int right, List<String> res)
     {
-        if(left > right) return;
-        if(left <0 || right < 0) return;
-        if(left==0 && right==0) res.add(s);
+        if(left > right) return; // 左括號的數量不能小於右括號，否則不是有效雙括號.
+        if(left <0 || right < 0) return; //超過所要求的括號數量
+        if(left==0 && right==0) res.add(s); // 剛好是題目要求的雙括號數量
         
-        dfs(s+"(", left-1, right, res);
-        dfs(s+")", left, right-1, res);
+        dfs(s+"(", left-1, right, res); //如果下一個是左括號的狀態分支
+        dfs(s+")", left, right-1, res); //如果下一個是右括號的狀態分支
     }
 
     public void performTest()

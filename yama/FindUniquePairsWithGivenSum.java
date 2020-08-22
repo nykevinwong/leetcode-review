@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 /*  @@DESCRIPTION
-Amazon 題: 最大值的兩數之和.
+Amazon 題: 最大值的兩數之和. 但陣列中的數字是可以重覆的
 找出一組陣列中總和為90的兩數. 如果有超過一組兩數，傳回有單個最大值的那組.  同一元素不可從覆使用.
 */
 public class FindUniquePairsWithGivenSum implements IInterviewQuestion
@@ -17,21 +17,21 @@ public class FindUniquePairsWithGivenSum implements IInterviewQuestion
         List<List<Integer>> res = new ArrayList<>();
         for(int i=0;i<nums.length;i++) 
         { 
-            List<Integer> ls = pos.get(target-nums[i]);
+            List<Integer> ls = pos.get(target-nums[i]); // 查是否對應的數存在
 
-            if(ls!= null && ls.size() > 0)
+            if(ls!= null && ls.size() > 0) //在當前數之前，有相對應的數存在
             {  // to DO. get rid of duplication.
-                    int x = nums[i];
-                    int y = nums[ls.get(0)];
-                    int left = x > y ? x:y;
-                    int right = x > y ? y:x;
-                    res.add(Arrays.asList(left, right));
-                    ls.remove(0);
+                    int x = nums[i];  // 取得當前數
+                    int y = nums[ls.get(0)]; // 取得相對應數
+                    int left = x > y ? x:y; // 較大值在左
+                    int right = x > y ? y:x; // 較小值在右
+                    res.add(Arrays.asList(left, right)); //左大右小的答案格式
+                    ls.remove(0); // 清除當前符合條件，不需要再使用.
             }
             else
-            {
+            {   //如果對應的數不存在，記錄當前數，並存下索引位置.
                 pos.put(nums[i], pos.getOrDefault(nums[i], new ArrayList<Integer>()) );
-                pos.get(nums[i]).add(i);
+                pos.get(nums[i]).add(i); // 由於陣列內的整數可以重覆出現，用ArrayList存每個位置.
             }
         }
 
