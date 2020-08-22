@@ -19,7 +19,8 @@ class KClosetPointstoOrigin implements IInterviewQuestion  {
             (p1, p2) -> (p2[0]*p2[0] +p2[1]*p2[1]) - (p1[0]*p1[0] +p1[1]*p1[1])  );
         // 用最大堆積的N*Log(K)技巧取最小K個. 最大堆積，取資料時，是由大到小的順序取出.
 
-        //N*lok(K) 技巧，將所有大於最小K個的值都取出不要.
+        //N*lok(K) 技巧，只要留排序好後，後面K個值. 
+        // 最大堆積就得到最小k個值.最小堆積就得到最大k個值.
         for(int[] p:points) 
         {
             pq.offer(p);
@@ -46,7 +47,7 @@ class KClosetPointstoOrigin implements IInterviewQuestion  {
         // 傳回答案，答案不是ascending order.
         return Arrays.copyOfRange(points, 0, K);
     }
-    
+    //分割分組排序法:這裡使用最左值為軸值
     private int partition(int[][] arr, int l, int r) {
         int[] pivot = arr[l];// (swap code part 1) 以左邊值為分割值，暫存分割值
 

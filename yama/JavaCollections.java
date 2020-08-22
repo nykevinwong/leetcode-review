@@ -30,7 +30,7 @@ public class JavaCollections implements IInterviewQuestion, IImportTechnique  {
         Queue<Integer> pq2=new PriorityQueue<>(Collections.reverseOrder()); 
         
         for(int pValue: points) { pq2.offer(pValue); } //存入最大值堆積，讓堆積自已排.
-        // 印出照堆積順序排列的值.
+        // 照堆積順序列印結果.
         while(pq2.size() > 0) { System.out.print(pq2.poll()+ " "); } System.out.println();
    
         // 使用最大堆積取得最小K個數的 N*log(K) time complexity 技巧.
@@ -41,7 +41,7 @@ public class JavaCollections implements IInterviewQuestion, IImportTechnique  {
             if(pq2.size() > K)  pq2.poll(); // 堆積大於K個，就提出最大值.
         }
 
-        // print the result        
+        // 照堆積順序列印結果.        
         while(!pq2.isEmpty()) { System.out.print(pq2.poll() + " "); } System.out.println();
     
         // add() vs offer(), remove() vs poll(), element() vs peek().

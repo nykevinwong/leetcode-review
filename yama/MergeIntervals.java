@@ -3,12 +3,13 @@ import java.util.*;
 class MergeIntervals implements IInterviewQuestion
 {
     public int[][] merge(int[][] intervals) {
+        // 空值或只有一個元素時，不用合併。原始陣列就是答案.
 		if (intervals== null || intervals.length <= 1) return intervals;
 
 		// 區間排序用起點排，若兩起點相等，用終點排序。
 		Arrays.sort(intervals, (i,j) -> i[0]==j[0] ? i[1]-j[1]:i[0]-j[0]);
 
-		LinkedList<int[]> llRes = new LinkedList<>();
+		LinkedList<int[]> llRes = new LinkedList<>();//方便快速插入刪除的資料結構
 		llRes.add(intervals[0]); // 標兵,簡化邏輯,減少程式碼檢查
         
 		for (int i=1;i < intervals.length;i++) {

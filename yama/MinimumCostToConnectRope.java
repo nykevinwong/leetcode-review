@@ -12,18 +12,20 @@ class MinimumCostToConnectRope implements IInterviewQuestion
 {
     public int minCostToConnectRope(int[] ropes)
     {
-        int res = 0;
+        int res = 0; //總長度
+        //用最小堆積，由小到大排.
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
         for(int len : ropes) { minHeap.add(len); }
 
-        while(minHeap.size() > 1)
-        {
+        while(minHeap.size() > 1)//至少有兩個就執行
+        {   //從最小堆積取當前最小兩長度值，兩長度值就是最小成本值.
             int combinedLen = minHeap.poll() + minHeap.poll();
-            res += combinedLen;
+            res += combinedLen; // 總和至總成本值
+            //新繩子也要，新繩子最終也被連成總繩子，也可能是最短繩。
             minHeap.offer(combinedLen);
         }
 
-        return res;
+        return res;//傳回總成本,必須是最正的最小成本
     }
 
     public void performTest()

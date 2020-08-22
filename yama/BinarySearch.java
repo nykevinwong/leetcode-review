@@ -5,28 +5,27 @@ public class BinarySearch implements IInterviewQuestion, IImportTechnique
     // lowerBound(低值邊界，左邊界): false-> 有重覆元素時，傳回重覆元素的右邊界或靠右值的邊界
     // 將負插入位置轉成正值後減一就是，該元素該被插入的位置.
     public int binarySearch(int[] arr, int key, boolean lowerBound)
-    {
-        int left = 0;
-        int right = arr.length - 1;
-        int lastKeyPos = -1;
+    {  // 傳入的陣列必須是要排序好,才能Binar Search.
+        int left = 0; int right = arr.length - 1; // 設定雙指標遍歷區間範圍
+        int lastKeyPos = -1;//最後一個找到的鍵值位置， -1為沒找到鍵值.
 
-        while(left <= right)
+        while(left <= right) //陣列只有一個元素時，left==right時，也得執行.
         {
-            int mid = (left+right) / 2;
+            int mid = left+(right-left) / 2; //免integer overflow的寫法
             int cur  = arr[mid];
 
-            if(key > cur) left = mid+1;
-            else if(key < cur) right = mid-1;
-            else // key == cur
+            if(key > cur) left = mid+1; //要找的值大於當前中點值，往右找，縮左邊邊界.
+            else if(key < cur) right = mid-1; //要找的值小於當前中點值，往左找，縮右邊邊界.
+            else // key == cur // 找到了
             {
-                lastKeyPos = mid;
+                lastKeyPos = mid; // 記錄當前位置
 
-                if(lowerBound) right = mid-1;
-                else left = mid+1;
+                if(lowerBound) right = mid-1; //如果是要找左邊界位置，縮右邊邊界,往左繼續找同一值。
+                else left = mid+1; //如果是要找右邊界位置，縮左邊邊界,往右繼續找同一值。
             }
         
         }
-
+        //鍵值找不到，就轉成該鍵值元素該被插入的位置. 不然，傳回找到鍵置的索引位置.
         return (lastKeyPos==-1) ? -(left+1) : lastKeyPos;
     }
 

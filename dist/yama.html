@@ -806,10 +806,11 @@ public class SearchMatrix
 import java.util.LinkedList;
 /* @@DESCRIPTION
 994. Rotting Oranges 爛橙子
+0 = 沒橙子在此， 1 = 爛橙子在此, 2 = 好橙子在此,
 給一個九宮格或更大的宮格.裡面有相鄰的橙子，也可能有不相鄰的橙子或沒有橙子。
 每一分鐘，爛橙子會弄爛四方相鄰新橙子. 算出爛橙子弄爛所有橙子所需時間。不可能全部弄爛就傳回負一.
 解法是使用廣度優先搜索，將爛橙子座標當成起始佇列元素. 計算新橙子個數。 每一佇列迴圈周期，針對所有欄橙子的四方查是否有新橙子，有就弄爛放入佇列，個數減一. 
-所需分鐘加一. 如果新橙子不為零，代表不可能全部弄爛.
+所需分鐘加一. 如果某個好橙子不鄰接任何爛橙子，代表不可能全部弄爛.
  
 */
 
@@ -818,39 +819,43 @@ public class RottinOranges   {
     // Zombie in Matrix: https://leetcode.com/discuss/interview-question/411357/
     // Minium hours to send file to all available servers
     public int orangesRotting(int[][] grid) {
+        //使用廣優搜，必須用佇列(隊列)
         Queue&lt;Integer[]&gt; q = new LinkedList&lt;&gt;();
-        int count =0;
-        // push source noddes
+        int initalFreshOrangeCount =0; // 初始好橙子數
+        // 設定廣優搜起點，遍歷整個網格
         for(int i=0;i&lt;grid.length;i++)
             for(int j=0;j&lt;grid[0].length;j++)
-            {
+            {   // 以爛橙子當做廣優搜起點
                 if(grid[i][j]==2) q.offer(new Integer[] {i,j});
-                if(grid[i][j]==1) count++;
+                if(grid[i][j]==1) initalFreshOrangeCount++;//計算網格上的初始初始好橙子數
             }
         
-        if(count==0) return 0; // speicial case. no fresh orange at all from start.
-        
+        if(initalFreshOrangeCount==0) return 0; // 特別狀況(邊角案例)，沒有好橙子。不需要繼處理.
+        // 四方向陣列
         int[][] dir = new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
-        int time = -1;
+        // 如果一開始沒有任何好橙子只有爛橙子，等於0分鐘就全爛了.
+        // 如果一開始有一個好橙子及鄰接的一個爛橙子，當前爛橙子弄爛好橙子後，該新的爛橙子會在佇列。
+        // 最後一次新的爛橙子組，沒有鄰接的好橙子弄爛，該次是不能計算。用-1來初始才是正確的.
+        int time = -1; 
         
-        while(q.size() &gt; 0)
+        while(q.size() &gt; 0) // 還有爛橙子的話
         {
-            int size = q.size();            
-            for(int i=0;i&lt;size;i++) // make sure to go through all nodes in current queue
+            int size = q.size(); //當前爛橙子數
+            for(int i=0;i&lt;size;i++) // 遍歷所有當前爛橙子組
             {
-                Integer[] pos = q.poll(); // get position                        
-                for(int j=0;j&lt;dir.length;j++) // get adjacents of adjcent node.
-                {
+                Integer[] pos = q.poll(); // 取出當前爛橙子                        
+                for(int j=0;j&lt;dir.length;j++) // 查看當前爛橙子的鄰接節點是否有好橙子
+                {  // 計算當前鄰接位置
                     int nx= pos[0] + dir[j][0];
                     int ny =pos[1] + dir[j][1];
-
+                    //當前鄰接位置必須在網格內 
                     if(nx &lt; 0 || ny &lt; 0 || nx &gt;= grid[0].length || ny &gt;= grid.length) continue;
                     
-                    if(grid[ny][nx]==1) // push an adjecent neighor which is a fresh orange in this case
-                    { // in scoope
-                        count--;
-                        grid[ny][nx] = 2; // rotten the tomato, mark as visited
-                        q.offer(new Integer[]{ny,nx}); 
+                    if(grid[ny][nx]==1) // 當前鄰接位置有好橙子
+                    { 
+                        grid[ny][nx] = 2; // 弄爛當前好橙子，將好橙子設成爛橙子
+                        initalFreshOrangeCount--;// 好橙子變少一個
+                        q.offer(new Integer[]{ny,nx}); //存入當前爛橙子位置，好再下次弄爛其鄰接節點好橙子.
                     }
                 }      
             }
@@ -858,7 +863,8 @@ public class RottinOranges   {
             time++;
         }
         
-        return (count==0) ? time:-1; //-1 also means it's not possible to rotten every orange.
+        //初始好橙子數為零，代表全被弄爛了。
+        return (initalFreshOrangeCount==0) ? time:-1; //-1 also means it's not possible to rotten every orange.
     }
 
 }
@@ -908,42 +914,46 @@ import java.util.HashSet;
 class PrisonCellsAfterNDays  {
 
     public int[] prisonAfterNDays(int[] cells, int N) {
+        // 陣列為空值，沒有元素，或著N代表第零天，就傳回原始陣列。
         if(cells==null || cells.length == 0 || N &lt;= 0) return cells;
-            Set&lt;String&gt; set = new HashSet&lt;&gt;();
+
+            Set&lt;String&gt; set = new HashSet&lt;&gt;();//以整個cell陣列內容當鍵值存每天prision的狀態.
             
-            while(0 &lt; N)
+            while(0 &lt; N) //共有N天的狀態要處理
             {
-                int[] next = nextDayCell(cells);
-                String curKey = Arrays.toString(next);
-                
+                int[] next = nextDayCell(cells); //取得下一天的狀態
+                String curKey = Arrays.toString(next);// 下一天陣列內容狀態轉成字串，方便存取
+                // 此狀態存在過，代表己經開始進入重覆狀態的環
                 if(set.contains(curKey))
                 {                
-                    N%=set.size();
+                    N%=set.size(); //N的餘數代表狀態陣列中對應的位置就是答案。
+                    // 由於我們沒有天數對照狀態表，我們用nexyDayCall重新計算.
                     while(0 &lt; N--) cells  = nextDayCell(cells);
                     
-                    return cells;
+                    return cells; //這就是N的餘數所代表的prison狀態
                 }
                 else
-                {
+                {  //此狀態沒存過,記錄下來
                     set.add(curKey);
                 }
-                
-                cells = next;   
-                N-=1;
+                                
+                cells = next; // 處理完後，當前prision狀態就是下個prison狀態。  
+                N-=1;// 天數過了一天
             }
             
             return cells;
         }
         
         public int[] nextDayCell(int[] cells)
-        {
+        {   //建立新陣列來存下一天的狀態
             int[] temp = new int[cells.length];
-            
-            for(int i=1;i&lt;cells.length-1;i++)
-            {
+            // 陣列第一個及最後位置的值必為零。因為無法得知第一位置左鄰居值及最後位右鄰居值。
+            // 計算下一天的狀態,除了第一及最後位置外，遍歷所有位置。從第二個位置遍歷至倒數第一個. 
+            for(int i=1;i&lt;cells.length-1;i++) 
+            {  // 下一天的同位置的狀態，是左右鄰居都為0或1，也就是相等時，下一天同位置的值為1.
                 temp[i] = (cells[i-1]==cells[i+1]) ? 1:0;        
             }
-            return temp;
+            return temp;//傳回下一天狀態.
         }
 
 }
@@ -970,23 +980,25 @@ public class PartitionLabel
     public List&lt;Integer&gt; partitionLabels(String S) {
         int[] last = new int[26];
         List&lt;Integer&gt; res = new ArrayList&lt;Integer&gt;();
-        
+        //建立26個小寫字母，每個字在字串上出現的最後位置的對照表
         for(int i=0;i&lt;S.length();i++)
             last[S.charAt(i)-'a'] = i;           
-        
-        int lastMax = 0, start = 0;
+        // lastMax是當前區間最大最後位置。 start 是區間起始位置
+        int lastMax = 0, start = 0; 
+        //遍歷整個字串，處理每個字母
         for(int i=0;i&lt;S.length();i++)
-        {
+        {   //當前字母的最後位置跟之前某字母的最後位置比，取最大最後位置者.
+            //當前最大最後位置者，可能是當前字母，也可能是之前某個在字串上的字母。
             lastMax = Math.max( last[S.charAt(i)-'a'], lastMax);           
-            
+            //如果當前最大最後位置，是當前索引，表代當前字母及所有之前字母只出現在這個區間。
             if(lastMax==i)
-            {
+            {   // 計算區間長度，並存入ArrayList.
                 res.add(lastMax-start+1);                    
-                start = i+1;
+                start = i+1; //記錄下個區間起始位置，好計算下個區間長度.
             }
         }
         
-        return res;
+        return res;//傳回所有劃分字母區間
     }
 
 }
@@ -1184,24 +1196,28 @@ class OptimalUtilization
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_18">
 <code class="language-java">
 
+// 
 public class NumberOfClusters  {
     // questions: https://www.glassdoor.com/Interview/Problem-2d-grid-each-node-has-1-colors-find-number-of-clusters-of-a-given-color-red-blue-green-blue-gre-QTN_2930567.htm
     // https://leetcode.com/problems/number-of-islands/
     public int[] numberOfClusters(char[][] grid) {
+        //設定顏色及該顏色群集(色塊)數量的位置
         char[] colors = new char[] {'0','1','2'};
         int[] count = new int[] { 0,0,0};
 
         for(int i=0;i&lt;grid.length;i++)
         {
             for(int j=0;j&lt;grid[0].length;j++)
-            {
+            {   //沒必要訪問已訪問的節點
+                if(grid[i][j]=='v') continue; 
+
                 for(int k=0;k&lt;colors.length;k++)
-                {
-                    if(grid[i][j]==colors[k]) 
+                {   //針對未訪問的位置，遍歷同一顏色來計算該顏色群集數
+                     if(grid[i][j]==colors[k]) 
                     {
                         dfs(grid, i, j, colors[k]);
-                        count[k]++;
-                        break; // break; no need to check other colors.
+                        count[k]++;//計算該顏色群集數
+                        break; //當前節點己訪問,且是該顏色，沒必要查其它顏色
                     }
                 }
             }
@@ -1212,12 +1228,12 @@ public class NumberOfClusters  {
     }
     
     public void dfs(char[][] grid, int y, int x, char target)
-    {
+    {   // 不在grid範圍內的不用查。
         if(x &lt; 0 || x &gt;= grid[0].length || y &lt; 0 || y &gt;= grid.length ) return;        
-        if(grid[y][x]!= target) return;
+        if(grid[y][x]!= target) return;// 非要查的顏色不用深度遍歷
         
-        grid[y][x]= 'v'; //marked as visited
-        
+        grid[y][x]= 'v'; // 將該位置或節點設定已經訪問過
+        // 遍歷當前節點的所有鄰接節點，由於是grid, 只有四個鄰接節點要去訪問。
         dfs(grid, y+1, x, target);
         dfs(grid, y-1, x, target);
         dfs(grid, y, x+1, target);
@@ -1271,31 +1287,32 @@ class NthGeometricProgression   {
 
 /*  @@DESCRIPTION
 Amazon 題: 最常用字.
-給一段文章及禁用字清單. 找出文章中非禁用字的最高頻字.
-最佳解是不能排序。將禁用字轉小寫存入HashSet排除從覆字。文章轉小寫拆成字組. 針對非禁用字計數. 不斷地更新當前最大值及當前最高頻字.
+給一段文章及禁用字(粗話字)清單. 將禁用字排除在外，找出文章中的最高頻字.
+最佳解是不能排序。將禁用字轉小寫存入HashSet排除重覆字。文章轉小寫拆成字組. 針對非禁用字計數. 不斷地更新當前最大值及當前最高頻字.
 */
 class MostCommonWord 
 {
     public String mostCommonWord(String paragraph, String[] banned) {
-        String[] words = paragraph.split(&quot;\\W+&quot;); // split by all non-character. + means more than one non-character can be used. 
-        HashSet&lt;String&gt; set = new HashSet&lt;&gt;();
-        HashMap&lt;String,Integer&gt; m = new HashMap&lt;&gt;();
+        // W means non-word character. + means more than one non-word can be used. 
+        String[] words = paragraph.split(&quot;\\W+&quot;); 
+        HashSet&lt;String&gt; bannedWords = new HashSet&lt;&gt;(); //除去重覆元素，只要獨特(distinct)元素用.
+        HashMap&lt;String,Integer&gt; m = new HashMap&lt;&gt;();//記錄字出現次數(frequency)
         String maxWord = null;
-        int max = 0;
-        for(String b : banned)
-            set.add(b.toLowerCase());
+        int max = 0; // 記錄全域最高頻字的出現次數,用以快速記錄全域&quot;唯一&quot;最高頻字
+        for(String b : banned) // 建造禁用字表，重覆的禁用字不需要，
+        bannedWords.add(b.toLowerCase()); //轉小寫方便比較字串或當哈希表鍵值。
         
-        for(String w: words)
+        for(String w: words) //遍歷文章段落上每個字
         {
-            w = w.toLowerCase();
-            if(!set.contains(w))
-            {
+            w = w.toLowerCase(); //轉成小寫好比較字串
+            if(!bannedWords.contains(w)) //如果不是禁用字
+            {   //計算該字的出現次數
                 m.put(w, m.getOrDefault(w,0)+1);
-                int count =m.get(w);
-                if(count &gt; max)
+                int count =m.get(w); //取出該字出現次數
+                if(count &gt; max) //如果該字比全域最高頻字的出現次數還高
                 {
-                    maxWord = w;
-                    max = count;
+                    maxWord = w; //記錄成全域最高頻字
+                    max = count; //記錄成全域最高頻字的出現次數
                 }
             }
         }
@@ -1329,18 +1346,20 @@ class MinimumCostToConnectRope
 {
     public int minCostToConnectRope(int[] ropes)
     {
-        int res = 0;
+        int res = 0; //總長度
+        //用最小堆積，由小到大排.
         PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
         for(int len : ropes) { minHeap.add(len); }
 
-        while(minHeap.size() &gt; 1)
-        {
+        while(minHeap.size() &gt; 1)//至少有兩個就執行
+        {   //從最小堆積取當前最小兩長度值，兩長度值就是最小成本值.
             int combinedLen = minHeap.poll() + minHeap.poll();
-            res += combinedLen;
+            res += combinedLen; // 總和至總成本值
+            //新繩子也要，新繩子最終也被連成總繩子，也可能是最短繩。
             minHeap.offer(combinedLen);
         }
 
-        return res;
+        return res;//傳回總成本,必須是最正的最小成本
     }
 
     public void performTest()
@@ -1465,35 +1484,35 @@ class MinCostToConnectAllNodesOrRepairEdges  {
 Merge Two Sorted LinkedList. 合併兩個有序鍊接表.
 */
 class MergeTwoSortedList 
-{
+{  //使用合併排序法(Merged sort)的合併方法
     public Node mergeTwoLists(Node l1, Node l2) {
-        Node dummy = new Node(0);
-        Node temp = dummy;
-        
+        Node dummy = new Node(0);//需要一個標兵，假的資料，方便傳回鍊頭.
+        Node temp = dummy;//該標兵同時也是一個新鍊表頭，用來存方合併後的資料.
+        // 兩鍊表都還有元素沒遍歷過
         while(l1 !=null &amp;&amp; l2 != null)
-        {
+        {  // 取兩鍊表當前較小的節點
             Node smaller = (l1.val &lt; l2.val) ? l1:l2;
-            temp.next = smaller;             
-            temp = temp.next;
-            
+            temp.next = smaller; // 加到新鍊表尾           
+            temp = temp.next; // 新鍊表當前頭下移至尾，好連接下筆新資料.
+            // 兩鍊表當前較小的節點，己被取出。必須移動該鍊表當前頭，好讀取下筆資料.
             if(l1.val &lt; l2.val) l1=l1.next;
             else l2 = l2.next;
         }
-        
-        while(l1!=null)
+        //只有一鍊表還有資料沒遍歷完，將所有資料一一連接到新鍊表尾部.
+        while(l1!=null) 
         {
-            temp.next = l1;
-            temp = temp.next;
-            l1 = l1.next;
+            temp.next = l1;  // 加到新鍊表尾  
+            temp = temp.next; // 新鍊表當前頭下移至尾，好連接下筆新資料.
+            l1 = l1.next; // 必須移動該鍊表當前頭，好讀取下筆資料.
         }
-        
+        // 同上，但處理另一個可能性.
         while(l2!=null)
         {
-            temp.next = l2;
-            temp = temp.next;
-            l2 = l2.next;
+            temp.next = l2; // 加到新鍊表尾  
+            temp = temp.next; // 新鍊表當前頭下移至尾，好連接下筆新資料.
+            l2 = l2.next; // 必須移動該鍊表當前頭，好讀取下筆資料.
         }
-        
+        //標邱的用途來了，直接傳回正確的新鍊頭.
         return dummy.next;
     }
 
@@ -1513,27 +1532,30 @@ import java.util.*;
 class MergeIntervals 
 {
     public int[][] merge(int[][] intervals) {
+        // 空值或只有一個元素時，不用合併。原始陣列就是答案.
 		if (intervals== null || intervals.length &lt;= 1) return intervals;
 
-		// Sort by ascending starting point
+		// 區間排序用起點排，若兩起點相等，用終點排序。
 		Arrays.sort(intervals, (i,j) -&gt; i[0]==j[0] ? i[1]-j[1]:i[0]-j[0]);
 
-		LinkedList&lt;int[]&gt; llRes = new LinkedList&lt;&gt;();
-		llRes.add(intervals[0]);
+		LinkedList&lt;int[]&gt; llRes = new LinkedList&lt;&gt;();//方便快速插入刪除的資料結構
+		llRes.add(intervals[0]); // 標兵,簡化邏輯,減少程式碼檢查
         
 		for (int i=1;i &lt; intervals.length;i++) {
-            int[] merged = llRes.getLast();                        
-			if (intervals[i][0] &lt;= merged[1]) // Overlapping intervals
-            {
-                llRes.removeLast();
-				merged[1] = Math.max(merged[1], intervals[i][1]);
-                llRes.addLast(merged);
+            int[] merged = llRes.getLast();   
+            //上面排序後，前起點必定小於當前起點.                     
+			if (intervals[i][0] &lt;= merged[1])// 前個終點大於當前起點，兩區間相交(overlapped)
+            { // 已知排序後，合併區間
+				merged[1] = Math.max(merged[1], intervals[i][1]); 
+                // 將最後一個換成合併好的區間.
+                llRes.removeLast(); 
+               llRes.addLast(merged);
             }
-			else { // disjoint intervals                          
+			else { // 不相交區間 disjoint intervals                          
 				llRes.add(intervals[i]);
 			}
 		}
-
+        //轉換linked List成陣列
 		return llRes.toArray(new int[llRes.size()][]);
     }
 
@@ -1646,9 +1668,13 @@ class LongestPlaindromicSubstring  {
         int len = s.length();
 
         //用來存位置i至位置j的字串是否為迴文的記錄表格. 若索引位置小等於2
-        boolean[][] isPalindrome = new boolean[len][len];                
-        // j starts from 1. must compare at least two chars. one char from j, another char from i.
+        boolean[][] isPalindrome = new boolean[len][len]; // isPalindrome[i][j] 
+        // 內走一步範圍的字串是迴文，當前區間才可能是迴文.
+        // isPalindrome[i][j] = isPalindrome[i+1][j-1] &amp;&amp; s[i]==s[j];              
         
+        // 如果 i&lt;j, 不合理.
+        // 如果 i==j, 同一個字。 必定是迴文.
+        // 如果 i&gt;j, 
         for(int j=1; j &lt; s.length();j++) 
             for(int i=0; i &lt; j ; i++)
             {
@@ -1724,7 +1750,8 @@ class KClosetPointstoOrigin   {
             (p1, p2) -&gt; (p2[0]*p2[0] +p2[1]*p2[1]) - (p1[0]*p1[0] +p1[1]*p1[1])  );
         // 用最大堆積的N*Log(K)技巧取最小K個. 最大堆積，取資料時，是由大到小的順序取出.
 
-        //N*lok(K) 技巧，將所有大於最小K個的值都取出不要.
+        //N*lok(K) 技巧，只要留排序好後，後面K個值. 
+        // 最大堆積就得到最小k個值.最小堆積就得到最大k個值.
         for(int[] p:points) 
         {
             pq.offer(p);
@@ -1751,7 +1778,7 @@ class KClosetPointstoOrigin   {
         // 傳回答案，答案不是ascending order.
         return Arrays.copyOfRange(points, 0, K);
     }
-    
+    //分割分組排序法:這裡使用最左值為軸值
     private int partition(int[][] arr, int l, int r) {
         int[] pivot = arr[l];// (swap code part 1) 以左邊值為分割值，暫存分割值
 
@@ -1818,7 +1845,7 @@ public class JavaCollections , IImportTechnique  {
         Queue&lt;Integer&gt; pq2=new PriorityQueue&lt;&gt;(Collections.reverseOrder()); 
         
         for(int pValue: points) { pq2.offer(pValue); } //存入最大值堆積，讓堆積自已排.
-        // 印出照堆積順序排列的值.
+        // 照堆積順序列印結果.
         while(pq2.size() &gt; 0) { System.out.print(pq2.poll()+ &quot; &quot;); } System.out.println();
    
         // 使用最大堆積取得最小K個數的 N*log(K) time complexity 技巧.
@@ -1829,7 +1856,7 @@ public class JavaCollections , IImportTechnique  {
             if(pq2.size() &gt; K)  pq2.poll(); // 堆積大於K個，就提出最大值.
         }
 
-        // print the result        
+        // 照堆積順序列印結果.        
         while(!pq2.isEmpty()) { System.out.print(pq2.poll() + &quot; &quot;); } System.out.println();
     
         // add() vs offer(), remove() vs poll(), element() vs peek().
@@ -2433,28 +2460,27 @@ public class BinarySearch , IImportTechnique
     // lowerBound(低值邊界，左邊界): false-&gt; 有重覆元素時，傳回重覆元素的右邊界或靠右值的邊界
     // 將負插入位置轉成正值後減一就是，該元素該被插入的位置.
     public int binarySearch(int[] arr, int key, boolean lowerBound)
-    {
-        int left = 0;
-        int right = arr.length - 1;
-        int lastKeyPos = -1;
+    {  // 傳入的陣列必須是要排序好,才能Binar Search.
+        int left = 0; int right = arr.length - 1; // 設定雙指標遍歷區間範圍
+        int lastKeyPos = -1;//最後一個找到的鍵值位置， -1為沒找到鍵值.
 
-        while(left &lt;= right)
+        while(left &lt;= right) //陣列只有一個元素時，left==right時，也得執行.
         {
-            int mid = (left+right) / 2;
+            int mid = left+(right-left) / 2; //免integer overflow的寫法
             int cur  = arr[mid];
 
-            if(key &gt; cur) left = mid+1;
-            else if(key &lt; cur) right = mid-1;
-            else // key == cur
+            if(key &gt; cur) left = mid+1; //要找的值大於當前中點值，往右找，縮左邊邊界.
+            else if(key &lt; cur) right = mid-1; //要找的值小於當前中點值，往左找，縮右邊邊界.
+            else // key == cur // 找到了
             {
-                lastKeyPos = mid;
+                lastKeyPos = mid; // 記錄當前位置
 
-                if(lowerBound) right = mid-1;
-                else left = mid+1;
+                if(lowerBound) right = mid-1; //如果是要找左邊界位置，縮右邊邊界,往左繼續找同一值。
+                else left = mid+1; //如果是要找右邊界位置，縮左邊邊界,往右繼續找同一值。
             }
         
         }
-
+        //鍵值找不到，就轉成該鍵值元素該被插入的位置. 不然，傳回找到鍵置的索引位置.
         return (lastKeyPos==-1) ? -(left+1) : lastKeyPos;
     }
 
