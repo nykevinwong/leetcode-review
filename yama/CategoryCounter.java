@@ -1,12 +1,12 @@
 import java.util.Map;
 import java.util.HashMap;
 
-// 不同物件種類的品種數
+// 種類計數器,計算同物件及不同物件種類數
 // 如三隻狗，五隻鳥，十隻馬，九隻猴。共有四種動物。
 // 如三個4,五個6,七個8。共有三種數字。
 // 如三個a,六個d,九個f，十個k。共有四種字母。
-
-class CategoryCounter<E>
+// 形狀，面積大小，體積，等等任何可以自已分門別類的都可用類似種類計數器的方式。
+class CategoryCounter<E> 
 {
     Map<E,Integer> m = new HashMap<>();
     int kinds = 0; 
