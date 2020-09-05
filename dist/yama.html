@@ -70,7 +70,7 @@
 <li id="li_32" name="li_32" data-id=""><input type="checkbox" id="checkbox_32" name="checkbox_32" /><a href="#code_32">Favorite Genres</a></li>
 <li id="li_33" name="li_33" data-id=""><input type="checkbox" id="checkbox_33" name="checkbox_33" /><a href="#code_33">Critical Routers Or Connections</a></li>
 <li id="li_34" name="li_34" data-id=""><input type="checkbox" id="checkbox_34" name="checkbox_34" /><a href="#code_34">Copy Random Linked List</a></li>
-<li id="li_35" name="li_35" data-id=""><input type="checkbox" id="checkbox_35" name="checkbox_35" /><a href="#code_35">Categroy Counter</a></li>
+<li id="li_35" name="li_35" data-id=""><input type="checkbox" id="checkbox_35" name="checkbox_35" /><a href="#code_35">Category Counter</a></li>
 <li id="li_36" name="li_36" data-id=""><input type="checkbox" id="checkbox_36" name="checkbox_36" /><a href="#code_36">Binary Search</a></li>
 
   </ul>
@@ -233,11 +233,12 @@ class TreasureIsland2
         Queue&lt;int[]&gt; q = new LinkedList&lt;&gt;();
         int[][] dir = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
 
+        // 將起始節點存入廣優搜佇例
         for(int i=0;i&lt; maze.length;i++)
         {
             for(int j=0; j &lt; maze[0].length;j++)
             {
-                if(maze[i][j]=='S')
+                if(maze[i][j]=='S')//如果是起始點，可以有多個. 
                 {
                     q.add(new int[] {j, i});
                 }
@@ -247,29 +248,31 @@ class TreasureIsland2
         int count = 0;
         while(q.size() &gt; 0)
         {
-            int size = q.size();
+            int size = q.size();//針對當前佇例的所有節點先處理，記錄要處理的當前節點量
 
-            for(int i=0;i&lt;size;i++)
+            for(int i=0;i&lt;size;i++) //針對當前佇例的所有節點先處理
             {
-                int[] pos = q.poll();
-                for(int k=0;k&lt;dir.length;k++)
+                int[] pos = q.poll();//取出節點
+                for(int k=0;k&lt;dir.length;k++) // 針對節點的四或八方向的鄰接節點處理
                 {
                     int nx = pos[0] + dir[k][0];
                     int ny = pos[1] + dir[k][1];
+                    // 不在網格內的座標，是不存在任何鄰接節點的，要跳過。
                     if(nx &lt;0 || nx &gt;= maze[0].length || ny &lt;0 || ny &gt;= maze.length) continue;
 
-                    if(maze[ny][nx]=='O') 
+                    if(maze[ny][nx]=='O') // 如果是未訪問過的節點
                     {
-                        maze[ny][nx] = 'D'; // visited
-                        q.add(new int[] {nx, ny });
+                        maze[ny][nx] = 'D'; // 設成訪問過
+                        q.add(new int[] {nx, ny });// 記錄該節點，好下次處理該節點的鄰節接點.
                     }
-                    else if(maze[ny][nx]=='X')
+                    else if(maze[ny][nx]=='X') //如果是終點標記
                     {
-                        return count; // found it
+                        return count; 
                     }
                 }
             }
-            count++;
+
+            count++; //每批次處理當前節點後，等於廣優搜執行一次，也等於步數.
         }
 
         return count;
@@ -401,13 +404,15 @@ public class TopKFrequentlyMentionedKeywords
     public List&lt;String&gt; nlogn_Sort(Map&lt;String,Integer&gt; m, int k)
     {   // sort in a descending order based on word frequency from large to small.
         List&lt;String&gt; res = new ArrayList(m.keySet());
+        // 從字數出現次數大到小排. 相等次數者，依字串字母排序。
         Collections.sort(res, (w1, w2) -&gt; (m.get(w1) == m.get(w2) ? w1.compareTo(w2) : m.get(w2)-m.get(w1)) );
-        return res;
+        return res; //由出現次數高至低排列的答案
     }
 
     public List&lt;String&gt; nlogk_Sort(Map&lt;String,Integer&gt; m, int k)
     {   
         // create a min heap to sort from small to large. add to sort. remove to get rid of smallest item.
+        // 從字數出現次數小到大排. 相等次數者，依字串字母排序。由於是反轉後，才是正確的順序。字母排序也是相反的。
         PriorityQueue&lt;String&gt; q = new PriorityQueue&lt;&gt;( (w1, w2) -&gt; (m.get(w1) == m.get(w2) ? w2.compareTo(w1) : m.get(w1)-m.get(w2)));
         // if you use max heap, you won't be able to lock insert/delete into log(k) time complexity as we did below.
         for (Map.Entry&lt;String, Integer&gt; entry : m.entrySet()) {
@@ -422,28 +427,29 @@ public class TopKFrequentlyMentionedKeywords
             res.add(w);
         }    
         Collections.reverse(res); //reverse the order        
-        return res;
+        return res; //由出現次數高至低排列的答案
     }
 
     public List&lt;String&gt; TopKFrequent(String[] keywords, String[] reviews, int k, boolean nlogksort )
-    {
-        Set&lt;String&gt; keywordSet = new HashSet&lt;&gt;(Arrays.asList(keywords)); // remove duplicates from keywrods
-        Map&lt;String, Integer&gt; m = new HashMap&lt;&gt;();
+    {  // 關鍵字表存放需要被計數的字，符合者才被計數.
+        Set&lt;String&gt; keywordSet = new HashSet&lt;&gt;(Arrays.asList(keywords)); // 將重覆的關鍵字除去
+        Map&lt;String, Integer&gt; m = new HashMap&lt;&gt;(); //字數對照表
 
         for(String r: reviews)
         {   // split based on non-character. characters:[a-zA-Z0-9_]
-            String[] strs = r.split(&quot;\\W&quot;);
-            Set&lt;String&gt; inReview = new HashSet&lt;&gt;(Arrays.asList(strs));
-            for(String w:inReview)
+            String[] strs = r.split(&quot;\\W&quot;); //將review 段落中的單字都取出，由段落的非單字如空白，標點等等來分割這些單字。
+            Set&lt;String&gt; inReview = new HashSet&lt;&gt;(Arrays.asList(strs)); //將重覆的單字除去
+            for(String w:inReview) //針對這個review中的個別單字計數
             {  
-                w = w.toLowerCase();  // comparision is CASE-INSENSITIVE
-                if(keywordSet.contains(w))
+                w = w.toLowerCase();  // 轉成小寫，確保比較字串時，不用分大小寫.
+                if(keywordSet.contains(w)) // 該字必須在關鍵字表才要計數
                 {
-                    m.put(w, m.getOrDefault(w,0)+1);
+                    m.put(w, m.getOrDefault(w,0)+1); // 計錄該單字的全域出現次數
                 }
             }
         }
 
+        // 取出單字全域出現次數最高的K者
        List&lt;String&gt; res = nlogksort ? nlogk_Sort(m,k) : nlogn_Sort(m, k);
        return res.subList(0,k); // [0,K)
     }
@@ -460,44 +466,48 @@ public class TopKFrequentlyMentionedKeywords
 <a class=".title">Sub Tree With Maximum Average</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_5">
 <code class="language-java">
-
+//多元樹的最大平均值
+//每個節點下的子樹節點值全部相加除總節點個數就是該子樹平均值
+//求那一個節點下的子樹平均值是全域最大平均值
 class SubTreeWithMaximumAverage 
 {
     class RefValue
     {
         public NaryTreeNode maxNode;
     }
+
     public NaryTreeNode getMaxAverageSubTree(NaryTreeNode root)
     {
         RefValue maxSubTree = new RefValue();
         float[] res = getSumAndAverage(root, maxSubTree);
         return maxSubTree.maxNode;
     }
-
+    // postorder traveral, bottom-up approach
     public float[] getSumAndAverage(NaryTreeNode root, RefValue maxSubTree)
     {
         if(root==null) return new float[]{0,0, 0};
- 
-        float sum = root.val;
-        float maxAverage = 0;
-        float childCount = 0;
+       //當前節點總和，當前最大平均及節點個數
+        float sum = root.val; // 當前節點的值
+        float maxAverage = 0; // 最大平均數未知
+        float childCount = 1; //當前節點也算一個節點
+
         if(root.nodes.size() &gt; 0)
         {
             for(NaryTreeNode child: root.nodes)
-            {
+            {   //取得每節點的節點子樹總和值，最大平均值及子樹節點個數
                 float[] res = getSumAndAverage(child, maxSubTree);     
-                sum+= res[0];    
-                childCount+=res[2];                      
-                if(maxAverage &lt; res[1])
+                sum+= res[0]; //計算當前節點的總和值    
+                childCount+=res[2];// 計算當前節點的                      
+                if(maxAverage &lt; res[1]) //比較所有個個子樹的最大平均值
                 {                 
                     System.out.print(maxAverage +  &quot; &lt; &quot; + res[1]); 
-                    maxAverage = res[1];
-                    maxSubTree.maxNode = child;
+                    maxAverage = res[1]; // 更新當前節點的最大平均值
+                    maxSubTree.maxNode = child; //更新全域最大平均值節點
                     System.out.println(&quot; [&quot; + maxSubTree.maxNode.val +&quot;]&quot;);
                 }
             }
-
-            float average = sum / (childCount+1);
+            //計算當前節點平均值
+            float average = sum / (childCount);
             if(maxAverage &lt; average)
             {                 
                 System.out.print(maxAverage +  &quot; &lt; &quot; + average); 
@@ -506,8 +516,8 @@ class SubTreeWithMaximumAverage
                 System.out.println(&quot; [&quot; + maxSubTree.maxNode.val +&quot;]&quot;);
             }
         }
-
-        return new float[]{sum, maxAverage, childCount + 1};
+        //傳回當前節點子樹總和值，當前最大平均值及子樹節點個數
+        return new float[]{sum, maxAverage, childCount };
     }
 
 }
@@ -526,26 +536,21 @@ class SubTreeWithMaximumAverage
 class SubtreeOfAnotherTree 
 {
     public boolean isSubtree(TreeNode s, TreeNode t) {        
-        return traverse(s, t);
-    }
-    
-    public boolean traverse(TreeNode s, TreeNode t)
-    {
         return s!=null &amp;&amp; (
-            sameStructure(s,t) ||
-            traverse(s.left,t) ||
-            traverse(s.right,t)
-        );
+            sameStructure(s,t) || //根節點樹是否等於傳入的樹t
+            isSubtree(s.left,t) || //左節點樹是否等於傳入的樹t
+            isSubtree(s.right,t)  //右節點樹是否等於傳入的樹t
+        ); // 以此類推，是否某個節點樹等於傳入的樹t
     }
     
     public boolean sameStructure(TreeNode a, TreeNode b)
     {
-        if(a==null &amp;&amp; b ==null) // touch bottom of the tree
+        if(a==null &amp;&amp; b ==null) // 空值樹是相同結構
             return true;
         
         if(a!=null &amp;&amp; b !=null &amp;&amp;
-          a.val == b.val)
-        {
+          a.val == b.val) // 當前節點相等，就往下檢查該子樹的節點是否都相等
+        {   //對同位左右節點比較      
             return sameStructure(a.left, b.left) &amp;&amp; sameStructure(a.right, b.right);
         }   
         
@@ -569,27 +574,28 @@ class SubstringsOfSizeKwithKDistinctChars
 {
     public List&lt;String&gt; substringsOfSizeKwithKDistinctChars(String s, int k)
     {
-        List&lt;String&gt; res = new ArrayList&lt;&gt;();
-        Set&lt;String&gt; set = new HashSet&lt;&gt;();
-        int[] m = new int[256];
+        List&lt;String&gt; res = new ArrayList&lt;&gt;(); //存解答的子字串
+        Set&lt;String&gt; set = new HashSet&lt;&gt;(); //
+        int[] m = new int[256]; // 存字母出現次數,假設ASCII code is used
 
         for(int i=0, j = 0;i &lt; s.length() &amp;&amp; j &lt; s.length(); )
         {
-            if(m[s.charAt(i)]==0)
+            if(m[s.charAt(i)]==0) // 第一次出現此字母
             {
-                m[s.charAt(i++)]++;
+                m[s.charAt(i++)]++; // 計算此字母出現次數，移動尾指標(快指標)
+            }
+            else  // 同樣的字母又出現一次，移動頭指標(慢指標)直到此字母在此[j,i]區間只出現過一次.
+            {
+                m[s.charAt(j++)]--; 
+            }
 
-            }
-            else 
-            {
-                m[s.charAt(j++)]--;
-            }
-            if(i-j==k) { 
-                String sub = s.substring(j,i);
-                // use both hashSet and list to remove duplicate and maintain the original order 
+            // 當前[j,i] 區間就是保證一個字母只能出現一次
+            if(i-j==k) {  // 如果長度為K,由於字母一次只在此區間出現一次，那這子字串肯定是只有K個獨特字元。
+                String sub = s.substring(j,i); // 取該區間的子字串
+                //用 Set 確定，重覆的答案只存一次。
                 if(!set.contains(sub)) { res.add(sub); }
-                set.add(sub);
-                m[s.charAt(j++)]--;
+                set.add(sub); // 這答案不能再出現，存入set，方便下次檢查.
+                m[s.charAt(j++)]--; // 這區間不再計入答案，移動頭指標，也得更新字母頻表.
             }
             
         }
@@ -614,8 +620,8 @@ class SubstringsOfExactlyKDistinctChars
 
     public int substringswithExactlyKDistinctChars(String s, int K)
     {
-        Window&lt;Character&gt; w1 = new Window&lt;Character&gt;();
-        Window&lt;Character&gt; w2 = new Window&lt;Character&gt;();
+        CategoryCounter&lt;Character&gt; w1 = new CategoryCounter&lt;Character&gt;();
+        CategoryCounter&lt;Character&gt; w2 = new CategoryCounter&lt;Character&gt;();
         int count = 0, left1=0, left2 = 0;
         for(int i=0;i&lt;s.length();i++)
         {
@@ -642,13 +648,23 @@ class SubstringsOfExactlyKDistinctChars
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_9">
 <code class="language-java">
 import java.util.*;
+/*
+  [1,2,3] 有多少子陣列?
+  形公式可求出: (1+3)*3/2 = 6
+  子陣列: [1], [2], [3], [1,2], [2,3], [1,2,3]
+  也可用執行樹狀態圖(backtracking 來畫):
+  在[1,3]區間中，只包含[3]的子陣列數量 count([3])= f([1,3]) - f([1,2]) = 6 - (1+2)*2/2 = 6-3 = 3
+  在[1,2]區間中，只包含[2]的子陣列數量 count([2])= f([1,2]) - f([1,1]) = 3 - 1 = 2
+  https://math.stackexchange.com/questions/1941224/number-of-occurrences-in-contiguous-subarrays
+*/
 class SubarraysWithKDifferentIntegers 
 {
     //Longest SubString With K Distinct Characters
-
+    //要了解該程式，必須懂得解 
+    //傳回陣A所有子陣列中，剛有k個種類的數字的子陣列數量.
     public int subarraysWithKDistinct(int[] A, int K) {        
-        Window&lt;Integer&gt; w1 = new Window&lt;Integer&gt;();
-        Window&lt;Integer&gt; w2 = new Window&lt;Integer&gt;();
+        CategoryCounter&lt;Integer&gt; w1 = new CategoryCounter&lt;Integer&gt;();
+        CategoryCounter&lt;Integer&gt; w2 = new CategoryCounter&lt;Integer&gt;();
         int left1=0, left2 =0;
         int count = 0;
         
@@ -658,12 +674,15 @@ class SubarraysWithKDifferentIntegers
             w1.add(x);
             w2.add(x);
             
-            while(w1.kinds() &gt; K )
-                w1.remove(A[left1++]);
+            //當前i位置就有K+種類，移除當前left1位置的字母來更新種類數直至w1只有K種.
+            //w1 此時的  [left1, i] 的區間包括K種類及K以下種類的子區間
+            while(w1.kinds() &gt; K ) w1.remove(A[left1++]);
+
+            //當前i位置就有K+種類，移除當前left2位置的字母來更新種類數直至w2只有K-1種.
+            //w2 此時的 [left2, i] 的區間包括K-1及K-1以下種類的子區間
+            while(w2.kinds() &gt;= K ) w2.remove(A[left2++]);
             
-            while(w2.kinds() &gt;= K )
-                w2.remove(A[left2++]);
-            
+            // w1區間長度 - w2區間長度 = 只有包含K種類區間的子陣列數目 
             count+= left2-left1;            
         }
         
@@ -1649,12 +1668,14 @@ class LongestPlaindromicSubstring  {
         // isPalindrome[i][j] = isPalindrome[i+1][j-1] &amp;&amp; s[i]==s[j];              
         
         // 如果 i&lt;j, 不合理.
-        // 如果 i==j, 同一個字。 必定是迴文.
-        // 如果 i&gt;j, 
+        // 如果 i==j, 同一個字。 必定是迴文. 沒有內部子字串.
+        // 如果 j-i&gt;=2, 有至少一個字元長的內部子字串。
+        // 如果 j-i=1, 兩個字，不一定是迴文。沒有內部子字串。
         for(int j=1; j &lt; s.length();j++) 
             for(int i=0; i &lt; j ; i++)
             {
-                //j-i &lt;=2 means current length doesnt have an inner string to check.
+                //j-i &lt;2 means current length doesnt have an inner string to check. true by default.
+                //j-i=2 means there is one charater in between. it must be palindrome itself. true by default.
                 boolean isInnerPalindrome = isPalindrome[i+1][j-1] || j-i &lt;=2;
                 
                 if(isInnerPalindrome &amp;&amp; s.charAt(i)==s.charAt(j) )
@@ -2002,7 +2023,7 @@ Amazon 題: 最大值的兩數之和. 但陣列中的數字是可以重覆的
 public class FindUniquePairsWithGivenSum 
 {
     public List&lt;List&lt;Integer&gt;&gt; findUniquePairsWithGivenSum(int[] nums, int target)
-    {
+    {  //存對應數查照表，陣列上的各數可能是另一數的對應數。一陣列可以多個同一數字元素。
         Map&lt;Integer, List&lt;Integer&gt;&gt; pos = new HashMap&lt;&gt;();
         List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
         for(int i=0;i&lt;nums.length;i++) 
@@ -2048,7 +2069,7 @@ Amazon 題:多組的兩數之和.
 public class FindPairWithGivenSum 
 {
     public List&lt;List&lt;Integer&gt;&gt; findPairWithGivenSum(int[] nums, int target)
-    {
+    {   //存對應數查照表，陣列上的各數可能是另一數的對應數。一陣列可以多個同一數字元素。
         Map&lt;Integer, List&lt;Integer&gt;&gt; pos = new HashMap&lt;&gt;();
         List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
         int max = Integer.MIN_VALUE;
@@ -2426,16 +2447,16 @@ public class CopyRandomLinkedList   {
 <template id="my-label-button-code_34"><button onclick="alert('This is an inline-handler');">Leetcode</button></template>
 
 <div id="code_35" name="code_35" class="center">
-<a class=".title">Categroy Counter</a>
+<a class=".title">Category Counter</a>
 <pre  style="overflow:hidden;"  data-label="my-label-button-code_35">
 <code class="language-java">
 import java.util.Map;
-// 不同物件種類的品種數
+// 種類計數器,計算同物件及不同物件種類數
 // 如三隻狗，五隻鳥，十隻馬，九隻猴。共有四種動物。
 // 如三個4,五個6,七個8。共有三種數字。
 // 如三個a,六個d,九個f，十個k。共有四種字母。
-
-class CategoryCounter&lt;E&gt;
+// 形狀，面積大小，體積，等等任何可以自已分門別類的都可用類似種類計數器的方式。
+class CategoryCounter&lt;E&gt; 
 {
     Map&lt;E,Integer&gt; m = new HashMap&lt;&gt;();
     int kinds = 0; 

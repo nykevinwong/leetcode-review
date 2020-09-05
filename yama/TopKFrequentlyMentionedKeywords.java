@@ -26,13 +26,15 @@ public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
     public List<String> nlogn_Sort(Map<String,Integer> m, int k)
     {   // sort in a descending order based on word frequency from large to small.
         List<String> res = new ArrayList(m.keySet());
+        // 從字數出現次數大到小排. 相等次數者，依字串字母排序。
         Collections.sort(res, (w1, w2) -> (m.get(w1) == m.get(w2) ? w1.compareTo(w2) : m.get(w2)-m.get(w1)) );
-        return res;
+        return res; //由出現次數高至低排列的答案
     }
 
     public List<String> nlogk_Sort(Map<String,Integer> m, int k)
     {   
         // create a min heap to sort from small to large. add to sort. remove to get rid of smallest item.
+        // 從字數出現次數小到大排. 相等次數者，依字串字母排序。由於是反轉後，才是正確的順序。字母排序也是相反的。
         PriorityQueue<String> q = new PriorityQueue<>( (w1, w2) -> (m.get(w1) == m.get(w2) ? w2.compareTo(w1) : m.get(w1)-m.get(w2)));
         // if you use max heap, you won't be able to lock insert/delete into log(k) time complexity as we did below.
         for (Map.Entry<String, Integer> entry : m.entrySet()) {
@@ -47,28 +49,29 @@ public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
             res.add(w);
         }    
         Collections.reverse(res); //reverse the order        
-        return res;
+        return res; //由出現次數高至低排列的答案
     }
 
     public List<String> TopKFrequent(String[] keywords, String[] reviews, int k, boolean nlogksort )
-    {
-        Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords)); // remove duplicates from keywrods
-        Map<String, Integer> m = new HashMap<>();
+    {  // 關鍵字表存放需要被計數的字，符合者才被計數.
+        Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords)); // 將重覆的關鍵字除去
+        Map<String, Integer> m = new HashMap<>(); //字數對照表
 
         for(String r: reviews)
         {   // split based on non-character. characters:[a-zA-Z0-9_]
-            String[] strs = r.split("\\W");
-            Set<String> inReview = new HashSet<>(Arrays.asList(strs));
-            for(String w:inReview)
+            String[] strs = r.split("\\W"); //將review 段落中的單字都取出，由段落的非單字如空白，標點等等來分割這些單字。
+            Set<String> inReview = new HashSet<>(Arrays.asList(strs)); //將重覆的單字除去
+            for(String w:inReview) //針對這個review中的個別單字計數
             {  
-                w = w.toLowerCase();  // comparision is CASE-INSENSITIVE
-                if(keywordSet.contains(w))
+                w = w.toLowerCase();  // 轉成小寫，確保比較字串時，不用分大小寫.
+                if(keywordSet.contains(w)) // 該字必須在關鍵字表才要計數
                 {
-                    m.put(w, m.getOrDefault(w,0)+1);
+                    m.put(w, m.getOrDefault(w,0)+1); // 計錄該單字的全域出現次數
                 }
             }
         }
 
+        // 取出單字全域出現次數最高的K者
        List<String> res = nlogksort ? nlogk_Sort(m,k) : nlogn_Sort(m, k);
        return res.subList(0,k); // [0,K)
     }

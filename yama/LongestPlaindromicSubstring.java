@@ -12,12 +12,14 @@ class LongestPlaindromicSubstring implements IInterviewQuestion {
         // isPalindrome[i][j] = isPalindrome[i+1][j-1] && s[i]==s[j];              
         
         // 如果 i<j, 不合理.
-        // 如果 i==j, 同一個字。 必定是迴文.
-        // 如果 i>j, 
+        // 如果 i==j, 同一個字。 必定是迴文. 沒有內部子字串.
+        // 如果 j-i>=2, 有至少一個字元長的內部子字串。
+        // 如果 j-i=1, 兩個字，不一定是迴文。沒有內部子字串。
         for(int j=1; j < s.length();j++) 
             for(int i=0; i < j ; i++)
             {
-                //j-i <=2 means current length doesnt have an inner string to check.
+                //j-i <2 means current length doesnt have an inner string to check. true by default.
+                //j-i=2 means there is one charater in between. it must be palindrome itself. true by default.
                 boolean isInnerPalindrome = isPalindrome[i+1][j-1] || j-i <=2;
                 
                 if(isInnerPalindrome && s.charAt(i)==s.charAt(j) )
