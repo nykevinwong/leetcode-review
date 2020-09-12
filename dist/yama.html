@@ -231,7 +231,7 @@ class TreasureIsland2
     public int minimumRoute(char[][] maze)
     {
         Queue&lt;int[]&gt; q = new LinkedList&lt;&gt;();
-        int[][] dir = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int[][] dir = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} }; //四鄰接方向的位置
 
         // 將起始節點存入廣優搜佇例
         for(int i=0;i&lt; maze.length;i++)
@@ -248,7 +248,7 @@ class TreasureIsland2
         int count = 0;
         while(q.size() &gt; 0)
         {
-            int size = q.size();//針對當前佇例的所有節點先處理，記錄要處理的當前節點量
+            int size = q.size(); //針對當前佇例的所有節點先處理，記錄要處理的當前節點量
 
             for(int i=0;i&lt;size;i++) //針對當前佇例的所有節點先處理
             {
@@ -263,11 +263,11 @@ class TreasureIsland2
                     if(maze[ny][nx]=='O') // 如果是未訪問過的節點
                     {
                         maze[ny][nx] = 'D'; // 設成訪問過
-                        q.add(new int[] {nx, ny });// 記錄該節點，好下次處理該節點的鄰節接點.
+                        q.add(new int[] {nx, ny });// 將該節點放入佇例，好下次處理該節點的鄰節接點.
                     }
                     else if(maze[ny][nx]=='X') //如果是終點標記
                     {
-                        return count; 
+                        return count; //傳回從起點到另一終點的最少步數
                     }
                 }
             }
@@ -297,30 +297,33 @@ class TreasureIsland
     {
         Queue&lt;int[]&gt; q = new LinkedList&lt;&gt;();
         int count = 0;
-        int[][] dir = new int[][] { {0,1},{1,0},{ 0,-1},{-1,0}};
-        q.offer(new int[]{0,0});
-        maze[0][0]= (char)count++;
+        int[][] dir = new int[][] { {0,1},{1,0},{ 0,-1},{-1,0}}; //四鄰接方向的位置
+        q.offer(new int[]{0,0}); // 將起始節點存入廣優搜佇例
+        maze[0][0]= (char)count++; // 用步數值標記成訪問過
 
         while(q.size() &gt; 0)
         {
-            int size = q.size();
-            for(int i=0;i&lt;size;i++)
+            int size = q.size(); //針對當前佇例的所有節點先處理，記錄要處理的當前節點量
+            for(int i=0;i&lt;size;i++) //針對當前佇例的所有節點先處理
             {
-                int[] pos = q.poll();
-               // System.out.println(Arrays.toString(pos));
-                for(int j=0;j&lt;dir.length;j++)
+                int[] pos = q.poll(); //取出節點
+             
+                for(int j=0;j&lt;dir.length;j++) // 針對節點的四或八方向的鄰接節點處理
                 {
                     int nx = pos[0] + dir[j][0];
                     int ny = pos[1] + dir[j][1];
+                    // 不在網格內的座標，是不存在任何鄰接節點的，要跳過。
                     if(nx &lt; 0 || nx &gt;= maze[0].length || ny &lt; 0 || ny &gt;= maze.length) continue;
-                    if(maze[ny][nx]=='O') // only O is walkable
+
+                    if(maze[ny][nx]=='O') // 如果是未訪問過的節點
                     {
-                        q.offer(new int[] {nx,ny});
-                        maze[ny][nx]= (char)count;
+                        maze[ny][nx]= (char)count; // 用步數值標記成訪問過
+                        q.offer(new int[] {nx,ny}); // 將該節點放入佇例，好下次處理該節點的鄰節接點.
                     }
-                    else if(maze[ny][nx]=='X')
+                    else if(maze[ny][nx]=='X') //如果是終點節點
                     { // found the target
-                        System.out.println(&quot;Steps: &quot; + (count));
+                        System.out.println(&quot;Steps: &quot; + (count)); //輸出需要的步數
+                        // 用該陣列製作起點到終點的座標路徑圖
                         List&lt;int[]&gt; res = createSolution(maze, pos[0], pos[1]);  
                         return res;
                     }
@@ -411,16 +414,18 @@ public class TopKFrequentlyMentionedKeywords
 
     public List&lt;String&gt; nlogk_Sort(Map&lt;String,Integer&gt; m, int k)
     {   
-        // create a min heap to sort from small to large. add to sort. remove to get rid of smallest item.
         // 從字數出現次數小到大排. 相等次數者，依字串字母排序。由於是反轉後，才是正確的順序。字母排序也是相反的。
+        // 用最小堆積從小數到大數排，小數先排出。最後會留下最大的。
         PriorityQueue&lt;String&gt; q = new PriorityQueue&lt;&gt;( (w1, w2) -&gt; (m.get(w1) == m.get(w2) ? w2.compareTo(w1) : m.get(w1)-m.get(w2)));
-        // if you use max heap, you won't be able to lock insert/delete into log(k) time complexity as we did below.
+
+        // 將數值放入最小堆積自已排序，堆積大於k個，就排出最小的。最後會只留下K個最大值。
+        // 這方法是N*log(K) time complexity.
         for (Map.Entry&lt;String, Integer&gt; entry : m.entrySet()) {
             q.offer(entry.getKey());
             if (q.size() &gt; k) { q.poll(); }  // ensure each insertion only uses log(k)       
         }
     
-        //get all elements from the heap
+        // 將最小堆積內容取出反轉順序。 最小堆積從小到大排，答案是從大到小排。
         List&lt;String&gt; res = new ArrayList&lt;&gt;();        
         while (q.size() &gt; 0) {
             String w = q.poll();
@@ -1312,7 +1317,7 @@ class MostCommonWord
             }
         }
         
-        return maxWord;
+        return maxWord; // //傳回全域最高頻字
     }
 
 }
@@ -2118,15 +2123,15 @@ public class FindPairWithGivenSum
 <code class="language-java">
 import java.util.*;
 class FindNUniqueIntegersSumUpToZero  {
-
+    // 給一個陣列的長度，找出讓此陣列所有整數元素總和為零的整數值
     public int[] sumZero(int n) {
         
-        int half = n/2;
+        int half = n/2; // 將陣列砍半，自己來設值
         int[] arr = new int[n];
         for(int i=0;i&lt; half;i++)
         {
-            arr[i]=-(n-i);
-            arr[n-i-1]= (n-i);
+            arr[i]=-(n-i); // 左半是負值
+            arr[n-i-1]= (n-i); // 右半是正值，全部相加為零。
         }
                     
         return arr;

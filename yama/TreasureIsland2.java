@@ -6,7 +6,7 @@ class TreasureIsland2 implements IInterviewQuestion
     public int minimumRoute(char[][] maze)
     {
         Queue<int[]> q = new LinkedList<>();
-        int[][] dir = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} };
+        int[][] dir = new int[][] { {0,1}, {0,-1}, {1,0}, {-1,0} }; //四鄰接方向的位置
 
         // 將起始節點存入廣優搜佇例
         for(int i=0;i< maze.length;i++)
@@ -23,7 +23,7 @@ class TreasureIsland2 implements IInterviewQuestion
         int count = 0;
         while(q.size() > 0)
         {
-            int size = q.size();//針對當前佇例的所有節點先處理，記錄要處理的當前節點量
+            int size = q.size(); //針對當前佇例的所有節點先處理，記錄要處理的當前節點量
 
             for(int i=0;i<size;i++) //針對當前佇例的所有節點先處理
             {
@@ -38,11 +38,11 @@ class TreasureIsland2 implements IInterviewQuestion
                     if(maze[ny][nx]=='O') // 如果是未訪問過的節點
                     {
                         maze[ny][nx] = 'D'; // 設成訪問過
-                        q.add(new int[] {nx, ny });// 記錄該節點，好下次處理該節點的鄰節接點.
+                        q.add(new int[] {nx, ny });// 將該節點放入佇例，好下次處理該節點的鄰節接點.
                     }
                     else if(maze[ny][nx]=='X') //如果是終點標記
                     {
-                        return count; 
+                        return count; //傳回從起點到另一終點的最少步數
                     }
                 }
             }

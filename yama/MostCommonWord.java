@@ -34,7 +34,7 @@ class MostCommonWord implements IInterviewQuestion
             }
         }
         
-        return maxWord;
+        return maxWord; // //傳回全域最高頻字
     }
 
     public void performTest()

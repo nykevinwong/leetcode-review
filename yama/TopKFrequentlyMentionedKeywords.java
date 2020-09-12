@@ -33,16 +33,18 @@ public class TopKFrequentlyMentionedKeywords implements IInterviewQuestion
 
     public List<String> nlogk_Sort(Map<String,Integer> m, int k)
     {   
-        // create a min heap to sort from small to large. add to sort. remove to get rid of smallest item.
         // 從字數出現次數小到大排. 相等次數者，依字串字母排序。由於是反轉後，才是正確的順序。字母排序也是相反的。
+        // 用最小堆積從小數到大數排，小數先排出。最後會留下最大的。
         PriorityQueue<String> q = new PriorityQueue<>( (w1, w2) -> (m.get(w1) == m.get(w2) ? w2.compareTo(w1) : m.get(w1)-m.get(w2)));
-        // if you use max heap, you won't be able to lock insert/delete into log(k) time complexity as we did below.
+
+        // 將數值放入最小堆積自已排序，堆積大於k個，就排出最小的。最後會只留下K個最大值。
+        // 這方法是N*log(K) time complexity.
         for (Map.Entry<String, Integer> entry : m.entrySet()) {
             q.offer(entry.getKey());
             if (q.size() > k) { q.poll(); }  // ensure each insertion only uses log(k)       
         }
     
-        //get all elements from the heap
+        // 將最小堆積內容取出反轉順序。 最小堆積從小到大排，答案是從大到小排。
         List<String> res = new ArrayList<>();        
         while (q.size() > 0) {
             String w = q.poll();
