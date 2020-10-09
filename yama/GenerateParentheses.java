@@ -6,7 +6,14 @@ generate parenthesis. 產生有效的雙括號.
 */
 
 class GenerateParentheses implements IInterviewQuestion {
-    
+    // 給定括號數。產生有效雙括號。
+    // backtracking preorder traversal 變型解法，由函式簽名中的參數變數來暫存.
+    // 函式簽名需要當前產生的雙括號字串。當前還可用的左右括號數。有效雙括號的答案存放表。
+    // 左右括號。兩種可能性，當前字串加入左括號或加入右括號。減少用掉的括號數。
+    // 三種可能的判斷: 
+    // 左括號數比右括號數還多，代表如右括號己經不夠用，無法產生有效答案。截枝不用再進行。
+    // 左或右括號變成負數，代表當前不是有效答案。截枝不用再進行。。
+    // 左右括號剛好都用完，當前字串就是有效的雙括號解答。 
     public List<String> generateParentheses(int n) {
         List<String> res = new ArrayList<>();
         dfs("", n, n, res);   

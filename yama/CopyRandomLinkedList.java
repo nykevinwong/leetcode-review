@@ -5,6 +5,21 @@ Copy Random LinkedList. 拷貝帶有指向其它節點的鍊接表.
 */
 
 public class CopyRandomLinkedList  implements IInterviewQuestion {
+    // Dummy 節點複製有random節點的鍊表解法
+    // 一個來源鍊表.一個哈希表存舊新節點對照表。一個零值dummy node.
+    // 用兩指標分別同時遍歷來源鍊表及當前新鍊表.
+    // 第一次遍歷時，將當前新鍊表下個設成新複製的對應節點，並存入舊新節點對照表。
+    // 第二次遍歷時，用舊新節點對照表找出新節點的random所該對應的節點.
+    // 新鍊表頭就是最初的dummy.next.
+
+    // 不用 Dummy 節點複製有random節點的鍊表解法
+    // 一個來源鍊表.一個哈希表存舊新節點對照表。不用Dummy node.
+    // 用一指標分別遍歷來源鍊表.
+    // 第一次遍歷時，直接存當前舊節點對照新複製對應節點的表。
+    // 第二次遍歷時，用對照表由當前舊節點取出新複製對應節點，並將新節點next設成，當前舊節點的next.
+    // 同時，用對照表由當前舊節點的random取出新複製對應節點，將此新節點設成當前新節點的random.
+    // 新鍊表頭就是由舊鍊表頭對應新鍊表頭的位置. 
+ 
     public Node copyRandomListWithDummyNode(Node head)   {
         if(head==null) return null;        
         HashMap<Node, Node> m = new HashMap<Node, Node>(); // 舊鍊表指標對映到新鍊表指標

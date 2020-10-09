@@ -5,7 +5,7 @@ public class BinarySearch implements IInterviewQuestion, IImportTechnique
     // lowerBound(低值邊界，左邊界): false-> 有重覆元素時，傳回重覆元素的右邊界或靠右值的邊界
     // 將負插入位置轉成正值後減一就是，該元素該被插入的位置.
     public int binarySearch(int[] arr, int key, boolean lowerBound)
-    {  // 傳入的陣列必須是要排序好,才能Binar Search.
+    {  // 傳入的陣列必須是要排序好,才能Binary Search.
         int left = 0; int right = arr.length - 1; // 設定雙指標遍歷區間範圍
         int lastKeyPos = -1;//最後一個找到的鍵值位置， -1為沒找到鍵值.
 

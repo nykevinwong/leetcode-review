@@ -2470,14 +2470,14 @@ class CategoryCounter&lt;E&gt;
     
     public void add(E x)
     {
-        m.put(x, m.getOrDefault(x,0)+1); //多一個這種類
-        if(m.get(x)==1) kinds++;// 如果此種類的物件至少有一個，代表多了一個品種。
+        m.put(x, m.getOrDefault(x,0)+1); // x 種類的物品多了一個。
+        if(m.get(x)==1) kinds++;// 如果此種類的物品剛有了一個，代表多了一個品種。
     }
     
     public void remove(E x)
     {
         m.put(x, m.get(x)-1); // 少一個這種類
-        if(m.get(x)==0) kinds--;// 如果此種類的物件變回零，代表這品種已經沒了。
+        if(m.get(x)==0) kinds--;// 如果此種類的物品變回零個，代表這品種已經沒了。
     }
     
     public int kinds() { return kinds; }
