@@ -1,4 +1,7 @@
 # leetcode-review
+https://nykevinwong.github.io/leetcode-review/dist/index.html
+
+https://nykevinwong.github.io/leetcode-review/dist/yama
 
 復習方法:
 
