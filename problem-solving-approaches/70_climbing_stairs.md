@@ -9,9 +9,11 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 (3) Dynamic Programming 
 (4) Fibonacci Sequence   Dynamic Programming with constant space use 
 
-Clilmb Combination:
+In this brute force approach we take all possible step combinations i.e. 1 and 2, at every step. At every step we are calling the function climbStairs for step 1 and 2, and return the sum of returned values of both functions.
 
-			      1
+Clilmb Combination of N = 5:
+
+			      1                            
 			      /\
 		    1      	 	2
 		   /\			/\
@@ -21,8 +23,9 @@ Clilmb Combination:
            /		  /\	
          1 	         1  2
 
-count -> climbCombination(n-1)+climb(n-2); // for dp conversion
-count -> climb(i+1,k) + climb(i+2,k);
+count -> climbCombination(n-1) + climbCombination(n-2); // decremental opeartion
+count -> climbCombination(i+1,n) + climbCombination(i+2,n); // incremental opeartion
+
 
 new int[n+1];
 O(N)
