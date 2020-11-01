@@ -11,15 +11,15 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 Clilmb Combination:
 
-				 1
-				 /\
+			      1
+			      /\
 		    1      	 	2
-			/\			/\
-		1		2		1  2
-		/\      /\      /\  /\
-	  1	 2		1 2	   1 2 	1 2
-     /		  /\	
-    1 		 1	2
+		   /\			/\
+		1	2		1  2
+		/\      /\     	     /\     /\
+	     1	 2	1 2	    1 2     1 2
+           /		  /\	
+         1 	         1  2
 
 count -> climbCombination(n-1)+climb(n-2); // for dp conversion
 count -> climb(i+1,k) + climb(i+2,k);
