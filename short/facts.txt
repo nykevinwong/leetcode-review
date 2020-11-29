@@ -1,0 +1,98 @@
+Finding out overlapped intervals [[s1,e1],[s2,e2]..].
+we assume that there's no overlapped within the same interval list; the intervals are disjointed.
+below facts are true when two intervals[start1,end1] & [start2,end2] are overlapped.
+(1) end1 >= start2 & end2 >= start1 
+(2) start3 = max(start1,start2) 
+    end3 =   min(end1,end2)
+    [start3,end3] is a overlapped interval whenn start3 <= end3 or start3 + duration < end3.
+                  is not a overlapped when start3 > end3.
+
+Two Pointer Technique is used to search pairs in a sorted array or sorted arrays.
+Array Iteration to pick a pair.
+
+looking for a pair in one list or one dimension Array
+you can reuse the same slot from the array.
+for(int i=0;i<=n;i++)   // 
+  for(int j=0;<=n;j++) 
+  {
+      arr[i]+arr[j]
+  }
+
+you can not use the same slot from the array.
+for(int i=0;i<=n;i++)   // (n-1)+(n-2)+..+1
+  for(int j=i+1;<=n;j++)
+  {
+      arr[i]+arr[j]
+  }
+
+
+
+
+if one dimension array or this one list is sorted plus you can't select the same slot. you can use two pointer.
+int l=0;
+int r= arr.length;
+while (l < r):
+{
+    if(a[l] + a[r] == sum)
+    {
+        r--;
+        l++;
+    }
+    else if(a[l] + a[r] > sum) // check the sorted column
+      r--;
+    else 
+      l++;
+}
+
+same slot doesn't mean it's a duplicate. a duplicate value can exists in two different slots.
+you want to pick a pair from two lists or two dimension array.
+for(int i=0;i<=n;i++)   
+  for(int j=0;<=n;j++)  
+  {
+      int[] c = new int[a[i],b[j]];
+  }
+
+if two lists are sorted already, you can use two pointers.
+This will pick all unqiue pairs from the array; the same as above but O(N) time complexity.
+while (i < a.length && b < B.length):
+{
+    if(a[i] < b[j]) // check the sorted column
+      i++;
+    else 
+      j++;
+}
+
+排序
+
+Counting Sort 計數排序法是O(n)時間，O(n)空間的不穩定排序法，非in-place運作。要排序的原始資料必須在某個範圍內，並有最大最小值。
+所需計數的空間: max-min+1
+資料轉成計數索引的方法: arr[i]-最小值 可轉換成從零開始的索引
+計數程式碼: for(int i=0;i<arr.length;i++) count[arr[i]-min]++;
+排序程式碼: for(int i=min, j=0;i<=max;i++) while(count[i] > 0) { arr[j++] = count[i]--; }
+
+下面用了穩定的Counting Sort.
+如果HashMap是記錄的某種數字範圍，如文章中字出現次數範圍，可以下面方式將一般 O(nlog(n)) 排序降成 O(N)排序。
+    for(String word: words) 
+    { //記錄該字出現的順序                           
+      if(!m.containsKey(word)) uniqueWords.add(word);
+      ..
+    }
+
+    List<List<String>> res = new ArrayList<>();
+    //最差狀況是每個字都有每一樣的計數
+    for(String s: uniqueWords) res.add(new ArrayList<String>());
+    或 for(int i=min;i<=max;i++) ....
+
+    // 以出現次數來計數排序, min 最小值 為零時，可以不用。       
+    for(String s: uniqueWords) res.get(m.get(s)-min).add(s);          
+
+    for(int i=res.size()-1;i >=0;i--) //從高頻開始
+    {
+          List<String> l = res.get(i);
+          for(int j=0;j<l.size() && l.size() > 0;j++)
+          {          
+            strRes[k][0] = l.get(j);
+            strRes[k][1] = String.valueOf(i + min); 或 m.get(l.get(j)) //該字出現次數
+            k++;
+          }      
+    }

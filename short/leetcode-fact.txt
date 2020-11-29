@@ -1,0 +1,29 @@
+172. Factorial Trailing Zeroes | 階乘的尾隨零 
+(1)  (long i=5; n/i>0; i*=5) res+= (n/i);
+(2)  return (n==0) ? 0 : trailingZeroes(n/5) + n/5;
+
+231. Power of Two | 326. Power of Three | 342. Power of Four
+(1) Linear Search from 1 to integer n
+(2) Double-Type Binary Search from 1 to integer n
+
+69. Sqrt(x) only integer part | decimal digits are truncated
+(1) Linear Search is not possible since sqrt root of n is with deci 
+(2) Long-Type Binary Search from 1 to integer n  [367. Valid Perfect Square]
+(*) return (int)right when binary search is NOT found since right pointer is close to actual sqrt root. 
+
+Sqrt(x) Root of Number | 數的根 | 求實數解 (decimal diigits are required)
+(1) Double-Type Binary Search from 1 to integer n
+    (a) 因為是double, 左右邊界內縮時，可設成mid，不用mid-1 or mid+1. (left=mid, right=mid)
+    (b) double類型的迴圈執行絛件也是 left <= right
+(2) 符合絛件的根值範圍 abs( mid^n -x) < 誤差值  (誤差值 =0.001)
+
+198. House Robber
+[4,3,5]
+f(n) = 當前範圍搶得最大值 = max(搶之前屋最大值,不搶之前屋最大值+搶當前屋)
+f(n) = 當前範圍搶得最大值 = max(之前範圍搶得最大值,前前範圍搶得最大值+搶當前屋)
+f(0) = 0          [Breaking Condition | DP default value]
+f(1) = arr[0]     [Breaking Condition | DP default value] 
+f(2) = max(arr[0],arr[1]) [Breaking Condition | DP default value]
+f(3) = max(f(2), f(1) + arr[2]) [Example]
+f(n) = max(f(n-1), f(n-2)+arr[n-1]) | n>=3
+Recursive - Memoization - Dynamic Programming
