@@ -24,13 +24,11 @@ Search in Rotated Sorted Array (with duplicate)
 - (nums[mid] < nums[right]) will only work for non-duplicate scenario.
 - the code for duplicate scenario will work for both duplicate and non-duplicate scenario.
 
-
 (4) First Bad Version
 - standard lowerbound/leftmost-value binary search 
 - scope: false, false,... false, [true], true ...
 - lowerbound/leftmost-value: 
 - if(nums[mid]==target) { lastKeyPos = mid; r=mid-1; } // shrink the right boundary
-
 
 (5) Find Peak Element
 -  (nums[mid] > nums[mid+1]) the value is decreasing. the peak is on [l,mid] search(l,mid) 
@@ -194,17 +192,4 @@ If the divisor is 4 we can get a sum to 7 (1+1+2+3) and if the divisor is 5 the 
 - standard LOWERBOUND binary search template
 - if(canBeValid(nums, midDivisor, threshold)) { r= mid-1; } //find smaller (smallest)
 - custom Math.ceil 無條件四捨無入.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
-
-   public boolean canSumLessThanOrEqualThreshold(int[] nums, int curMidDivisor, int threshold)
-    {
-        int sum = 0;
-        for(int i=0;i< nums.length;i++)
-        {
-           int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
-           sum+=value;
-            if (sum > threshold) return false;
-        }
-        
-        
-        return true;
-    }
+ int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
