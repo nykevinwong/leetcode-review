@@ -1,0 +1,39 @@
+Binary Search Tree
+A Binary Search Tree is a special form of a binary tree. 
+The value in each node must be greater than (or equal to) any values in its left subtree 
+but less than (or equal to) any values in its right subtree.
+
+A valid BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+
+Template to start with.
+
+void dfs(TreeNode root, ...)
+{
+    if(root==null) return;
+    dfs(root.left, ...);
+    dfs(root.right, ...);
+}
+
+boolean dfs(TreeNode root, ...)
+{
+    if(root==null) return;
+    boolean left = dfs(root.left, ...);
+    boolean right = dfs(root.right, ...);
+    return left && right;
+    // return dfs(root.left,...) && dsf(root.right, ...);
+}
+
+Validate Binary Search Tree:
+- use Integer wrap class for leftBound and rightBound. null value can represent infinity
+- the valid BST condition:
+- boundary: leftBound < root.val < rightBound
+- (leftBound==null || leftBound < root.val ) // leftbound is infinitely/undetermined  or when leftbound is less than root.val
+- (rightBound== null || root.val < rightBound) // leftbound is infinitely/undetermined  or when leftbound is less than root.val
+-  isLeftValid  = isValidBSTRange(root.left, leftBound, root.val) 
+-  isRightValid = isValidBSTRange(root.right, root.val, rightBound)
+- both side must be valid to satisfiy the condition.
+

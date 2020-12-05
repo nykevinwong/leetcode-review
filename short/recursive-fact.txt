@@ -1,0 +1,12 @@
+Array 
+
+arr.length
+
+Linked List
+
+whlie(cur!=null) { cur=cur.next; len++; }
+getLength(Node cur) { return (cur==null) ? 0: getLength(cur.next)+1; }
+
+get Height for COMPLETE tree
+while(root!=null ) { root=root.left; len++}
+getHeight(Node root) { return (root==null) ? 0: getHeight(root.left)+1; }

@@ -1,0 +1,210 @@
+(1) Binary Search
+-Arrays.binarySearch(arr, target)
+-Collections.binarySearch(arr, target)
+-(index < 0) index= -index-1; // get insert position for non-existent target
+-rewrite standard binary search template from while to for will not work.
+-for-loop won't work for some reason with the exactly same conditions.
+
+(2) Sqrt(x) | Valid Perfect Square
+- only the integer part of the result is returned.
+- standard binary search template
+- search scope: [1,x]
+- long type search
+- long value = mid * mid 
+- return (int)right. // won't work for left 
+
+(2) Guess Number Higher or Lower
+(3) Search in Rotated Sorted Array (no duplicate)
+Search in Rotated Sorted Array (with duplicate)
+- standard binary search template 
+- condition if(nums[left] < nums[mid])  [left,mid] is the sorted interval
+            else if(nums[left] > nums[mid]) [mid,right] is the sorted interval. 
+            else left++; // only for handle duplicate scneario
+- >= or <= in condition will only work for duplicate scneario.
+- (nums[mid] < nums[right]) will only work for non-duplicate scenario.
+- the code for duplicate scenario will work for both duplicate and non-duplicate scenario.
+
+
+(4) First Bad Version
+- standard lowerbound/leftmost-value binary search 
+- scope: false, false,... false, [true], true ...
+- lowerbound/leftmost-value: 
+- if(nums[mid]==target) { lastKeyPos = mid; r=mid-1; } // shrink the right boundary
+
+
+(5) Find Peak Element
+-  (nums[mid] > nums[mid+1]) the value is decreasing. the peak is on [l,mid] search(l,mid) 
+-  if above condition is NOT satisified, the value is increaseing or flatting. the peak is on [mid+1,r] .
+
+(6) Find Minimum in Rotated Sorted Array (no duplicate)
+Find Minimum in Rotated Sorted Array (with duplicate)
+- min is always on the rotated part if the array has been rotated.
+- min is ONLY on the left side of the sorted part when the whole array is sorted and not rotated.
+- [3,1,3] duplicate scenario for recursion and iteration:   while(nums[l]==nums[r] && l!=r) l++;
+- min condition: if(nums[l] <= nums[r]) return nums[l];
+                 if(nums[l] <= nums[m]) // [l,m] is the sorted interval
+                 {  l = mid+1; // serach the right side }
+                 else {  r = m; } // we want to also search element at m within [l,m] , NOT [l,m-1]
+                 
+
+(7) Search for a Range [get lowerbound & upperbound of a duplicate value]
+- don't use O(N) loop to get lower bound if possible: while(l-1 > start  && nums[left]==nums[left-1]) left--;
+- don't use O(N) loop to get lower bound if possible: while(r+1 < end && nums[right]==nums[right+1]) right++;
+
+(8) Find K Closet Element 離某數 x 最接近的K個數.
+
+| a - x | leftValue = abs(x - nums[left])
+| b - x | rightValue = abs(nums[right]-x)
+
+a is close to x than b when 
+1. | a - x | < | b - x |
+2. | a - x | == | b -x | and a < b
+=> if(leftValue <= rightValue) right--; else left++;
+相等時，左值更接近。
+
+- x <= nums[0] - return 陣列中前個k數. x 必須至少包含在第一個位置
+- nums[n-1] >=x - return 陣列中後個k數. x 必須至少包含在最後一個位置
+- Collections.binarySearch or Arrays.binarySearch 
+- (index < 0) index=-index-1;
+- left = max(0, index - k -1 );     right = min(nums.length-1, index + k -1)
+- two pointer technique - while(right-left+1 > k) // 得到k個數的範圍區間就停止
+- List.sublist(left, right+1) exclusive finalIndex
+
+[---|---------x-------|----]
+    i-k-1    i       i+k-1 
+
+    while(r-l+1 > k) // run the loop until it equals k-size.
+    {
+        int lValue = Math.abs(arr[l]-x);
+        int rValue = Math.abs(arr[r]-x);
+        // get rid of bigger-distance item
+        if(lValue <= rValue ) // l is smaller
+            r--; // arr[r] is bigger.
+        else l++;
+
+    }
+
+
+(9) Cloest Binary Search Tree Value
+- 最近接或等於 x 的二元搜尋樹節點
+- if( Math.abs(target-root.val) > minDiff) 
+- update minDiff and save minDiffRoot 
+- standard binary search tree tarversal to find target.
+
+(10) Search in a Sorted Array of Unknown size
+- standard binary search
+- right = use Integer.MAX_VALUE 
+
+(11) Power(x,n)
+
+(12) Find Smallest Letter Greater than Target. Letter also wrap around.
+- when target is found, index + 1 = insert position + 1 = smallest letter great than target  
+- when target is NOT found, -index -1 = insert position = smallest letter great than target  
+- to handle wrap-around index=> index %= letters.length;
+
+(13) Intersection of Two Arrays. 兩個數組中相等的數字。
+- O(n) HashSet.contains()
+- use HashSet instead of ArrayList for non-duplicate answer
+- nlog(n) Arrays.sort or Arrays.binarySearch
+
+(14) Intersection of Two Arrays II. [two pointers]
+
+(15) Two Sum II (input array is sorted)
+- binarySearch the complement Number
+- O(N) two pointer technique is faster. 
+
+(16) Find the Duplicate Number (一組數組中找出duplicate)
+- Arrays.sort(nums): i > 0 && nums[i]==nums[i-1] 
+- slow fast cycle detection: *** range MUST BE from 1 to n
+
+public int findDuplicate(int[] nums) {
+    int slow = 0;
+    int fast = 0;
+ 
+    do{
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } while(slow != fast);
+ 
+    int find = 0;
+ 
+    while(find != slow){
+        slow = nums[slow];
+        find = nums[find];
+    }
+    return find;
+}
+
+(17) Median of Two Sorted Arrays
+
+(18) Find Kth Smallest Pair distance (第K個最小的兩數距離)
+nums = [1,3,1], k = 1. output = 0.
+(1,3) -> 2 , (1,1)-> 0, (3,1) -> 2
+- Arrays.sort(nums)
+- left = 0, right = nums[nums.length-1] - nums[0] (largest distance)
+- standard binary serach template
+- ( getPairCount(nums, mid) >= k ) r=mid-1; // shrink right boundary for make it as smallest as possible
+- return l.
+- getPairCount(int[] nums, int mid))
+{      int count = 0; // get all pair distance larger than mid distance.
+        for(int r=1, l=0; r < nums.length;r++)
+        {
+            while( l < r && nums[r]-nums[l] > mid) l++;
+            count+= r-l;
+        }
+        return count;
+}
+
+(19) Split Array Largest Sum 分割數組的最大值(求全域最小最大值)
+Input: nums = [7,2,5,10,8], m = 2, Output: 18
+The best way is to split it into [7,2,5] and [10,8].
+- standard binary search template
+- estimate solution range -> m = 1 => max: 10, m = 5, max 7+2+5+10+8 = 32
+- left = max(nums[...]) , right = sum(nums[...])
+- if(isValid(nums, m, mid)) r= mid-1; // for valid 
+
+    // 10,11,12,13,14...18......30,31,32.
+    // not possible     | possible for m =2
+    // 找出所有符合條件的合理分割數組
+    public boolean isValid(int[] nums, int m, int midSum)
+    {
+        int curSum = 0; int count = 1;
+        for(int i=0;i < nums.length;i++)
+        {   //當前分割數組和
+            curSum += nums[i];
+            if(curSum > midSum) 
+            {                
+                // 當前分割數組和大於當前最大考慮值，不考慮該組及當前元素.看下一組分割是否合理。
+                // [7+2+5+10] 太大. [7+2+5] 合理，下個分割從 [10] 開始.
+                curSum = nums[i];
+                count+=1; //當前分割數量
+                if(count > m) return false;                
+            }
+        }
+        return true;
+    }
+
+(20) Find the Smallest Divisor Given a Threshold (<=Threshold)
+Input: nums = [1,2,5,9], threshold = 6, Output: 5
+Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. 
+If the divisor is 4 we can get a sum to 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
+ [largest sum = sum(nums[...])--------------------- smallest sum                         ]
+ [smallest divisor 1                               largest divisor (max(nums[...]))      ]
+
+- standard LOWERBOUND binary search template
+- if(canBeValid(nums, midDivisor, threshold)) { r= mid-1; } //find smaller (smallest)
+- custom Math.ceil 無條件四捨無入.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
+
+   public boolean canSumLessThanOrEqualThreshold(int[] nums, int curMidDivisor, int threshold)
+    {
+        int sum = 0;
+        for(int i=0;i< nums.length;i++)
+        {
+           int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
+           sum+=value;
+            if (sum > threshold) return false;
+        }
+        
+        
+        return true;
+    }

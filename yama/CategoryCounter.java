@@ -21,8 +21,8 @@ class CategoryCounter<E>
     
     public void remove(E x)
     {
+        if(m.get(x)==1) kinds--;// 如果此種類的物品變回零個，代表這品種已經沒了。
         m.put(x, m.get(x)-1); // 少一個這種類
-        if(m.get(x)==0) kinds--;// 如果此種類的物品變回零個，代表這品種已經沒了。
     }
     
     public int kinds() { return kinds; }
