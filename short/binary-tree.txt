@@ -1,0 +1,101 @@
+二元樹
+
+二元樹的level或depth是從根節點起，從零開始。
+二元樹或二元子樹的高度是從該樹或子樹的最長路徑的最後節點算起，從零往上加。
+二元樹根節點的高度是左右節點中最大高度+1。
+二元樹的最底部從零開始的level就是最大深度.
+二元樹的某節點level就是該節點的深度.
+二元樹節點最大數量是2^(level)-1
+
+he depth of a node is the number of edges from the node to the tree's root node.
+A root node will have a depth of 0.
+
+The height of a node is the number of edges on the longest path from the node to a leaf.
+A leaf node will have a height of 0.
+
+Properties of a tree:
+
+The height of a tree would be the height of its root node,
+or equivalently, the depth of its deepest node.
+
+The diameter (or width) of a tree is the number of nodes on the longest path between any two leaf nodes. The tree below has a diameter of 6 nodes.
+
+二元樹遍歷
+
+遍歷 從資料中將每個元素只取出一次處理，就叫遍歷(Traversal). 
+二元樹遍歷有4種。前序，中序，後序及層序，都是O(N)線性遍歷,每個節點只到過或處理一次。
+前序，中序，後序，用遞迴dfs，iterative用堆疊。
+層序用遞迴dfs，iterative用佇列. 
+
+遞迴遍歷
+二元樹的前序，中序，後序遞迴(递归/recusrive)遍歷的寫法一樣。差別是何時處理當前節點。
+
+iterative遍歷
+
+二元樹的前序及後序iterative遍歷的寫法一樣。差別是存入左右節點堆疊的先後順序。後序遍歷需要有LinkedList從表頭前存入當前節點解答或用堆疊來反轉。
+前序先處理左節點，由於堆疊先進後出，後進先出。先存右節點再存左節點。
+前序先處理右節點，由於堆疊先進後出，後進先出。先存左節點再存右節點。
+
+中序iterative遍歷寫法較特殊需要特別記憶.
+
+        TreeNode cur = root;
+        
+        while(cur!=null || !s.isEmpty())
+        {
+            while(cur!=null)
+            {
+                s.push(cur);
+                cur = cur.left;
+            }
+            // cur is null right now.
+            cur = s.pop();
+            res.add(cur.val);
+            cur = cur.right;
+        }
+
+iterative遍歷System Stack Call Emulation
+可用TreeNode<Object[]>及一個自製 Object[] pair/tripulet/multi()來存入堆疊。
+這方法是最多只是解決或防止stack overflow的問題。
+
+二元樹遞迴層序遍歷 需要從零開始的level變數及List<List<Integer>>的表集。
+可由 lls.size() 及增加新表單至 lls 中來推算是否尚當前遞迴呼叫是剛到某一層的第一個節點.
+可用 Math.pow(2, level) 及當前層級表單的大小來推算是否當前遞迴呼叫剛到某一層的某個節點或最後一個節點. 
+可用 HashMap 及 level 變數存各層級對應的變數表，當遞迴呼叫剛某一層時，可取出更新該層變數。
+
+二元樹ITERATIVE層序遍歷 用佇列(隊列)，及從零開始的level變數。在ITERATIVE迴圈內，用佇列的size及另一個迴圈來一次處理當前層級的節點。
+
+二元樹的最大深度遞迴解法(104. Maximum Depth of Binary Tree)用的是遞迴後序遍歷。傳回最大值+1.
+二元樹的最大深度ITERATIVE層序遍歷解，用佇列及從零開始的level變數。同二元樹ITERATIVE層序遍歷，level在此就是最大的深度值。
+
+(特殊必記)
+對稱樹或鏡像樹(Symmetric Tree)的根下的左右子樹呈鏡像對稱。根只有自已一節點與自已對稱，可以將根同時當成左右節點使用。
+函式簽章必用 isMirror(TreeNode left,TreeNode right); 
+沒有左右節點或左右節點為空的鏡像樹節點是有效對稱節點，如只有根節點的樹。 (left==null && right == null)
+只有單一節點的鏡像樹節點是不對稱，空值與任何數值不呈對稱。(left==null || right == null) //同時需要上面的簽查才成立。
+有左右節點的鏡像樹節點值相同，及左右子樹同時為鏡像樹才是鏡像是。 
+    public boolean isMirror(TreeNode left, TreeNode right)
+    {
+        if(left == null && right == null) return true;
+        if(left==null || right == null) return false;
+        
+        return (left.val == right.val) && 
+            isMirror(left.left, right.right) &&
+            isMirror(left.right,right.left);
+    }
+
+鏡像樹佇列層序遍歷O(n)解. 佇列需要將根加入兩次. 不使用size. 
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    q.add(root);
+    while (!q.isEmpty()) {
+        TreeNode t1 = q.poll();
+        TreeNode t2 = q.poll();
+        if (t1 == null && t2 == null) continue;
+        if (t1 == null || t2 == null) return false;
+        if (t1.val != t2.val) return false;
+        q.add(t1.left);
+        q.add(t2.right);
+        q.add(t1.right);
+        q.add(t2.left);
+    }
+    return true;

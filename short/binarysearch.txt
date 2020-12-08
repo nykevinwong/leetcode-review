@@ -1,3 +1,9 @@
+標準binary search 沒用 if(nums[mid]==target) return mid or target.
+就必須考慮將 = (equal sign) 放入查左右邊界的condition
+l 往右走，漸漸變大。 r 往左走，漸漸變小。
+l 最後落在 最後的mid+1,r落在最後mid-1. 可知. r 漸漸變小,是接近較小，l漸漸變大，是接近較大
+
+
 (1) Binary Search
 -Arrays.binarySearch(arr, target)
 -Collections.binarySearch(arr, target)
@@ -9,9 +15,11 @@
 - only the integer part of the result is returned.
 - standard binary search template
 - search scope: [1,x]
-- long type search
+- long type search. 
 - long value = mid * mid 
 - return (int)right. // won't work for left 
+- double type WON'T work. 
+- Math.abs(target-x) <= 0.001 WON'T work
 
 (2) Guess Number Higher or Lower
 (3) Search in Rotated Sorted Array (no duplicate)
@@ -19,10 +27,12 @@ Search in Rotated Sorted Array (with duplicate)
 - standard binary search template 
 - condition if(nums[left] < nums[mid])  [left,mid] is the sorted interval
             else if(nums[left] > nums[mid]) [mid,right] is the sorted interval. 
-            else left++; // only for handle duplicate scneario
+            else left++; // when nums[left]==nums[mid].. only for handle duplicate scneario, but work for both
 - >= or <= in condition will only work for duplicate scneario.
 - (nums[mid] < nums[right]) will only work for non-duplicate scenario.
 - the code for duplicate scenario will work for both duplicate and non-duplicate scenario.
+- (nums[left]<=target && target < nums[mid]) right=mid-1; // search sorted interval [left,mid-1]
+- (nums[mid]<target && target<=nums[right]) left=mid+1; // search sorted interval [left,mid-1]
 
 (4) First Bad Version
 - standard lowerbound/leftmost-value binary search 
@@ -36,13 +46,15 @@ Search in Rotated Sorted Array (with duplicate)
 
 (6) Find Minimum in Rotated Sorted Array (no duplicate)
 Find Minimum in Rotated Sorted Array (with duplicate)
+- best dry-run test:[4,5,1,2,3], [5,1,2,3,4],[5,1,2],[5,1] or [1]
 - min is always on the rotated part if the array has been rotated.
 - min is ONLY on the left side of the sorted part when the whole array is sorted and not rotated.
 - [3,1,3] duplicate scenario for recursion and iteration:   while(nums[l]==nums[r] && l!=r) l++;
+- *** 非常重要，中點的計算必須是在排除duplicate 後。
 - min condition: if(nums[l] <= nums[r]) return nums[l];
-                 if(nums[l] <= nums[m]) // [l,m] is the sorted interval
+                 if(nums[l] <= nums[mid]) // [l,mid] is the sorted interval
                  {  l = mid+1; // serach the right side }
-                 else {  r = m; } // we want to also search element at m within [l,m] , NOT [l,m-1]
+                 else {  r = mid; } // m is also a part of rotated array in this case
                  
 
 (7) Search for a Range [get lowerbound & upperbound of a duplicate value]
@@ -96,6 +108,7 @@ a is close to x than b when
 (11) Power(x,n)
 
 (12) Find Smallest Letter Greater than Target. Letter also wrap around.
+- the array is sorted and letters can be duplicate. search the rightmost (upperbound) value
 - when target is found, index + 1 = insert position + 1 = smallest letter great than target  
 - when target is NOT found, -index -1 = insert position = smallest letter great than target  
 - to handle wrap-around index=> index %= letters.length;
