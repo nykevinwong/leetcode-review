@@ -1,65 +1,84 @@
 標準binary search 沒用 if(nums[mid]==target) return mid or target.
 就必須考慮將 = (equal sign) 放入查左右邊界的condition
 l 往右走，漸漸變大。 r 往左走，漸漸變小。
-l 最後落在 最後的mid+1,r落在最後mid-1. 可知. r 漸漸變小,是接近較小，l漸漸變大，是接近較大
+l 最後落在 最後的mid+1,r落在最後mid-1. 
+如[r,l]落在[2,3]. 可知r=2,l=3, r漸漸變小,是接近較小，l漸漸變大，是接近較大.
 
-
-(1) Binary Search
--Arrays.binarySearch(arr, target)
--Collections.binarySearch(arr, target)
--(index < 0) index= -index-1; // get insert position for non-existent target
--rewrite standard binary search template from while to for will not work.
--for-loop won't work for some reason with the exactly same conditions.
+(1) 二元搜尋 Binary Search
+- 防整數溢位的中點公式為 mid = l+(r-l)/2; 
+- Java 內建兩個二元搜尋函式為Arrays.binarySearch(arr, target) 及 Collections.binarySearch(arr, target),
+內建二元搜尋函式不支援搜尋有序數組中重覆出現數的左右邊界索引. 
+傳回的負值帶有不存在值的插入位置資訊，用下面公式可得插入位置.
+(index < 0) index= -index-1; // 轉成不存在值的插入位置
+- 若將整數標準二元搜尋的 while loop 寫法直轉成 for loop 是行不通的.
 
 (2) Sqrt(x) | Valid Perfect Square
-- only the integer part of the result is returned.
-- standard binary search template
-- search scope: [1,x]
-- long type search. 
-- long value = mid * mid 
-- return (int)right. // won't work for left 
-- double type WON'T work. 
-- Math.abs(target-x) <= 0.001 WON'T work
+- 長整數標準二元搜尋. 搜尋範圍在 [1,x]. 
+  搜尋範圍及長整數的使用也暗示，這解法無法算 [0,1] 之間的小數答案。
+  題目答案只要整數部份，要去掉小數點部份.
+  中元素值是 long midValue = mid * mid; 
+- 雙精度浮點數不可行，即使調整目標值與中值的絕對誤差也得不到正確答案。
+  Math.abs(target-x) <= 0.001 :ADJUSTMENT WON'T work
+- 若x=8,8開根號，應是2.82.. 二元搜尋迴圈最後[l,r] 落在 [3,2]. r 為較小值，右值就是正確答案。
+  return (int)right. 
 
 (2) Guess Number Higher or Lower
-(3) Search in Rotated Sorted Array (no duplicate)
-Search in Rotated Sorted Array (with duplicate)
-- standard binary search template 
-- condition if(nums[left] < nums[mid])  [left,mid] is the sorted interval
-            else if(nums[left] > nums[mid]) [mid,right] is the sorted interval. 
-            else left++; // when nums[left]==nums[mid].. only for handle duplicate scneario, but work for both
-- >= or <= in condition will only work for duplicate scneario.
-- (nums[mid] < nums[right]) will only work for non-duplicate scenario.
-- the code for duplicate scenario will work for both duplicate and non-duplicate scenario.
-- (nums[left]<=target && target < nums[mid]) right=mid-1; // search sorted interval [left,mid-1]
-- (nums[mid]<target && target<=nums[right]) left=mid+1; // search sorted interval [left,mid-1]
+(3) Search in Rotated Sorted Array (no duplicate), Search in Rotated Sorted Array (with duplicate)
+在旋转排序数组搜尋目標值
+- 標準二元搜尋在有或無重覆數的旋转排序数组找目標值的兩種情況中都可有效使用.
+- 在旋转排序数组找目標值要先判斷一段是有序區間，另一段是旋轉區間。整段都是有序區間情況只適用在找最小或最大值。
+    # 旋转排序数组左元素值小於中元素值時，代表左中區間[l,mid]是有序間區，中右區[mid,r]是旋轉區間。
+    # 旋转排序数组左元素值大於中元素值時，代表中右區間[mid,r]是有序間區，左中區[l,mid]是旋轉區間。
+    # 旋转排序数组左元素值等於中元素值時，代表此兩左中元素是同一數字。可以將左值加一，判斷是否左中兩元素中間[l,?,mid]
+    是否也是同一元素。
+    # 旋转排序数组中元素值小於右元素值的判斷只能用在重覆數的旋转排序数组。上面兩判斷，都適用兩種情況。
+    # 適用在有或無重覆數的旋转排序数组的判斷程式碼. 注意，程式碼都用else-if-else形式 
+        if(nums[left] < nums[mid])  [left,mid]  [左點，中點] 就是有序區間
+        else if(nums[left] > nums[mid]) [mid,right] [中點，右點] 就是有序區間. 
+        else left++; // when nums[left]==nums[mid].
+    # 上面程式碼的 < 及 > 符號不能換成 <= 或 >=. > 及 < 適用有或無重覆數的旋转排序数组的兩種情況。
+- 另外，需要特別處理要尋找的目標值target是否在符合區之內.
+    # 判斷出有序區間[l,mid]或[mid,r]後，套入 ( <= target <= ) 條件公式中,排除條件裡中元素值的等號(=).
+    # 左右邊界時，用標準二元搜尋的
+    # 目標值 target 在中右元素區間內，代表在右邊，砍短左邊界。left=mid+1;
+    # 目標值 target 在左中元素區間內，代表在左邊，砍短右邊界。right=mid-1;
 
-(4) First Bad Version
-- standard lowerbound/leftmost-value binary search 
-- scope: false, false,... false, [true], true ...
-- lowerbound/leftmost-value: 
-- if(nums[mid]==target) { lastKeyPos = mid; r=mid-1; } // shrink the right boundary
 
-(5) Find Peak Element
--  (nums[mid] > nums[mid+1]) the value is decreasing. the peak is on [l,mid] search(l,mid) 
--  if above condition is NOT satisified, the value is increaseing or flatting. the peak is on [mid+1,r] .
+(4) First Bad Version 第一個壞掉的程式版本
+- 標準的最左值(左邊界/下邊界)二元搜尋
+- 假設搜尋的範圍為 [true,...true,ture,...[false],false....[]
+  # 從範圍可知，第一個壞版本其實是所有壞版本的左邊界值(lowerbound, leftmost value)
+  # 當中元素值等於目標植時，記錄中點。繼續往左邊找，也就是砍短右邊界。
+  if(nums[mid]==target) { lastKeyPos = mid; r=mid-1; } // shrink the right boundary
+
+(5) Find Peak Element 尋找峰值元素
+   # 標準二元搜尋。
+   - 中元素值大於下個元素值，代表有序數值遞減。
+     # 峰值可能在左中區間[l,mid]，搜尋該區間用r=mid，由於中元素可能是最大峰值，這樣可再搜尋一次此元素確認.
+   - 中元素值小於等於下個元素值，代表有序數值遞增或相等。mid+1可能是最大峰值，峰值可能在[mid+1,r]區間.
 
 (6) Find Minimum in Rotated Sorted Array (no duplicate)
 Find Minimum in Rotated Sorted Array (with duplicate)
-- best dry-run test:[4,5,1,2,3], [5,1,2,3,4],[5,1,2],[5,1] or [1]
-- min is always on the rotated part if the array has been rotated.
-- min is ONLY on the left side of the sorted part when the whole array is sorted and not rotated.
-- [3,1,3] duplicate scenario for recursion and iteration:   while(nums[l]==nums[r] && l!=r) l++;
-- *** 非常重要，中點的計算必須是在排除duplicate 後。
-- min condition: if(nums[l] <= nums[r]) return nums[l];
-                 if(nums[l] <= nums[mid]) // [l,mid] is the sorted interval
-                 {  l = mid+1; // serach the right side }
-                 else {  r = mid; } // m is also a part of rotated array in this case
-                 
-
+在旋转排序数组搜尋最小值
+- 最好的測試用:[4,5,1,2,3], [5,1,2,3,4],[5,1,2],[5,1] or [1]
+- 整個陣列當下是有序的話，代表最左元素值肯定小於最右元素值，最小值肯定是最左元素值。
+- 旋转的排序数组只有一半有序，另一半旋转的。最小值肯定在旋转區間。
+- *** 非常重要，最小值，有重覆數的旋转的排序数组裡的中點計算必須是在排除duplicate後，不然會導致程式計算錯誤。
+- [3,1,3] 是有重覆數狀況的旋转的排序数组，處理重覆數狀況的recursion & iteration程式碼用: 
+   while(nums[l]==nums[r] && l!=r) l++;
+- 適用有或無重覆數的旋转排序数组的兩種情況。:
+   if(nums[l] <= nums[r]) return nums[l];
+   if(nums[l] <= nums[mid]) // [l,mid] is the sorted interval
+   {  l = mid+1; // 最小值在旋转區間, mid元素值是最大值，不可能在旋转區間內. }
+   else {  r = mid; } // 最小值在旋转區間，但mid元素值也可能在旋转區間，也檢查確認一下。
+                    
 (7) Search for a Range [get lowerbound & upperbound of a duplicate value]
-- don't use O(N) loop to get lower bound if possible: while(l-1 > start  && nums[left]==nums[left-1]) left--;
-- don't use O(N) loop to get lower bound if possible: while(r+1 < end && nums[right]==nums[right+1]) right++;
+搜尋某重覆數值在數組上的左右範圍索引
+- 用可查左右邊界或上下邊界的標準二元搜尋即可。
+- 相等時,記錄最後出現的lastFound位置。
+- 要注意，盡量不可以在二元搜尋中，使用更低效的 O(N) loop 來查詢重覆數值的左右邊界索引。 
+ while(l-1 > start  && nums[left]==nums[left-1]) left--;
+ while(r+1 < end && nums[right]==nums[right+1]) right++;
 
 (8) Find K Closet Element 離某數 x 最接近的K個數.
 
@@ -96,37 +115,65 @@ a is close to x than b when
 
 
 (9) Cloest Binary Search Tree Value
-- 最近接或等於 x 的二元搜尋樹節點
-- if( Math.abs(target-root.val) > minDiff) 
-- update minDiff and save minDiffRoot 
-- standard binary search tree tarversal to find target.
+  最接近或等於目標值的二元搜尋樹節點
+- 最接近的值可以是較大值，也可是較小值或相等值。如 1,2,3,1跟3都是離2只差1的距離，2即是相等值。
+- 標準二元樹搜尋，當目標值與當前節點值的絕對差是全域最小絕對值，該節點就是答案。
+  if( Math.abs(target-root.val) > minDiff) //全域最小值，記錄該節點 
 
 (10) Search in a Sorted Array of Unknown size
-- standard binary search
-- right = use Integer.MAX_VALUE 
+- 標準二元搜尋，將搜尋範圍的 right 設成 Integer.MAX_VALUE; (right = Integer.MAX_VALUE;)
+- 無限大小其實是有限的，畢竟數組元素的範圍是儲存資料決定，而超過邊界值時，也必定有某最大最小值代表。
 
 (11) Power(x,n)
+X^n => (1) X^(n/2) * X^(n/2) | if n is EVEN -> O(log(n)) condition 
+       (2) X * X^(n-1)       | if n is odd
+       (3) 1                 | if n = 0
 
-(12) Find Smallest Letter Greater than Target. Letter also wrap around.
-- the array is sorted and letters can be duplicate. search the rightmost (upperbound) value
-- when target is found, index + 1 = insert position + 1 = smallest letter great than target  
-- when target is NOT found, -index -1 = insert position = smallest letter great than target  
-- to handle wrap-around index=> index %= letters.length;
+pow(x, n) {
+    if(n==0) return 0; // zero case
+    else if(n%2==0) { y = pow(x, n/2); return y*y; } // EVEN case
+    return x * pow(x, n -1); // ODD case
+}
+
+(12)  Find Smallest Letter Greater than Target. Letter also wrap around.
+找下個大於目標值的字母。 查找到索引過了陣列邊界可以環繞(wrap around)到前頭。
+- 題目的數組是有序遞增的，而且字母可能出現重覆字母。找右邊界的字母目標值的索引，就能推算下個字母值。
+- 下個字母值的位置，即是當前出現字母左邊界索引值的下一個。若該字母不存在，就是該字母插入位置的索引。
+- 二元尋搜的不存在目標的索引值為負數，要轉成插入位置用: (index < 0) index = -index - 1;
+- 處理可環繞(warp-around)索引的方法: index %= letters.length;
 
 (13) Intersection of Two Arrays. 兩個數組中相等的數字。
-- O(n) HashSet.contains()
-- use HashSet instead of ArrayList for non-duplicate answer
-- nlog(n) Arrays.sort or Arrays.binarySearch
+(14) Intersection of Two Arrays II. [同上，但陣列早已有序]
+- 兩數組都可能有重覆數字，兩數組的所有相同數字就是答案，但答案不可有重覆數字，代表答案可用Hashset存。
+  用 HashSet.contains() 存一數組的所有獨特數字。用這HashSet查找另一數值的所有數字，找到數字存入另一個解答的HashSet.
+  答案用 HashSet 代替 ArrayList 來排除重覆的答案。 是O(N)解
+- nlog(n) 解。先排序一數組，然後遍歷另一數組的元素來二元搜尋有序數組中是否有相等值，有則存入HashSet. 
+  Hashset已有的值就不再查詢。
+- 如果數組本來就是有序的，我們對兩數組使用two pointer O(n)解，兩點從同一索引零開始. 
+    int p1=0, p2=0;
+    while( p1 < nums1.length &&  p2 < nums2.length) {
+        if(nums1[p1] < nums2[p2]) {  p1++; }
+        else if(nums1[p1] > nums2[p2]) { p2++; }
+        else { list.add(nums1[p1]);  p1++; p2++; }
+    }
 
-(14) Intersection of Two Arrays II. [two pointers]
 
 (15) Two Sum II (input array is sorted)
-- binarySearch the complement Number
-- O(N) two pointer technique is faster. 
+- nlog(n)解: 用遍歷所有元素，針對各個元素找不是相同位置的相差補數。
+- o(n)解: 用 two pointer  
+   # Two Pointer 左值只能往右，只能使左值變大。右值只能往左，只能使右值變小。
+    必須要根據方程式等式來決定往左，往右。
+	int l = 0, r = numbers.length - 1;
+	while (l < r) {
+		int 2ptSum = numbers[left] + numbers[right];
+		if (2ptSum < target) left++;
+		else if (2ptSum > target) right--;
+		else return new int[] { left + 1, right + 1 };		
+	}
 
-(16) Find the Duplicate Number (一組數組中找出duplicate)
-- Arrays.sort(nums): i > 0 && nums[i]==nums[i-1] 
-- slow fast cycle detection: *** range MUST BE from 1 to n
+(16) Find the Duplicate Number (一組數組中找出唯一重覆數字 duplicate)
+- nlog(n) 解: 排序數組，然後比較當前元素值是否等於前元素值. Arrays.sort(nums): i > 0 && nums[i]==nums[i-1] 
+- O(n) 解: 對陣列用鍊表還起點偵測法: slow fast cycle detection: *** range MUST BE from 1 to n
 
 public int findDuplicate(int[] nums) {
     int slow = 0;
@@ -147,49 +194,60 @@ public int findDuplicate(int[] nums) {
 }
 
 (17) Median of Two Sorted Arrays
+- O(m+n) 解: (merge sort) 合併排序法合併兩陣列，求出中數. 
+- 二分法: 排除兩有序陣列不需要搜尋的部份。如排除一陣列的前半部及另一陣列的後半部，繼續用此二分法
+搜尋中間部份直到找到median. 
+[1,3,5,7,8,9][2,4,6,8,10]
+k = (m+n)/2;
+total length -> odd -> median = merged arr[k]
+total length -> even -> median = merged (arr[k]+arr[k+1])/2 
+
 
 (18) Find Kth Smallest Pair distance (第K個最小的兩數距離)
 nums = [1,3,1], k = 1. output = 0.
 (1,3) -> 2 , (1,1)-> 0, (3,1) -> 2
-- Arrays.sort(nums)
-- left = 0, right = nums[nums.length-1] - nums[0] (largest distance)
-- standard binary serach template
-- ( getPairCount(nums, mid) >= k ) r=mid-1; // shrink right boundary for make it as smallest as possible
-- return l.
-- getPairCount(int[] nums, int mid))
-{      int count = 0; // get all pair distance larger than mid distance.
-        for(int r=1, l=0; r < nums.length;r++)
+- 一組數組中，任意二數可組成一數對. 在數組中所有二數組合的數對距離的第K個最小兩數距離是哪兩數?
+- 暴力解可算出所有二數距離值.
+- 排序解可用距離公式排序數組,排序後的第K個最小的就是答案.
+- 推算可搜尋範圍. 數組排序後,兩數的距離最小可能為 0,最大距離為數組最大數減最小數,也就是有序數組最後一位減第一位.
+- 可用二搜尋當前中值距離是否剛好在第k位(>=K)，也就是有k個小於等於中值距離的數對。若至少有k個，繼續為左找較小距離，直到
+  找到最後一個符合條件的最小距離。
+- return left; // 搜尋的是至少(>=)K個才是答案. r 最後落較小值 < K的區間尾位，l是落在較大值 >= K 的區間首位.  
+
+    public int getLessEqualMidDistance_PairCount(int[] nums, int midDistance)
+    { //用的是排除法
+        int count = 0;
+        for(int r=1,l=0; i < nus.length;i++)  
         {
-            while( l < r && nums[r]-nums[l] > mid) l++;
-            count+= r-l;
+            //找出當前[l,r]之間,所有距離大於中值距離的數對，計數
+            while(l < r && nums[r]-nums[l] > midDistance) l++;
+            count+= r-l; // 減去所有距離大於中值距離的數對量，就得到小於等於中值距離的數對的數量.
         }
-        return count;
-}
+        return count;//傳回所有小於等於中值距離的數對的數量.
+    }
 
 (19) Split Array Largest Sum 分割數組的最大值(求全域最小最大值)
 Input: nums = [7,2,5,10,8], m = 2, Output: 18
 The best way is to split it into [7,2,5] and [10,8].
-- standard binary search template
-- estimate solution range -> m = 1 => max: 10, m = 5, max 7+2+5+10+8 = 32
-- left = max(nums[...]) , right = sum(nums[...])
-- if(isValid(nums, m, mid)) r= mid-1; // for valid 
-
+- 推算可搜尋範圍: m=1 時， max是10. m = 陣列長度 5 時， max = 7+2+5+10+8 = 32 
+- left = max(nums[...]) 陣列元素最大值 , right = sum(nums[...]) 陣列總和
+- if(isValidSplit(nums, m, mid)) r= mid-1; // for valid 
     // 10,11,12,13,14...18......30,31,32.
     // not possible     | possible for m =2
     // 找出所有符合條件的合理分割數組
-    public boolean isValid(int[] nums, int m, int midSum)
+    public boolean isValidSplit(int[] nums, int m, int midMaxSubarrySum)
     {
         int curSum = 0; int count = 1;
         for(int i=0;i < nums.length;i++)
         {   //當前分割數組和
             curSum += nums[i];
-            if(curSum > midSum) 
-            {                
+            if(curSum > midMaxSubarrySum) //當前子陣列總和是否為當前子陣列最大值範圍內，大於則不合理. 
+            {   // 分割的目地是要排除大於最大值的子陣列，大於最大值的子陣列並不屬於當前最大值的子陣列組合中。             
                 // 當前分割數組和大於當前最大考慮值，不考慮該組及當前元素.看下一組分割是否合理。
-                // [7+2+5+10] 太大. [7+2+5] 合理，下個分割從 [10] 開始.
+                // [7+2+5+10] 大過中值，太大. [7+2+5] 小於當前最大值，合理。下個分割從 [10] 開始.
                 curSum = nums[i];
                 count+=1; //當前分割數量
-                if(count > m) return false;                
+                if(count > m) return false; //超過題目要求分割數量，不合理。               
             }
         }
         return true;
@@ -199,10 +257,9 @@ The best way is to split it into [7,2,5] and [10,8].
 Input: nums = [1,2,5,9], threshold = 6, Output: 5
 Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. 
 If the divisor is 4 we can get a sum to 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
- [largest sum = sum(nums[...])--------------------- smallest sum                         ]
- [smallest divisor 1                               largest divisor (max(nums[...]))      ]
-
-- standard LOWERBOUND binary search template
-- if(canBeValid(nums, midDivisor, threshold)) { r= mid-1; } //find smaller (smallest)
-- custom Math.ceil 無條件四捨無入.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
- int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
+題目要找出能讓陣列各數被除後的總和最接近給定臨界值的最小除數. 
+推算搜尋範圍。 當除數為1時，陣列總和最大。除數等於陣列最大值時，陣列總和為最小.
+搜尋對像為除數，除數範圍應該由1至陣列最大值。
+搜尋條件為，當前除數或當前中值除數所得到的陣列總和值大於臨界值，則往左邊找。這樣可得到小於等於(最接近)臨界值的除數。
+# custom Math.ceil 無條件四捨無入的程式碼.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
+# int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
