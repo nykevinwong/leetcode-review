@@ -161,8 +161,8 @@ pow(x, n) {
 (12)  Find Smallest Letter Greater than Target. Letter also wrap around.
 找下個大於目標值的字母。 查找到索引過了陣列邊界可以環繞(wrap around)到前頭。
 - 題目的數組是有序遞增的，而且字母可能出現重覆字母。找右邊界的字母目標值的索引，就能推算下個字母值。
-- 下個字母值的位置，即是當前出現字母左邊界索引值的下一個。若該字母不存在，就是該字母插入位置的索引。
-- 二元尋搜的不存在目標的索引值為負數，要轉成插入位置用: (index < 0) index = -index - 1;
+- 下個字母值的位置，即是當前出現字母右邊界索引值的下一個。若該字母不存在，就是該字母插入位置的索引。
+- 二元尋搜的不存在目標的索引值為負數時，要轉成插入位置用: (index < 0) index = -index - 1;
 - 處理可環繞(warp-around)索引的方法: index %= letters.length;
 
 (13) Intersection of Two Arrays. 兩個數組中相等的數字。
