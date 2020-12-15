@@ -1,13 +1,14 @@
+
+
 二元樹
+- 二元樹的level或depth是從根節點起，從零開始。
+- 二元樹或二元子樹的高度是從該樹或子樹的最長路徑的最後節點算起，從零往上加。
+- 二元樹根節點的高度是左右節點中最大高度+1。
+- 二元樹的最底部從零開始的level就是最大深度.
+- 二元樹的某節點level就是該節點的深度.
+- 二元樹節點最大數量是2^(level)-1
 
-二元樹的level或depth是從根節點起，從零開始。
-二元樹或二元子樹的高度是從該樹或子樹的最長路徑的最後節點算起，從零往上加。
-二元樹根節點的高度是左右節點中最大高度+1。
-二元樹的最底部從零開始的level就是最大深度.
-二元樹的某節點level就是該節點的深度.
-二元樹節點最大數量是2^(level)-1
-
-he depth of a node is the number of edges from the node to the tree's root node.
+The depth of a node is the number of edges from the node to the tree's root node.
 A root node will have a depth of 0.
 
 The height of a node is the number of edges on the longest path from the node to a leaf.
@@ -99,3 +100,12 @@ iterative遍歷System Stack Call Emulation
         q.add(t2.left);
     }
     return true;
+
+
+Path Sum (從根到葉的路徑節點和,列出或儲存所有根到葉的路徑，最大最小的路徑和)
+- 用二元樹前序及後序遍歷的組合.
+- 節點為葉時(root.left==null && root.right==null)，代表已經到二元樹底部的任一葉了，可處理下面的事。
+    # 可檢查當前總和是否為目標值.
+    # 可將之前儲存的節點表存入HashMap或List<List<Object>>>裡
+    # 可在此更新全域最大最小值.
+- 如果要計算總和，前序部份計算當前總和，後序部份Backtracking當前節點值.
