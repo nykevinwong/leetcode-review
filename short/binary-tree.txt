@@ -1,46 +1,39 @@
 
-
-二元樹
+二元樹特性
 - 二元樹的level或depth是從根節點起，從零開始。
-- 二元樹或二元子樹的高度是從該樹或子樹的最長路徑的最後節點算起，從零往上加。
+- 二元樹或二元子樹的高度(height)是從該樹或子樹的最長路徑的最後節點算起，從零往上加。
 - 二元樹根節點的高度是左右節點中最大高度+1。
 - 二元樹的最底部從零開始的level就是最大深度.
 - 二元樹的某節點level就是該節點的深度.
 - 二元樹節點最大數量是2^(level)-1
 
-The depth of a node is the number of edges from the node to the tree's root node.
-A root node will have a depth of 0.
+(1) Binary Tree Preorder Traversal
+(2) Binary Tree Inorder Traversal
+(3) Binary Tree Postorder Traversal
+(4) Binary Tree Level-order Traversal
 
-The height of a node is the number of edges on the longest path from the node to a leaf.
-A leaf node will have a height of 0.
+-遍歷 從資料中將每個元素只取出一次處理，就叫遍歷(Traversal). 
+    # 二元樹遍歷有4種。前序，中序，後序及層序，都是O(N)線性遍歷,每個節點只Visit過一次或處理一次。
+    # 前中後序遞迴用dfs，前中後序iterative就用堆疊。
+    # 層序遞迴用dfs，層序iterative就用佇列. 
 
-Properties of a tree:
-
-The height of a tree would be the height of its root node,
-or equivalently, the depth of its deepest node.
-
-The diameter (or width) of a tree is the number of nodes on the longest path between any two leaf nodes. The tree below has a diameter of 6 nodes.
-
-二元樹遍歷
-
-遍歷 從資料中將每個元素只取出一次處理，就叫遍歷(Traversal). 
-二元樹遍歷有4種。前序，中序，後序及層序，都是O(N)線性遍歷,每個節點只到過或處理一次。
-前序，中序，後序，用遞迴dfs，iterative用堆疊。
-層序用遞迴dfs，iterative用佇列. 
-
-遞迴遍歷
-二元樹的前序，中序，後序遞迴(递归/recusrive)遍歷的寫法一樣。差別是何時處理當前節點。
-
-iterative遍歷
-
-二元樹的前序及後序iterative遍歷的寫法一樣。差別是存入左右節點堆疊的先後順序。後序遍歷需要有LinkedList從表頭前存入當前節點解答或用堆疊來反轉。
-前序先處理左節點，由於堆疊先進後出，後進先出。先存右節點再存左節點。
-前序先處理右節點，由於堆疊先進後出，後進先出。先存左節點再存右節點。
-
-中序iterative遍歷寫法較特殊需要特別記憶.
-
+-二元樹前中後序遞迴遍歷 
+ #二元樹的前序，中序，後序遞迴(递归/recusrive)遍歷的寫法一樣。差別是何時處理當前節點。
+  void dfs(TreeNode root, ...) // 依解題方式傳回值可有可無。
+  {
+      if(root==null) return;
+      System.out.println(root.val);// 前序在此處理，以此類推。
+      dfs(root.left, ...);
+      dfs(root.right, ...);
+  }
+- 二元樹前中後序疊代 (iterative) 遍歷
+    # 二元樹的前序及後序疊代(iterative)遍歷的寫法一樣。差別是存入左右節點堆疊的先後順序。
+    後序遍歷需要有LinkedList從表頭前存入當前節點解答或用堆疊來反轉。
+    # 前序先處理左節點，由於堆疊先進後出，後進先出。先存右節點再存左節點。
+    # 前序先處理右節點，由於堆疊先進後出，後進先出。先存左節點再存右節點。
+    # 中序疊代(iterative)遍歷寫法較特殊需要特別記憶.
         TreeNode cur = root;
-        
+      
         while(cur!=null || !s.isEmpty())
         {
             while(cur!=null)
@@ -54,26 +47,28 @@ iterative遍歷
             cur = cur.right;
         }
 
-iterative遍歷System Stack Call Emulation
-可用TreeNode<Object[]>及一個自製 Object[] pair/tripulet/multi()來存入堆疊。
-這方法是最多只是解決或防止stack overflow的問題。
+    # iterative遍歷System Stack Call Emulation
+    # 可用TreeNode<Object[]>及一個自製 Object[] pair/tripulet/multi()來存入堆疊。
+      這方法是最多只是解決或防止stack overflow的問題。
 
-二元樹遞迴層序遍歷 需要從零開始的level變數及List<List<Integer>>的表集。
-可由 lls.size() 及增加新表單至 lls 中來推算是否尚當前遞迴呼叫是剛到某一層的第一個節點.
-可用 Math.pow(2, level) 及當前層級表單的大小來推算是否當前遞迴呼叫剛到某一層的某個節點或最後一個節點. 
-可用 HashMap 及 level 變數存各層級對應的變數表，當遞迴呼叫剛某一層時，可取出更新該層變數。
+- 二元樹遞迴層序遍歷 
+    # 需要從零開始的level變數及List<List<Integer>>的表集。
+    # 可由 lls.size() 及增加新表單至 lls 中來推算是否尚當前遞迴呼叫是剛到某一層的第一個節點.
+    # 可用 Math.pow(2, level) 及當前層級表單的大小來推算是否當前遞迴呼叫剛到某一層的某個節點或最後一個節點. 
+    # 可用 HashMap 及 level 變數存各層級對應的變數表，當遞迴呼叫剛某一層時，可取出更新該層變數。
+- 二元樹疊代(ITERATIVE)層序遍歷 用佇列(隊列)，及從零開始的level變數。
+    # 在疊代(ITERATIVE)迴圈內，用佇列的size及另一個迴圈來一次處理當前層級的節點。
 
-二元樹ITERATIVE層序遍歷 用佇列(隊列)，及從零開始的level變數。在ITERATIVE迴圈內，用佇列的size及另一個迴圈來一次處理當前層級的節點。
+(5) Maximum Depth of Binary Tree
+- 二元樹的最大深度遞迴解法用的是遞迴後序遍歷。傳回最大值+1.
+- 二元樹的最大深度疊代(ITERATIVE)層序遍歷解，用佇列及從零開始的level變數。同二元樹疊代(ITERATIVE)層序遍歷，level在此就是最大的深度值。
 
-二元樹的最大深度遞迴解法(104. Maximum Depth of Binary Tree)用的是遞迴後序遍歷。傳回最大值+1.
-二元樹的最大深度ITERATIVE層序遍歷解，用佇列及從零開始的level變數。同二元樹ITERATIVE層序遍歷，level在此就是最大的深度值。
-
-(特殊必記)
-對稱樹或鏡像樹(Symmetric Tree)的根下的左右子樹呈鏡像對稱。根只有自已一節點與自已對稱，可以將根同時當成左右節點使用。
-函式簽章必用 isMirror(TreeNode left,TreeNode right); 
-沒有左右節點或左右節點為空的鏡像樹節點是有效對稱節點，如只有根節點的樹。 (left==null && right == null)
-只有單一節點的鏡像樹節點是不對稱，空值與任何數值不呈對稱。(left==null || right == null) //同時需要上面的簽查才成立。
-有左右節點的鏡像樹節點值相同，及左右子樹同時為鏡像樹才是鏡像是。 
+(6) Symmetric Tree
+# 對稱樹或鏡像樹(Symmetric Tree)的根下的左右子樹呈鏡像對稱。根只有自已一節點與自已對稱，可以將根同時當成左右節點使用。
+# 函式簽章必用 isMirror(TreeNode left,TreeNode right); 
+# 沒有左右節點或左右節點為空的鏡像樹節點是有效對稱節點，如只有根節點的樹。 (left==null && right == null)
+# 只有單一節點的鏡像樹節點是不對稱，空值與任何數值不呈對稱。(left==null || right == null) //同時需要上面的簽查才成立。
+# 有左右節點的鏡像樹節點值相同，及左右子樹同時為鏡像樹才是鏡像是。 
     public boolean isMirror(TreeNode left, TreeNode right)
     {
         if(left == null && right == null) return true;
@@ -84,28 +79,205 @@ iterative遍歷System Stack Call Emulation
             isMirror(left.right,right.left);
     }
 
-鏡像樹佇列層序遍歷O(n)解. 佇列需要將根加入兩次. 不使用size. 
+# 鏡像樹佇列層序遍歷O(n)解. 佇列需要將根加入兩次. 不使用size. 
     Queue<TreeNode> q = new LinkedList<>();
-    q.add(root);
-    q.add(root);
+    q.add(root); q.add(root);
     while (!q.isEmpty()) {
-        TreeNode t1 = q.poll();
-        TreeNode t2 = q.poll();
+        TreeNode t1 = q.poll().  t2 = q.poll();
         if (t1 == null && t2 == null) continue;
         if (t1 == null || t2 == null) return false;
         if (t1.val != t2.val) return false;
-        q.add(t1.left);
+        q.add(t1.left); 
         q.add(t2.right);
         q.add(t1.right);
         q.add(t2.left);
     }
     return true;
 
-
-Path Sum (從根到葉的路徑節點和,列出或儲存所有根到葉的路徑，最大最小的路徑和)
+(7) Path Sum (從根到葉的路徑節點和,列出或儲存所有根到葉的路徑，最大最小的路徑和)
 - 用二元樹前序及後序遍歷的組合.
 - 節點為葉時(root.left==null && root.right==null)，代表已經到二元樹底部的任一葉了，可處理下面的事。
     # 可檢查當前總和是否為目標值.
     # 可將之前儲存的節點表存入HashMap或List<List<Object>>>裡
     # 可在此更新全域最大最小值.
 - 如果要計算總和，前序部份計算當前總和，後序部份Backtracking當前節點值.
+- 如果是要找到由某節點到此節點下的一個路徑總和(path sum iii)，就必須用runningSum及HashMap才能O(n)解題。
+    # 暴力解為 O(N^2). 由某節點到另一節點的總和為targetSum要計數答案數。而且每個節點都必須做同樣的呼叫。
+     int pathSum(TreeNode root, int targetSum) {
+         if(root==null) return 0;
+         return checkPathCurSum(root, targetSum) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+     }
+    
+    int checkPathCurSum(TreeNode root, int curSum)
+     {
+         if(root==null) return 0;
+         
+         int count = 0;
+         
+         if(curSum==root.val) count = 1;
+             
+          curSum-=root.val;
+          count+=checkPathCurSum(root.left, curSum);    
+          count+=checkPathCurSum(root.right, curSum);    
+          return count;
+     }
+
+
+    # runningSum HashMap 為最佳解   
+    int pathSum(TreeNode root, int targetSum) {
+        Map<Integer,Integer> m = new HashMap<>();
+        m.put(0,1);
+        return pathSum(root, 0, targetSum, m);
+    }
+    
+    int pathSum(TreeNode root, int runningSum, int targetSum, Map<Integer,Integer> m)
+    {
+        if(root==null) return 0;
+        
+        int count  = 0;
+        
+        runningSum+=root.val;
+        int x = runningSum-targetSum;
+        
+        count+= m.getOrDefault(x, 0);
+        m.put(runningSum, m.getOrDefault(runningSum,0)+1);
+        
+        count+=pathSum(root.left, runningSum, targetSum, m);
+        count+=pathSum(root.right, runningSum, targetSum, m);
+        
+        m.put(runningSum, m.getOrDefault(runningSum,0)-1);
+        
+        return count;
+    }
+    # 前序部份計算runningSum, 用runningSum-target在Hashmap取值. m[runningSum]+=1;
+    # 加總左右子節點傳回的count.
+    # 後序部份要backtracking 之前的runningSum. m[runningSum]-=1;
+    # m.put(0,1); // 解決只有樹根的狀況或樹根值為targetSum的狀況. [1]
+
+(8) Count Univalue SubTrees
+
+(9) Construct Binary Tree from Inorder and Postorder Traversal 
+(10) Construct Binary Tree from Preorder and Inorder Traversal 
+- 建立中序陣列元素值對索引的對照表. 
+- 建立一個傳回TreeNode的BuildTree幫助函式，傳入所有陣列，所有區間範圍及對照表。
+  # 區間範圍無效時(inStart > inEnd || poStart > poEnd)，則傳回空值。
+  # 前序部份計算左右子樹的區間.
+  # 樹根值由preorder/postorder陣列取得.
+  # 樹根中序陣列索引由對照表取得.
+  # 左子樹長度及右子樹長度由當前區間範圍計算可得.
+  # 新的區間範圍用 inRootIndex、當前區間範圍、左右子樹長度計算可晶.
+
+(11) Populating Next Right Pointers in Each Node
+- 暴力O(N)空間解: BFS 層序佇列遍歷。層序遍歷 = 用size存當前佇例大小，遍歷整個佇例節點。
+   ** 要存當前層的前個節點，這樣方便將此前節點的next指到當前節點.
+    if(prev!=null) prev.next = node;                
+    prev = node;
+- O(1) 空間解: 完整樹左節點層序Next指標遍歷解: (需要記憶)
+
+(12) Populating Next Right Pointers in Each Node II
+- 暴力解同上:
+- O(1) 空間解: Dummy 層序Next指標解 (先記憶)
+ Node connect(Node root) {            
+    Node nextHead = new Node(0); //用dummy node
+    nextHead.next = root; 
+    
+    while(nextHead.next != null) // 如果根或next不為空
+    {
+        Node prev = nextHead;
+        Node cur = nextHead.next;
+        nextHead.next = null;
+        
+        for(; cur != null; cur = cur.next){
+            if(cur.left != null){
+                prev.next = cur.left;
+                prev = prev.next;
+            }
+            
+            if(cur.right != null){
+                prev.next = cur.right; 
+                prev = prev.next;
+            }
+        }
+    }
+    
+    return root;   
+}
+
+(13) Lowest Common Ancestor of a Binary Tree
+/*
+要找的節點都必須存在二元樹中，才能用此方法
+
+查左右節點雙空，傳回空。
+查任一空時，傳回不空。可以下面檢查.
+if(left==null || right==null) // 00,01,10 covers 3 cases // return null or the other value.
+            return (left==null) ? right:left;
+
+use both top-down & bottom-up approach
+*/
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {        
+        // this approach won't work if p or q doesn't exist in the binary tree
+       if(root==null) return null;
+        if(root==p || root==q) return root;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        // return null for both null
+        // return the one while the other is null.
+        if(left==null || right==null) // 00,01,10 covers 3 cases // return null or the other value.
+            return (left==null) ? right:left;
+         
+        return root;      // must use root since we want to ensure the top most ancestor is the answer  
+    }
+    
+(14) Serialize and Deserialize Binary Tree
+public String serialize(TreeNode root) {
+    if(root==null) return "";
+    Queue<TreeNode> q= new LinkedList<>();
+    StringBuilder sb = new StringBuilder();
+    
+    if(root!=null) q.offer(root);
+    
+    while(!q.isEmpty())
+    {
+        TreeNode node = q.poll();
+        
+        if(node==null) 
+        {
+            sb.append("null,");
+        }
+        else
+        {
+            sb.append(node.val + ",");
+            q.offer(node.left);
+            q.offer(node.right);
+        }
+    }
+
+    sb.deleteCharAt(sb.length()-1);
+    return sb.toString();
+}
+ 
+// Decodes your encoded data to tree.
+public TreeNode deserialize(String data) {
+    if(data=="") return null;
+    String[] arr = data.split(",");
+    
+    TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+    Queue<TreeNode> q= new LinkedList<>();
+    
+    q.offer(root);
+    
+    for(int i=1; i < arr.length;i++)
+    {
+        TreeNode node = q.poll();
+        
+        node.left = (arr[i].equals("null")) ? null: new TreeNode(Integer.parseInt(arr[i]));
+        i++;
+        node.right = (arr[i].equals("null")) ? null: new TreeNode(Integer.parseInt(arr[i]));
+        if(node.left!=null) q.offer(node.left);
+        if(node.right!=null) q.offer(node.right);
+    }
+    
+    return root;
+}
