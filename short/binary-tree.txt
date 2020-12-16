@@ -203,7 +203,18 @@
     return root;   
 }
 
-(13) Lowest Common Ancestor of a Binary Tree
+(13) Lowest Common Ancestor of a Binary Tree (p,q節點必存在於二元樹中，所有節點值是唯一的)
+- 前序部份只做二件事，(1)查root空值，(2)root等於p或q時代表當前節就是其中一節點.
+- 後序部份也做二件事  (3)在左右節點為00,01,10 全空或一空值狀態時，有非空節點傳回那節點，不然傳回空值.
+                     (4)最後傳回當前節點及
+Lowest Common Ancestor of a Binary Tree II (p,q節點不一定存在於二元樹中)
+- 同上程式碼，可將原程式改名成helper函式,主程式呼叫該helper函式，而且對helper函式要做一些調整。
+- * p, q 節點不一定在二元樹的狀況下，必須使用counter或flag來記錄兩節點是否都出現了。
+  * 兩節點都存在時，如count=2或左右flag都為true,再傳找到的共同祖節點，不然傳回null.
+  * 要將檢查root為p或q的條件陳述式(2)的程式碼從前序部份移到後序部份，不然
+  程式找到p或q任一節點就傳回該節點，而不會繼續檢查直到兩節都找到為止。            
+Lowest Common Ancestor of a Binary Tree III (同II,但多給你一個parent變數可用)
+Lowest Common Ancestor of a Binary Tree IV (同I，但是從兩目標節點變成一到多目標節點)
 /*
 要找的節點都必須存在二元樹中，才能用此方法
 
