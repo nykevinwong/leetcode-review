@@ -6,6 +6,21 @@
 - 二元樹的最底部從零開始的level就是最大深度.
 - 二元樹的某節點level就是該節點的深度.
 - 二元樹節點最大數量是2^(level)-1
+- 二元樹的直徑(Diameter)就是樹的最長路徑，從某節點葉至另一節點葉
+  # 某個根節點的直徑就是左右最大深度相加 (depth(root.left)+depth(root.right))
+  # 二元樹的直徑直就是所有節點的最大直徑 [leetcode 543]
+        diameterOfBinaryTree(...) // O(N^2)
+        int curDiameter = depth(root.left) + depth(root.right);
+        int leftDiameter = diameterOfBinaryTree(root.left);
+        int rightDiamater = diameterOfBinaryTree(root.right);
+
+        public int depth(TreeNode node) { // O(N)，原型depth函式加一行就可以了。
+            if (node == null) return 0; 
+            int left = depth(node.left);
+            int right = depth(node.right);
+            maxDiameter = Math.max(maxDiameter, left+right+1); // 計算當前直徑並更新最大全域直徑
+            return Math.max(left, right) + 1;//當前最大深度
+        }
 
 (1) Binary Tree Preorder Traversal
 (2) Binary Tree Inorder Traversal
@@ -58,6 +73,10 @@
     # 可用 HashMap 及 level 變數存各層級對應的變數表，當遞迴呼叫剛某一層時，可取出更新該層變數。
 - 二元樹疊代(ITERATIVE)層序遍歷 用佇列(隊列)，及從零開始的level變數。
     # 在疊代(ITERATIVE)迴圈內，用佇列的size及另一個迴圈來一次處理當前層級的節點。
+
+(4.1) [103] Binary Tree Zigzag Level Order Traversal
+- 二元樹疊代層序遍歷，用佇列的size及另一個迴圈來處理來一次處理當前層級的節點。
+- 需要有個LinkedList 強型的變數。再用一個每層不斷切換oddLevel來決定LinkedList用add還是addFirst.
 
 (5) Maximum Depth of Binary Tree
 - 二元樹的最大深度遞迴解法用的是遞迴後序遍歷。傳回最大值+1.
@@ -242,53 +261,65 @@ use both top-down & bottom-up approach
     }
     
 (14) Serialize and Deserialize Binary Tree
+- 兩種選擇 BFS Leve-Order Traversal或 DFS Preorder Traversal.
+- DFS 比較適用在Serialize 和 Deserialize操作上。
+- 序例化用 DFS Preorder Traversal 及同時處理空的左右節點
+  # 前序是先 push(node.right) 再 push(node.left), 這樣堆疊 pop 後，先處理左節點，符合
+    Preorder traversal的行為。
+  # 空左右節點也存疊代堆疊中
+  # 當前節點為空時，用特殊字元代替空值，可序例化成 str+= "#,"; // "#" 代表NULL節點
+  # 最終型序列化字串的最後一個字是逗號，要去除掉，才能正確反序例化。
+- 反序例化   
+  # 先split(",")，先取得字串陣列後.
+  # Integer.parseInt()
+  * 重點: 用一個全域preOrderIndex，才能根據函式呼叫的順序(就是Preorder的順序)來正確設定下個要取值的索引.
+    # preOrderIndex 也可設成 -1.
+
+    // Encodes a tree to a single string.
 public String serialize(TreeNode root) {
-    if(root==null) return "";
-    Queue<TreeNode> q= new LinkedList<>();
-    StringBuilder sb = new StringBuilder();
-    
-    if(root!=null) q.offer(root);
-    
-    while(!q.isEmpty())
-    {
-        TreeNode node = q.poll();
-        
-        if(node==null) 
-        {
-            sb.append("null,");
+    if(root==null) return null;
+ 
+    String str = "";
+    Stack<TreeNode> s = new Stack<TreeNode>();
+    s.push(root);
+ 
+    while(!s.isEmpty()){
+        TreeNode node = s.pop();   
+
+        if(node!=null){
+            str += node.val+",";
+            s.push(node.right);
+            s.push(node.left);  
         }
-        else
+        else 
         {
-            sb.append(node.val + ",");
-            q.offer(node.left);
-            q.offer(node.right);
+            str += "#,";
         }
     }
-
-    sb.deleteCharAt(sb.length()-1);
-    return sb.toString();
+ 
+    return str.substring(0,str.length()-1);
 }
  
+private int preOrderIndex = -1;
+
 // Decodes your encoded data to tree.
 public TreeNode deserialize(String data) {
-    if(data=="") return null;
+    if(data == null) return null;
+ 
+    preOrderIndex = -1;
     String[] arr = data.split(",");
-    
-    TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
-    Queue<TreeNode> q= new LinkedList<>();
-    
-    q.offer(root);
-    
-    for(int i=1; i < arr.length;i++)
-    {
-        TreeNode node = q.poll();
-        
-        node.left = (arr[i].equals("null")) ? null: new TreeNode(Integer.parseInt(arr[i]));
-        i++;
-        node.right = (arr[i].equals("null")) ? null: new TreeNode(Integer.parseInt(arr[i]));
-        if(node.left!=null) q.offer(node.left);
-        if(node.right!=null) q.offer(node.right);
-    }
-    
+ 
+    return helper(arr);
+}
+ 
+public TreeNode helper(String[] arr){
+    preOrderIndex++;
+    // 當前字串是#，代表是null.
+    if(arr[c].equals("#")) return null;
+ 
+    TreeNode root = new TreeNode(Integer.parseInt(arr[preOrderIndex]));
+    root.left = helper(arr);
+    root.right = helper(arr);
+ 
     return root;
 }
