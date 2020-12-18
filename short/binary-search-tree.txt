@@ -217,3 +217,24 @@ public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
     }
 
 (11) Convert Sorted Array to Binary Search Tree
+將有序陣列傳換成二元搜尋樹.
+- 寫法跟 recursive 前序遍曆的二分法一樣，計算中點mid，然後中點值就是當前節點值。
+  # 左節點區間 node.left = createBSTFromArray(nums, start, mid-1)
+  # 右節點區間 node.right = createBSTFromArray(nums, mid+1, end)
+- 需要寫一個轉換函式，無效的陣列區間起始及終點可用來當stop condition.
+- 
+public TreeNode sortedArrayToBST(int[] nums) {
+    return createBSTFromArray(nums, 0, nums.length-1);
+}
+
+public TreeNode  createBSTFromArray(int[] nums, int start, int end)
+{
+    if(start > end) return null; // stop condition
+    
+    int mid = (start+end)/2;        
+    int value = nums[mid];        
+    TreeNode node = new TreeNode(value);
+    node.left = createBSTFromArray(nums, start, mid-1);
+    node.right = createBSTFromArray(nums, mid+1, end);
+    return node;
+}
