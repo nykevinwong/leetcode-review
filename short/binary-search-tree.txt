@@ -137,7 +137,23 @@ public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
         return root;
     }
 
-(7) Kth Largest Element in a Stream
+(7) Kth Largest Element in a Stream 找第k個最大
+ - 中序遍歷解: O(N) time. O(N) space 建立中序陣列，後從此陣列取 kth element 就是解答.
+
+ - O(h) search/insert/delete 二元樹搜尋樹資料結構解，必須有一個count變數記錄每個節點樹的節點數量/大小。
+ - O(N*log(n)) to perform for all elements
+ # 當前樹根的節點數量就是1. 用子樹大小可以判斷到底Kth最大是在右邊還是左邊。
+ # kth最大，是數字從小排到大，最大從右邊數過來。只用右子樹大小判斷。
+ # kth最小，是數字從小排到大，最小從左邊數過來。只用左子樹大小判斷。
+ # 左右子樹數量和，肯定是當前節點樹大小-1. => lefSize + rightSize + 1 = curTreeSize 
+    # kth最大 小於等於 rightSize, 代表kth元素在右子樹.
+    # kth最大 等於 rightSize+1, 代表kth元素就是當前節點.
+    # kth最大 大於 rightSize+1，代表kth元素在左子樹.
+    #--------------------------------------------
+    # kth最小 小於等於 rightSize, 代表kth元素在左子樹.
+    # kth最小 等於 rightSize+1, 代表kth元素就是當前節點.
+    # kth最小 大於 rightSize+1，代表kth元素在右子樹.
+
 (8) Lowest Common Ancestor of a Binary Search Tree (p,q 節點必存在於樹中)
 - 找出二元搜尋樹的最低共同祖節點. 有三種種清要處理.
   # p、q 兩節點大於當前節點, p、q 兩節點在右二元搜尋子樹. 在前序部份檢查
@@ -216,25 +232,29 @@ public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-(11) Convert Sorted Array to Binary Search Tree
-將有序陣列傳換成二元搜尋樹.
+(11) Convert Sorted Array to (Height Balanced) Binary Search Tree
+將有序陣列[-10,-3,0,5,9],傳換成二元搜尋樹.
+- 此題目陣列可知，根為0， -10、-3是左子樹，5、9是右子樹。 以此類推
+- 不能光遍歷二元樹元素，然後各各呼叫插入method.這樣會建立非 height balanced 樹，導致
+   無法log(n)找值，只能o(n)找值. 
 - 寫法跟 recursive 前序遍曆的二分法一樣，計算中點mid，然後中點值就是當前節點值。
   # 左節點區間 node.left = createBSTFromArray(nums, start, mid-1)
   # 右節點區間 node.right = createBSTFromArray(nums, mid+1, end)
 - 需要寫一個轉換函式，無效的陣列區間起始及終點可用來當stop condition.
 - 
-public TreeNode sortedArrayToBST(int[] nums) {
-    return createBSTFromArray(nums, 0, nums.length-1);
-}
-
-public TreeNode  createBSTFromArray(int[] nums, int start, int end)
-{
-    if(start > end) return null; // stop condition
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return createBSTFromArray(nums, 0, nums.length-1);        
+    }
     
-    int mid = (start+end)/2;        
-    int value = nums[mid];        
-    TreeNode node = new TreeNode(value);
-    node.left = createBSTFromArray(nums, start, mid-1);
-    node.right = createBSTFromArray(nums, mid+1, end);
-    return node;
-}
+    public TreeNode createBSTFromArray(int[] nums, int start, int end)
+    {
+        if(nums==null || nums.length==0) return null;
+        if(start  > end) return null;
+        
+        int mid = start+(end-start)/2;
+        int value  = nums[mid];
+        TreeNode node = new TreeNode(value);        
+        node.left = createBSTFromArray(nums, start, mid-1);
+        node.right = createBSTFromArray(nums, mid+1, end);
+        return node;
+    }
