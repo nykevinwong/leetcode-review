@@ -1,0 +1,219 @@
+Inorder traversal of the Binary Tree lists a 
+Inorder Successor of a node in binary tree is the next node in Inorder traversal of the Binary Tree.
+Inorder Successor also means next node that is larger than target node.
+
+(1) Validate Binary Search Tree
+
+public boolean isValidBST(TreeNode root)
+{
+    return isValidBST(root, null, null);
+}
+    
+public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
+{
+    if(root==null) return true;
+    //                                 1
+    // 用 <= 會在[1,null,1] 時出錯.       \ 1
+    if((leftBound == null || leftBound < root.val ) && ( rightBound == null || root.val < rightBound ) )
+    {
+        return isValidBST(root.left, leftBound , root.val) &&
+        isValidBST(root.right, root.val, rightBound);    
+    }
+    
+    return false;
+}
+
+(2) Inorder Successor in BST
+- 記錄當前大於目標節點值的節點即可.
+
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) 
+    {
+        TreeNode[] res = new TreeNode[1];
+        helper(root, p, res);
+        return res[0];
+    }
+
+    public void helper(TreeNode root, TreeNode p, TreeNode[] res) 
+    {
+        if(root==null) return;
+        
+        if(root.val > p.val)
+        { 
+            if(root.val > p.val ) res[0] = root;
+            helper(root.left, p, res);
+        }
+        else
+        {
+             helper(root.right, p, res);
+        }
+    }
+
+(3) Binary Search Tree Iterator (Inorder Traversal)
+將已知二元樹中序疊代碼，拆開放到對應函式就可以了。 
+
+(4) Search in a Binary Search Tree
+- 兩種(recursive & iterative)寫法都要熟.
+- 要特別注意檢查節點root, 節點left及right的空值
+疊代寫法:
+        if(root==null) return null;
+        Stack<TreeNode> s = new Stack<>();
+        
+        s.push(root);
+            
+        while(!s.isEmpty())
+        {
+            TreeNode node = s.pop();
+            
+            if(node.val==val) return node;
+            
+            if(node.val > val) { if(node.left!=null) s.push(node.left); }
+            else { if(node.right!=null) s.push(node.right); }
+        }
+        
+        return null; // not found        
+更正確來說, BST Traversal 不需要Stack的. 直接左移或右移當前節點指標就可以了.
+
+    public TreeNode findValueInBST(TreeNode root, int val) {
+        if(root==null) return null;
+        TreeNode cur = root;
+        
+        while(cur!=null)
+        {
+            if(cur.val==val) return cur;
+            
+            if(cur.val > val) cur = cur.left;
+            else cur = cur.right;
+        }
+        
+        return null;
+    }
+
+(5) Insert into a Binary Search Tree 
+- 插入值不會存在於樹中時，就是你不用調整新子樹,不用處裡相等狀況，只管插入.
+- 程式碼同搜尋二元樹目標值碼一樣，差別是你在目標左右節點為空時，建立使用目標值的新節點。傳回原樹根就可以了。
+- 原樹根不存在時，你就傳回一個使用目標值的新節點當新的樹根，代表目標值插入樹根的位置。
+- 兩種(recursive & iterative)寫法都要熟.
+- recursive 重點
+    # 插入時，用 root.left = insertIntoBST(root.left,...) 及 root.right = insertIntoBST(root.right..)
+    # 最後的 return 可用 root. 這樣所有recursive call 結束後，回到第一個函式呼叫，然後傳回本來的根。
+    # 如果傳入左右節點或空節點，傳回root代表傳回同一節點，不做更動.
+
+(6) Delete node in a BST
+- 程式碼是建構在修改後的搜尋二元樹目標值碼
+- 在二元搜尋樹刪除節點要記住的三個重點，每一個重點要畫圖記憶範例才能正確記憶。
+    # 要刪除的目標節點沒有左右節點，可直接刪除該節點。
+    # 要刪除的目標節點只有一個子節點，可用此子節點代替目標節點的位置，即完成刪除。
+        # 任一節點為空，即傳回另一節點. 這樣等於處理三種空節點情況. (00,01,10)
+    # 要刪除的目標節點有左右節點，找右子樹的最左節點值(右子樹最小值)，copy這值替換目標節點中的值，最後
+      在右子樹中recusrively 呼叫自身delete函式刪除這最小值節點值，即完成刪除。
+        # 取得右子樹的方法: TreeNode minOnRightLeft = root.right; //取得右子樹
+        # 取得最左節點的方法: while( minOnRightLeft.left != null ) minOnRightLeft = minOnRightLeft.left
+        # copy 替換目標節點中的值的方法: root.val = minOnRightLeft.val
+        # 刪除右子樹最小值的方法. root.right = deleteNode(root.right, minNode.val) 
+
+    TreeNode deleteNode(TreeNode root, int key)
+    {
+        if(root==null) return null;
+            
+        if(root.val > key)
+        {
+            root.left = deleteNode(root.left, key);
+        }
+        else if(root.val < key)
+        {
+            root.right = deleteNode(root.right, key);
+        }
+        else // found the key
+        {
+            if(root.left==null || root.right==null) return (root.left==null) ? root.right:root.left;
+            TreeNode minOnRightLeft = root.right; // get the right subtree
+            
+            while(minOnRightLeft.left!=null) minOnRightLeft= minOnRightLeft.left;            
+            
+            root.val = minOnRightLeft.val;
+            root.right = deleteNode(root.right, minOnRightLeft.val);                
+        }
+        
+        return root;
+    }
+
+(7) Kth Largest Element in a Stream
+(8) Lowest Common Ancestor of a Binary Search Tree (p,q 節點必存在於樹中)
+- 找出二元搜尋樹的最低共同祖節點. 有三種種清要處理.
+  # p、q 兩節點大於當前節點, p、q 兩節點在右二元搜尋子樹. 在前序部份檢查
+  # p、q 兩節點小於當前節點, p、q 兩節點在左二元搜尋子樹. 在中序部份檢查.
+  # 第三種情況，就是p、q各在當前節點左右邊。當前節點就是最低共同祖節點. 後序部份傳回.
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {        
+        TreeNode m = root; 
+
+        if(m.val > p.val && m.val > q.val) // p、q 兩節點大於當前節點
+            return lowestCommonAncestor(root.left, p, q);
+        else if(m.val < p.val && m.val < q.val) // p、q 兩節點小於當前節點
+            return lowestCommonAncestor(root.right, p, q);
+        return root; //第三種情況，沒有寫在if-statement. 用排除法寫在
+    }
+
+
+(9) Contains Duplicate III [找出絕對距離最大為t,兩數索引距離最大為k的兩數]
+# Brute Force // this will fail at Time Limit Exceeded.
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        for(int i=0;i<nums.length;i++)
+            for(int j=i+1;j<nums.length;j++)
+            {
+                if(Math.abs(i-j) <= k)
+                {   long a = nums[i],  b = nums[j]; //prevent integer overflow during subtraction
+                    if(Math.abs(a-b) <= t) return true;
+                }
+            }
+
+        return false;
+    }
+
+// (BST solution) n* log(k) solution
+   public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    if(nums==null||nums.length<2||k<0||t<0)
+        return false;
+ 
+    TreeSet<Long> set = new TreeSet<Long>();
+    for(int i=0; i<nums.length; i++){
+        long curr = (long) nums[i];
+ 
+        long leftBoundary = (long) curr-t;
+        long rightBoundary = (long) curr+t+1; //right boundary is exclusive, so +1
+        SortedSet<Long> sub = set.subSet(leftBoundary, rightBoundary); // at most t
+        if(sub.size()>0)
+            return true;
+ 
+        set.add(curr);   
+ 
+        if(i>=k){ // or if(set.size()>=k+1) // at most k
+            set.remove((long)nums[i-k]);
+        }
+    }
+ 
+    return false;
+    }
+
+(10) Balanced Binary Tree
+- 程式碼跟 getDepth() 一模一樣，就是多了三行會傳回-1代表，當前節點是個非 Balanced Binary subtree.
+- 在後序部份，檢查左右depth是否為-1,是就傳會-1. 沒有此檢查，程式不會work.
+  # 如果要讓程式變得稍為更快，直接在取得左深度或右深度後的一行，馬上各檢查一次.
+- 在後序部份，傳回最大高度或深度前，檢查左右兩深或兩高差是否大於 1. 大於1代表當前節點樹不是balanced.
+- 最後，用此 getHeight() 或 getDepth() 查題目的樹根的高是否-1, -1 則，此樹不是balanced.
+  
+    public int getHeight(TreeNode root)
+    {
+        if(root==null) return 0;
+        
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+        if(leftHeight==-1) return -1;
+        if(rightHeight==-1) return -1;
+        
+        if(Math.abs(leftHeight-rightHeight) > 1) return -1;
+        
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+(11) Convert Sorted Array to Binary Search Tree

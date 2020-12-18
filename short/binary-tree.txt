@@ -58,7 +58,7 @@
             }
             // cur is null right now.
             cur = s.pop();
-            res.add(cur.val);
+            res.add(cur.val); // or int value = cur.val;
             cur = cur.right;
         }
 
@@ -219,7 +219,7 @@
   # 樹根值由preorder/postorder陣列取得.
   # 樹根中序陣列索引由對照表取得.
   # 左子樹長度及右子樹長度由當前區間範圍計算可得.
-  # 新的區間範圍用 inRootIndex、當前區間範圍、左右子樹長度計算可晶.
+  # 新的區間範圍用 inRootIndex、當前區間範圍、左右子樹長度計算可得.
 
 (11) Populating Next Right Pointers in Each Node
 - 暴力O(N)空間解: BFS 層序佇列遍歷。層序遍歷 = 用size存當前佇例大小，遍歷整個佇例節點。
