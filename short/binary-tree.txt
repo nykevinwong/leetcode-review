@@ -310,51 +310,61 @@ use both top-down & bottom-up approach
   * 重點: 用一個全域preOrderIndex，才能根據函式呼叫的順序(就是Preorder的順序)來正確設定下個要取值的索引.
     # preOrderIndex 也可設成 -1.
 
+
     // Encodes a tree to a single string.
-public String serialize(TreeNode root) {
-    if(root==null) return null;
- 
-    String str = "";
-    Stack<TreeNode> s = new Stack<TreeNode>();
-    s.push(root);
- 
-    while(!s.isEmpty()){
-        TreeNode node = s.pop();   
-
-        if(node!=null){
-            str += node.val+",";
-            s.push(node.right);
-            s.push(node.left);  
-        }
-        else 
-        {
-            str += "#,";
-        }
+    
+    public String serialize(TreeNode root) {
+        if(root==null) return "#,";
+        String s = root.val + ",";
+        
+        s += serialize(root.left);
+        s += serialize(root.right);
+        
+        return s;
     }
- 
-    return str.substring(0,str.length()-1);
-}
- 
-private int preOrderIndex = -1;
+    
+    /*
+    public String serialize(TreeNode root) {
+        Stack<TreeNode> s = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        
+        s.push(root);
+        
+        while(!s.isEmpty())
+        {
+            TreeNode node = s.pop();
+            
+            if(node==null) 
+            {
+                sb.append("#,"); // # represents null value.
+            }
+            else
+            {                
+                sb.append(node.val + ",");
+                s.push(node.right);
+                s.push(node.left);
+            }
+                        
+        }
+        
+        System.out.println(sb.toString());
+        return sb.toString();
+    }*/
 
-// Decodes your encoded data to tree.
-public TreeNode deserialize(String data) {
-    if(data == null) return null;
- 
-    preOrderIndex = -1;
-    String[] arr = data.split(",");
- 
-    return helper(arr);
-}
- 
-public TreeNode helper(String[] arr){
-    preOrderIndex++;
-    // 當前字串是#，代表是null.
-    if(arr[c].equals("#")) return null;
- 
-    TreeNode root = new TreeNode(Integer.parseInt(arr[preOrderIndex]));
-    root.left = helper(arr);
-    root.right = helper(arr);
- 
-    return root;
-}
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] tokens = data.split(",");
+        return buildTree(tokens, new int[] {0});
+    }
+    
+    public TreeNode buildTree(String[] tokens, int[] index)
+    {
+        if(tokens[index[0]].equals("#")) { index[0]+=1; return null; }
+        
+        int value = Integer.valueOf(tokens[index[0]++]);
+        TreeNode node = new TreeNode(value);
+        
+        node.left = buildTree(tokens, index);
+        node.right = buildTree(tokens, index);
+        return node;
+    }

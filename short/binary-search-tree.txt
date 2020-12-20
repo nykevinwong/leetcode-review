@@ -154,6 +154,19 @@ public boolean isValidBST(TreeNode root, Integer leftBound, Integer rightBound)
     # kth最小 等於 rightSize+1, 代表kth元素就是當前節點.
     # kth最小 大於 rightSize+1，代表kth元素在右子樹.
 
+    // 由於是kth 最大，大數在右子樹，由右子樹大小決定.
+    int searchKth(Node root, int k) {
+        int rightSize = (root.right!=null) ? root.right.cnt: 0;
+
+        //如果右子樹有2個元素，要找3th largst.肯定是當前節點
+        if(rightSize+1 == k) return root.val;
+        //如果 kth 超過右子樹大小+1，代表在左子樹。
+        if(k > rightSize+1) {
+            return searchKth(root.left, k-(rightSize+1));
+        }//k小於等於 rightSize, 代表此數在右子樹。
+        else return searchKth(root.right, k);
+            
+    } 
 (8) Lowest Common Ancestor of a Binary Search Tree (p,q 節點必存在於樹中)
 - 找出二元搜尋樹的最低共同祖節點. 有三種種清要處理.
   # p、q 兩節點大於當前節點, p、q 兩節點在右二元搜尋子樹. 在前序部份檢查
