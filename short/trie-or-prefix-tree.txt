@@ -1,0 +1,256 @@
+208. Implement Trie (Prefix Tree)
+
+class Trie {
+    public Trie[] children = new Trie[26];
+    boolean endOfWord = false;
+    
+    /** Initialize your data structure here. */
+    public Trie() {
+            
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        
+        Trie cur = this;
+        for(int i=0;i< word.length();i++)
+        {
+            int index = word.charAt(i)-'a';
+            if(cur.children[index]==null) cur.children[index] = new Trie();
+            
+            cur = cur.children[index];
+        }
+        
+        cur.endOfWord = true;
+    }
+    
+    public Trie findLastMatchedTrie(String word)  {
+        Trie cur = this;
+
+        for(int i=0;i< word.length();i++)
+        {
+            int index = word.charAt(i)-'a';
+            if(cur.children[index]==null) return null;
+            
+            cur = cur.children[index];
+        }
+        
+        return cur;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {        
+        Trie found = findLastMatchedTrie(word);        
+        return found!=null && found.endOfWord==true; // ensure it's a word and not a prefix.
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        Trie found = findLastMatchedTrie(prefix);        
+        return found!=null; // ensure it's a word or  a prefix.        
+    }
+}
+
+677. Map Sum Pairs
+Input: ["MapSum", "insert", "sum", "insert", "sum"]
+       [[], ["apple", 3], ["ap"], ["app", 2], ["ap"]]
+Output: [null, null, 3, null, 5]
+
+Explanation:
+MapSum mapSum = new MapSum();
+mapSum.insert("apple", 3);  
+mapSum.sum("ap");           // return 3 (apple = 3)
+mapSum.insert("app", 2);    
+mapSum.sum("ap");           // return 5 (apple + app = 3 + 2 = 5)
+
+硬体要求是你必須能先默寫出,HashMap式的Tire的資料結構,insert, searchWord, 及
+searchPrefix三種方法，並了解endOfWord用法。
+
+重點 1 是在Trie需要一個sum的變數，每次呼叫insert時，每個被遍歷的Tire節點的sum累加新的value.
+重點 2 是需要另一個存字串對數值的對照表，可以存之前同一字串的數值value，這樣在遍歷同一字串的Tire路徑時，
+可將sum減去之前該字串的value.
+
+    class Tire 
+    {
+        public Map<Character, Tire> map = new HashMap<>();
+        public boolean endOfWord;
+        public int sum;
+    }
+
+class MapSum {
+    
+    private Map<String,Integer> prevSum  = new HashMap<>();
+    private Tire root = new Tire();
+    
+    /** Initialize your data structure here. */
+    public MapSum() 
+    {        
+    }
+    
+    public void insert(String key, int val) 
+    {        
+        int prev = prevSum.getOrDefault(key,0);
+        
+        Tire cur = root;
+  
+        for(int i=0;i < key.length();i++)
+        {
+            char c = key.charAt(i);
+            
+            cur.map.putIfAbsent(c, new Tire());
+            cur = cur.map.get(c);
+            cur.sum -= prev; // remove previously added sum
+            cur.sum += val;            
+        }
+        
+        prevSum.put(key, val);
+        cur.endOfWord = true;
+    }
+    
+    public int sum(String prefix) {
+        
+        Tire cur = root;
+        for(int i=0;i < prefix.length();i++)
+        {
+            char c = prefix.charAt(i);            
+            cur = cur.map.get(c);
+            if(cur==null) return 0;
+        }
+        
+        return cur.sum;
+    }
+}
+
+Replace Words  給你一堆字根，一個句子。將句子中的有字根的字換成字根。字根短的優先選取.
+-用Tire/Prefix Tree 可解，需要改良Tire裡的原SearchPrefix方法。
+- 就是如果當前endOfWord是true,表示至當前節點的路徑是一個完整字根，傳回字根，用這字根替換句子中的字。
+class Trie {
+    private Map<Character, Trie> m = new HashMap<>();
+    private boolean endOfWord;
+    
+    public void insert(String word)
+    {
+        Trie cur = this;
+        
+        for(int i=0;i < word.length();i++)
+        {            
+            char c = word.charAt(i);
+            
+            if(cur.m.get(c)==null) cur.m.put(c, new Trie());
+            
+            cur = cur.m.get(c);
+        }
+        
+        cur.endOfWord = true;
+        
+    }
+    public String partiallyMatched(String word)
+    {
+        Trie cur = this;
+        String s = "";
+        
+        for(int i=0;i < word.length();i++)
+        {            
+            char c = word.charAt(i);
+            if(cur.m.get(c)==null) return "";
+            
+            cur = cur.m.get(c);
+            s+= c;
+            
+            if(cur.endOfWord) return s;
+        }
+        
+        return "";
+    }
+}
+
+class Solution {
+    Trie trie = new Trie();
+    public String replaceWords(List<String> dictionary, String sentence) {        
+        
+        String[] tokens = sentence.split(" ");
+        
+        for(String word: dictionary) trie.insert(word);
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i < tokens.length;i++)
+        {
+            String wordRoot = trie.partiallyMatched(tokens[i]);
+            sb.append((wordRoot=="") ? tokens[i]: wordRoot);
+            if(i!=tokens.length-1) sb.append(" ");
+        }
+        
+        return sb.toString();
+    }
+}
+
+211. Design Add and Search Words Data Structure
+
+class Trie {
+    private Map<Character,Trie> m = new HashMap<>();
+    private boolean isWord;
+    public Trie() { }
+    
+    public void insert(String word)
+    {
+        Trie cur = this;
+        for(int i=0;i < word.length();i++)
+        {
+            char c = word.charAt(i);
+            cur.m.putIfAbsent(c, new Trie());            
+            cur = cur.m.get(c);
+        }
+        
+        cur.isWord = true;
+    }
+    
+    
+    public boolean search(String word)
+    {                        
+        Trie cur = this;
+        
+        System.out.println(word);
+        
+        for(int i=0;i < word.length();i++)
+        {
+            char c = word.charAt(i);
+           
+            if(!cur.m.containsKey(c)) //如果當前字元不存在於當前prefix集合中
+            { 
+                if(c=='.')
+                {
+                    for(Map.Entry<Character,Trie> entry: cur.m.entrySet())
+                    {
+                        Trie t = (Trie)entry.getValue();                    
+                        if(t.search(word.substring(i+1))) return true;
+                    }
+                }
+                                
+                return false;
+            }
+            else
+            {               
+                cur=cur.m.get(c);
+            }
+            
+        }
+        
+        return cur.isWord;
+    }
+}
+
+class WordDictionary {
+    Trie t = new Trie();
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+    }
+    
+    public void addWord(String word) {
+        t.insert(word);
+    }
+    
+    public boolean search(String word) {
+        boolean found = t.search(word);
+        return found;
+    }
+}
