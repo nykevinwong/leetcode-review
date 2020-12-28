@@ -184,6 +184,103 @@ class Solution {
     }
 }
 
+642. Design Search Autocomplete System
+也是classic Trie class ，但要在Trie多用一個 count HashMap 成員來記錄句子出現的次數統計。
+但一個完整的新句子輸入後，要更新該count Hashmap來多增加該句子出現的次數統計。
+search方法中，必須用 maxHeap 將 hashmap 的句子排序，取出最大3個。
+雖然 input(char c) 只能一次取一個字，還是可以在search整詢整個句子較不容易在面試時寫錯程式碼
+句子結尾 # 出現後，別忘了重置當前搜尋的句子  SearhcKey.
+
+class Trie
+{
+    private Map<Character, Trie> m = new HashMap<>();
+    private Map<String, Integer> count = new HashMap<>();
+    private boolean endOfWord;  
+    private int TOP_RESULT_MAX = 3;
+    
+    public Trie() { }
+    
+    // assume higher frequencey of a senetence is inserted first.
+    public void insert(String sentence, int time)
+    {
+        Trie cur = this;
+        for(int i=0;i<sentence.length();i++)
+        {
+            char c = sentence.charAt(i);
+            cur.m.putIfAbsent(c, new Trie());
+            cur = cur.m.get(c);
+            
+            cur.count.put(sentence, cur.count.getOrDefault(sentence, 0)+time);
+        }
+        
+        cur.endOfWord = true;
+    }
+        
+    public List<String> search(String keyword)
+    {
+        Trie cur = this;
+        for(int i=0;i < keyword.length();i++)
+        {
+            char c = keyword.charAt(i);
+            if(cur.m.get(c)==null) return new LinkedList<>();
+            cur = cur.m.get(c);
+        }
+        
+        
+        Map<String,Integer> count = cur.count;
+        
+        // 依搜尋frequency從大至小排序, frequency 相等則由字母大小順序來排。
+        PriorityQueue<String> maxHeap = new PriorityQueue<>(
+            (a,b) -> { int c1 = count.get(a), c2= count.get(b); return (c1==c2) ? a.compareTo(b):c2-c1; }
+        );
+        
+        for(Map.Entry<String,Integer> entry : count.entrySet())
+        {
+            maxHeap.add(entry.getKey());
+        }
+        
+        List<String> res = new LinkedList<>();
+        int len = TOP_RESULT_MAX;
+        
+        // 只要前LEN個大的數
+        while(!maxHeap.isEmpty() && len-- > 0) { res.add(maxHeap.poll());}
+        
+        return res;
+    }
+}
+
+class AutocompleteSystem {
+    private Trie r = new Trie();
+    private String curSearchKey = "";
+    
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        
+        for(int i=0;i<sentences.length;i++)
+        {            
+            r.insert(sentences[i], times[i]);
+        }
+
+    }
+    
+    public List<String> input(char c) {
+        List<String> res = new LinkedList<String>();
+        
+        if(c=='#')
+        {
+            // 統計新出現的搜尋關鍵句子
+            r.insert(curSearchKey, 1);
+            curSearchKey="";
+        }
+        else
+        {
+            curSearchKey+=c;
+            res = r.search(curSearchKey);
+        }
+        
+        return res;
+    }
+}
+
 211. Design Add and Search Words Data Structure
 
 class Trie {
@@ -253,4 +350,361 @@ class WordDictionary {
         boolean found = t.search(word);
         return found;
     }
+}
+
+Maximum XOR of Two Number in an array
+
+    /// Bitwise Trie tree. look for the path based on current opposite bit
+class Trie {
+    Map<Character,Trie> m = new HashMap<>();
+    Integer value = null;
+        
+    private String padZeros(int n)
+    {
+        String s =  Integer.toBinaryString(n); 
+        String temp = s;
+        for(int i=0;i < 32-s.length();i++) temp = "0" + temp;
+        return temp;
+    }
+    
+    public void insert(int n)
+    {
+        String s = padZeros(n);
+        Trie cur = this;
+        
+        for(int i=0;i< s.length();i++)
+        {
+            char c = s.charAt(i);
+            cur.m.putIfAbsent(c, new Trie());
+            cur = cur.m.get(c);
+        }        
+        cur.value = n;
+    }
+    
+    public char toggle(char c) { return (c=='1') ? '0':'1'; }
+
+    public Integer searchPossibleOppositeXOR(int n)
+    {  // 找盡可能反相的位元組，不能保證找到最大異或和位元組。要保證找到的話，必須要backtracking. 實解不適用在面試中。
+        String s = padZeros(n);        
+        Trie cur = this;       
+        
+        for(int i=0;i< s.length();i++)
+        {
+            char c = toggle(s.charAt(i)); // try the opposite for maximum 
+            
+            if(!cur.m.containsKey(c))
+            { // try again with another choice
+               c = toggle(c);
+               if(!cur.m.containsKey(c)) return -1;  // no more choice;            
+            }
+                
+            cur = cur.m.get(c);
+        }        
+        
+        return cur.value;
+    }
+    
+    
+}
+
+class Solution {
+    
+    public int findMaximumXOR(int[] nums) {
+        Trie t = new Trie(); int max = 0;
+        
+        for(int value: nums) t.insert(value); 
+        
+        for(int value: nums)
+        {   // we need to try all value since search function won't gurantee to select the value with most opposite bits.
+            int curXOR = t.searchPossibleOppositeXOR(value);
+            max = Math.max(max, value ^ curXOR);
+        }
+        
+        return max;
+
+    }  
+    
+}
+
+
+Word Search II (Word Game)
+
+class Solution {
+    
+    public class Trie
+    {
+        public Map<Character,Trie> nodes = new HashMap<>();
+        private String word;
+        private boolean used;
+        private Trie parent;
+        private char key;
+        
+        public void insert(String w)
+        {
+            Trie cur = this, prev = null;
+            for(int i=0; i < w.length();i++)
+            {
+                char c= w.charAt(i);
+                cur.nodes.putIfAbsent(c, new Trie());
+                prev = cur;
+                cur = cur.nodes.get(c);
+                cur.parent = prev;
+                cur.key = c;
+            }
+            
+            cur.word = w;
+        }
+        // not a required method if "used" is used to not pick the same word again.
+        public boolean deleteIfQualified()
+        { // this function is used to prune the branch that are TOTALLY searched before.
+            if(used == true && nodes.size()==0) // if the word is used and it's a leaf node.
+            {
+                parent.nodes.remove(this.key);
+                return parent.deleteIfQualified();
+            }
+            return false;
+        }
+        
+
+    }
+    
+    public List<String> findWords(char[][] board, String[] words) {
+        Trie t = new Trie();
+        List<String> res = new LinkedList();
+        
+        for(String w: words) t.insert(w);
+        
+        for(int y=0;y< board.length ;y++)
+        {
+            for(int x=0;x< board[0].length;x++)
+            {
+                dfs(board, x, y, t, res);
+            }
+        }
+        
+        return res;
+    }
+    
+    public void dfs(char[][] board, int x, int y, Trie t, List<String> res)
+    {        
+        if(x >=0 && x <= board[0].length-1 && y>=0 && y <= board.length-1)
+        {
+            char c = board[y][x];
+            board[y][x] = '@'; // mark as visited used the character outside a given range.
+            
+            if(t.nodes.containsKey(c))
+            {
+               // System.out.println(String.format("(%2s,%2s) => [%1s]", x,y,board[y][x]) );
+                
+                Trie matched = t.nodes.get(c);
+                if(matched.word!=null &&  !matched.used) { 
+                    res.add(matched.word);                     
+                    //matched.word=null; //deduplicate
+                    matched.used = true; // not only deduplicate, you can also use this to get a set of unused/unfound strings.
+                }
+
+                int[][] d = new int[][]{ {0,-1},{0,1}, {-1,0}, {1,0}};
+                for(int i=0;i< d.length;i++)
+                {
+                    dfs(board, x+d[i][0],y+d[i][1], matched, res);
+                }
+                
+                if(matched.deleteIfQualified()) matched = null; // help garbage collector 
+            }
+            
+            board[y][x]= c;  //backtracking. 
+            
+        }
+    }
+}
+
+Word Squares
+Input:["area","lead","wall","lady","ball"]
+Output:
+  [ "wall",
+    "area",
+    "lead",
+    "lady"
+  ],
+  [ "ball",
+    "area",
+    "lead",
+    "lady"
+  ]]
+
+public class Trie {
+    Map<Character, Trie> nodes = new HashMap<>();
+    List<Integer> wordIndexList = new LinkedList<>();
+    
+    public void insert(String w, int wordIndex)
+    {
+        Trie cur = this;
+        for(int i=0;i<w.length();i++)
+        {
+            char c = w.charAt(i);
+            cur.nodes.putIfAbsent(c, new Trie());
+            cur = cur.nodes.get(c); 
+            cur.wordIndexList.add(wordIndex);
+        }
+        
+    }
+
+    
+    public List<Integer> getPrefixMatchedWordList(String w)
+    {
+        Trie cur = this;
+        for(int i=0;i<w.length();i++)
+        {
+            char c = w.charAt(i);
+            if(cur.nodes.get(c)==null) return new LinkedList<Integer>();            
+            cur = cur.nodes.get(c); 
+        }
+        
+        return cur.wordIndexList;
+    }
+}
+
+class Solution {
+   public List<List<String>> wordSquares(String[] words) {
+       Trie trie = new Trie();
+       List<String> temp = new LinkedList<>();
+       List<List<String>> res = new LinkedList<List<String>>();
+       
+       for(int i=0;i< words.length;i++)
+       {
+           trie.insert(words[i],i);
+       }
+       
+       for(String w: words)
+       {
+           temp.add(w);
+           find(words, 1, temp, res, trie);
+           temp.remove(temp.size()-1);
+       }
+       
+       return res;
+   }
+    
+    public void find(String[] words, int colIndex, List<String> temp, List<List<String>> res, Trie trie)        
+    {
+        if(temp.size()==temp.get(0).length())
+        {
+            res.add(new LinkedList<String>(temp));
+            return;
+        }
+        
+        String prefix ="";
+        for(String w: temp)
+        {
+            prefix+= w.charAt(colIndex);
+        }
+        
+        List<Integer> prefixMap = trie.getPrefixMatchedWordList(prefix);
+        System.out.println(String.format("map.size():%d , tempList: %s" , prefixMap.size(), temp));
+        if(prefixMap.size()<=0) return;
+        
+        
+        for(int i : prefixMap)
+        {
+           String w = words[i];
+           temp.add(w);
+           find(words, colIndex+1, temp, res, trie);
+           temp.remove(temp.size()-1);
+        }
+        
+    }
+    
+    
+}
+
+Plaindrome Pairs
+
+Input: words = ["abcd","dcba","lls","s","sssll"], Output: [[0,1],[1,0],[3,2],[2,4]]
+Explanation: The palindromes are ["dcbaabcd","abcddcba","slls","llssssll"]
+
+class Trie 
+{
+    public Map<Character,Trie> nodes = new HashMap<>();
+    public Integer index = -1;
+    public List<Integer> mathcedPlaindormPrefix = new LinkedList<>();
+    
+    // inset the reverse word 
+    public void insert(String w, int index)
+    {
+        Trie cur = this;
+        
+        for(int i=w.length()-1; i>=0; i--)
+        {
+            char c = w.charAt(i);
+            cur.nodes.putIfAbsent(c, new Trie());
+            if(isPlaindrome(w, 0, i)) cur.mathcedPlaindormPrefix.add(index);
+            cur = cur.nodes.get(c);
+        }                
+        
+        cur.mathcedPlaindormPrefix.add(index);
+        cur.index = index;
+    }
+    
+    public List<List<Integer>> search(String w, int index)
+    {
+        Trie cur = this;
+        List<List<Integer>> res = new LinkedList<List<Integer>>();
+        
+        for(int i=0;i< w.length();i++)
+        {
+            if(cur.index >= 0 && 
+               cur.index != index && 
+              isPlaindrome(w, i, w.length()-1) )
+            {
+                res.add(Arrays.asList(index, cur.index));
+            }
+            
+            char c = w.charAt(i);
+            
+            if(!cur.nodes.containsKey(c)) return res;
+            
+            cur = cur.nodes.get(c);            
+        }
+        
+        for(int j : cur.mathcedPlaindormPrefix)
+        {
+            if(index==j) continue;
+            res.add(Arrays.asList(index,j));
+        }
+        
+        return res;
+    }
+    
+    public boolean isPlaindrome(String s, int l, int r)
+    {        
+        while(l<=r)
+        {
+            if(s.charAt(l)!=s.charAt(r)) return false;
+            l++;
+            r--;
+        }
+        
+        return true;
+    }
+    
+}
+
+class Solution {
+        
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        Trie trie = new Trie();
+        
+        for(int i=0; i < words.length; i++)
+            trie.insert(words[i], i);
+        
+        for(int i=0; i < words.length; i++)
+        {
+            List<List<Integer>> ans = trie.search(words[i], i);
+            res.addAll(ans);
+        }
+        
+        return res;
+    }
+    
 }
