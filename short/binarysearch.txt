@@ -171,8 +171,9 @@ pow(x, n) {
 - 二元尋搜的不存在目標的索引值為負數時，要轉成插入位置用: (index < 0) index = -index - 1;
 - 處理可環繞(warp-around)索引的方法: index %= letters.length;
 
+
 (13) Intersection of Two Arrays. 兩個數組中相等的數字。
-(14) Intersection of Two Arrays II. [同上，但陣列早已有序]
+(14) Intersection of Two Arrays II. [同上，但陣列早已有序, FACKBOOK 面試題]
 - 兩數組都可能有重覆數字，兩數組的所有相同數字就是答案，但答案不可有重覆數字，代表答案可用Hashset存。
   用 HashSet.contains() 存一數組的所有獨特數字。用這HashSet查找另一數值的所有數字，找到數字存入另一個解答的HashSet.
   答案用 HashSet 代替 ArrayList 來排除重覆的答案。 是O(N)解
@@ -181,10 +182,12 @@ pow(x, n) {
 - 如果數組本來就是有序的，我們對兩數組使用two pointer O(n)解，兩點從同一索引零開始. 
     int p1=0, p2=0;
     while( p1 < nums1.length &&  p2 < nums2.length) {
-        if(nums1[p1] < nums2[p2]) {  p1++; }
-        else if(nums1[p1] > nums2[p2]) { p2++; }
-        else { list.add(nums1[p1]);  p1++; p2++; }
+        if(nums1[p1] < nums2[p2]) {  p1++; } // 較小的往大值方向走
+        else if(nums1[p1] > nums2[p2]) { p2++; } //較小的往大值方向走
+        else { list.add(nums1[p1]);  p1++; p2++; } //依題目要求，兩值相等才是答案元素. 
     }
+
+
 
 
 (15) Two Sum II (input array is sorted)

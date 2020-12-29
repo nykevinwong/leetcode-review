@@ -2,6 +2,28 @@ Inorder traversal of the Binary Tree lists a
 Inorder Successor of a node in binary tree is the next node in Inorder traversal of the Binary Tree.
 Inorder Successor also means next node that is larger than target node.
 
+
+TreeNode BSTOpeartion(TreeNode root, int key)
+{
+    if(root==null) return null;
+
+    if(root.val > key) 
+    {
+        root.left = BSTOpeartion(root.left, key);
+    }
+    else if(root.val < key)
+    {
+        root.right = BSTOpeartion(root.right, key);
+    }
+
+    return root; // if root.val == key
+}
+
+add, find, delete 的差別
+- add 同上面的程式碼，但root為空時，回傳 new TreeNode(key);
+- find 同上面的程式碼，但不更新左右節點，用return傳回 find(root.left, key) 及 find(root.right, key)
+- delete 同上面的程式碼，但多加一個 else block 在 if-else 下面來處理 delete 動作.
+
 (1) Validate Binary Search Tree
 
 public boolean isValidBST(TreeNode root)
