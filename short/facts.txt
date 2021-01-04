@@ -107,3 +107,55 @@ Counting Sort 計數排序法是O(n)時間，O(n)空間的不穩定排序法，�
 Counting Sort | small integer range from 0 to k-1 |
    Radix Sort |
   Bucket Sort |
+
+
+HashSet 的用法:
+(1) 可用HashSet存無duplicate的集合.     
+     nums = [1,2,3,4,5,5,5,6,7,7]
+     for(int i: values) { hashset.add(i); }
+
+(2) 可用HashSet.contains 查某元數是否重覆出現.
+     nums = [1,2,3,4,5,5,5,6,7,7]
+     for(int i: values) { if(hashset.contains(i)) { duplicate.add(i); }hashset.add(i); }
+
+(3) 可用爬行法先入後除去，來確保當前Set裡最多k個元素.
+    size()大於k個，就可以除去。
+例子: 219. Contains Duplicate II 
+        public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>(); // O(n*log(n))TreeSet
+
+        for (int i = 0; i < nums.length; ++i) {
+            if (set.contains(nums[i])) return true;
+            set.add(nums[i]);
+            if (set.size() > k) {
+                set.remove(nums[i - k]);
+            }
+        }
+        
+        return false;        
+    }
+
+(4) 快慢指標爬行法. i 慢 j 快. 
+    當HashSet含有nums[j]的元素值，則去除在HashSet為nums[i]的元素值.
+    當HashSet含有nums[j]的元素值，可計算j-i為區間長度，也是區間元素個數.
+例子: 3. Longest Substring Without Repeating Characters
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int i =0, j =0;
+        int n = s.length(); int max = 0;
+        while(i < n && j < n)
+        {
+            if(!set.contains(s.charAt(j)))
+            {
+                set.add(s.charAt(j++));
+                max = Math.max(max, j-i);
+            }
+            else
+            {
+                set.remove(s.charAt(i++));
+            }
+        }
+        
+        return max;
+    }
+

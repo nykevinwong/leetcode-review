@@ -1,4 +1,4 @@
-Design HashSet
+(1) Design HashSet
 
 we will use separate chaining strategy to resolve hash collisions.
 
@@ -117,11 +117,537 @@ class BinarySearchTree
     
 }
 
+(2) Design HashMap
 
-/**
- * Your MyHashSet object will be instantiated and called as such:
- * MyHashSet obj = new MyHashSet();
- * obj.add(key);
- * obj.remove(key);
- * boolean param_3 = obj.contains(key);
- */
+(3) Contains duplicate
+- 暴力解 O(N^2) 兩個for-loop. pick one pair from one array.
+- 使用排序 Nlog(n) 解，檢查 nums[i]==nums[i-1] , i 從 1 開始. 或檢查 nums[i]==nums[i+1], (i < nums.length -1) 時 才執行
+- 用 hashset O(N) time & space 解.
+
+(4) Single Number [陣列的元素全都出現剛好二次，只有一個數字例外，找出該數字]
+- HashSet 解, 加入各元素，元素如果再出現時，移除掉。最後HashSet只有出現一次的數字
+- HashMap 解。加入各元素， key 是元素數， value 是出現次數。 再遍歷hashmap，出現一次的數字就是答案. 
+- xor 解. xor 設成 0, xor 各個數字，最後 xor 的結果就是答案。
+
+(5)  Intersection of Two Arrays
+- 如果陣列本身已經排序後，可用快慢 two pointer O(N) 爾,兩值相等時，就是答案元素。 
+
+(6) Happy Number
+Input: n = 19, Output: true
+Explanation: 12 + 92 = 82 ,82 + 22 = 68 ,62 + 82 = 100, 12 + 02 + 02 = 1
+
+    public boolean isHappy(int n) {
+        HashSet<Integer> seen = new HashSet<>();
+        
+        while(n != 1 && !seen.contains(n))
+        {
+            seen.add(n);
+            n = nextNumber(n);
+        }
+        
+        return n==1;
+    }*/
+    
+    public boolean isHappy(int n) {
+        int slowRunner = n;
+        int fastRunner = nextNumber(n);
+        while (fastRunner != 1 && slowRunner != fastRunner) {
+            slowRunner = nextNumber(slowRunner);
+            fastRunner = nextNumber(nextNumber(fastRunner));
+        }
+        return fastRunner == 1;
+    }
+    
+    public int nextNumber(int n)
+    {
+        int res = 0;
+        while(n > 0)
+        {
+            int r = n % 10;
+            n = n / 10;
+            res += r * r;
+        }
+        
+        return res;
+    }
+
+(7) Two Sum (兩數之和)
+- 如果我們選定某數 x後, 接下來要在陣列中，要找的另一數，就是 target - x，也可說是補數.
+  換句話說，我們可以先存 target - x ，也就是下個要找的數，遍歷陣列值到該數出現，代表找到。
+  可用Hashmap同時存要找的數值對應當前索引或值，之後找到該數target -x 後，就可取出x的相關資訊。
+
+ (8) Isomorphic Strings
+
+ (9) Minimum Index Sum of Two lists
+     public String[] findRestaurant(String[] list1, String[] list2) {
+        HashMap<String, Integer> m1 = new HashMap<>();   
+        int minIndexSum = Integer.MAX_VALUE;
+        List<String> res = new LinkedList<>();
+        
+        for(int i=0;i < list1.length;i++) { m1.put(list1[i], i); }
+        
+        for(int i=0;i < list2.length;i++)           
+        {
+            String s = list2[i];
+            if(m1.containsKey(s)) 
+            {
+                int indexSum = i + m1.get(s);           
+                
+                if(indexSum==minIndexSum) { res.add(s); }
+                else if(minIndexSum > indexSum)
+                {
+                    minIndexSum = indexSum;
+                    res.clear();
+                    res.add(s);
+                }
+            }
+        }
+        
+        return res.toArray(new String[res.size()]);
+    } 
+
+(10) First Unique Characcter in a String.
+
+       public int firstUniqChar(String s) {
+        int[] count = new int[256];
+        for(int i=0;i<s.length();i++) { count[s.charAt(i)]++; }
+        for(int i=0;i<s.length();i++) { if(count[s.charAt(i)]==1) return i; }        
+        return -1;
+    }
+
+(11) Intersection of Two Array II (in-place array)
+
+        public int[] intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        
+        int p1 = 0;
+        int p2 = 0;
+         
+        int k = 0;
+        while(p1 < nums1.length && p2 < nums2.length)
+        {
+            if(nums1[p1] > nums2[p2]) p2++;
+            else if(nums1[p1] < nums2[p2]) p1++;
+            else
+            {
+                nums1[k++] = nums1[p1];
+                p1++;
+                p2++;
+            }
+        }
+        
+        return Arrays.copyOfRange(nums1, 0, k);
+    }
+
+
+ (12)   219. Contains Duplicate II 
+// 暴力解
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        
+        for(int i=0;i<nums.length;i++)
+        {
+            for(int j=i+1; j < nums.length;j++)
+            {
+                int diff = Math.abs(i-j);
+                if(nums[i]==nums[j] && diff <= k)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
+// Sort
+
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int[][] arr = new int[nums.length][2];
+        
+        for(int i=0;i<nums.length;i++)
+        {
+            arr[i][0] = nums[i];
+            arr[i][1] = i;
+        }
+        
+        Arrays.sort(arr, (a,b) -> { return (a[0]==b[0]) ? a[1]-b[1] : a[0]-b[0]; });
+        
+        for(int i=1;i<nums.length;i++)
+        {
+            if(arr[i][0]==arr[i-1][0])
+            {
+                if(Math.abs(arr[i][1]-arr[i-1][1]) <= k) return true;
+            }
+        }
+        
+        return false;
+    }
+
+//HashSet爬行法
+        public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>(); // O(n*log(n))TreeSet
+
+        for (int i = 0; i < nums.length; ++i) {
+            if (set.contains(nums[i])) return true;
+            set.add(nums[i]);
+            if (set.size() > k) {
+                set.remove(nums[i - k]);
+            }
+        }
+        
+        return false;
+        
+    }
+
+** 必要時，鍵值的選擇很重要。
+(13) 49. Group Anagrams
+(14) Group Shifted Strings
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> m = new HashMap<>();
+        for(String s : strs)
+        {
+            String key = createCountKey(s);
+            m.putIfAbsent(key, new LinkedList<String>());
+            m.get(key).add(s);
+        }
+        
+        List<List<String>> res = new LinkedList<>();
+        for(List<String> ls : m.values())
+        {
+            res.add(ls);
+        }
+        
+        return res;
+    }
+    
+    public String createKey(String s) // O(N* (klog(k)))
+    {
+        char[] temp = s.toCharArray();
+        Arrays.sort(temp);
+        return new String(temp);
+    }
+    
+    public String createCountKey(String s) // O(N*k)
+    {
+        int[] count = new int[26];
+        
+        for(int i=0;i<s.length();i++) count[s.charAt(i)-'a']++;
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i < count.length;i++)
+        {
+            sb.append(count[i]);
+            if(i < count.length-1) sb.append("#");
+        }
+        
+        return sb.toString();
+    }
+
+    public String createGroupShiftedKey(String s)
+    {
+       char[] temp = s.toCharArray();
+        
+       while(temp[0]!='a')
+       {
+            for(int i=0;i<temp.length;i++)
+            {
+                int next =(temp[i]-'a' + 1) % 26;
+                temp[i] = (char)(next + 'a');
+            }
+       }
+        return new String(temp);
+    }
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+      List<TreeNode> ls = new LinkedList<>();
+      generateStructureString(root, new HashMap<String,Integer>(), ls);
+      return ls;
+    }
+    
+    652. Find Duplicate Subtrees
+    -用當前節點值及後序遍歷傳回的左右節點字串值組成一個代表該節點樹的識別字串，存入該字串計數。
+    該字串有兩個代表該節點樹是重覆出現的樹。
+
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+      List<TreeNode> ls = new LinkedList<>();
+      generateStructureString(root, new HashMap<String,Integer>(), ls);
+      return ls;
+    }
+    
+    public String generateStructureString(TreeNode root, Map<String,Integer> m, List<TreeNode> ls)
+    {
+        if(root==null) return null;
+        
+        String left = generateStructureString(root.left, m, ls);
+        String right = generateStructureString(root.right, m, ls);
+        String structureString = root.val + "," + left + "," + right;
+        
+        m.put(structureString, m.getOrDefault(structureString,0)+1);
+        // static int id = 0; // place this as global variable
+        // int uid = mSecond.computeIfAbsent(structureString, x-> id++); //針對每個字串產生獨特id
+        //  m.put(uid, m.getOrDefault(uid,0)+1); // 用 id 來計數. 
+        if(m.get(structureString)==2)
+        {
+            ls.add(root);
+        }
+        
+        return structureString;
+    }
+
+36. Valid Sudoku (測試給定的Sudoku盤是否是有效的Sudoku)
+重點在 Sudoku 的 row 整條不可有重覆數字. col 整條不可有重覆數字.
+其中的九個box不可有重覆數字. 可用HashSet查是否有重覆的元素出現。
+
+  public boolean isValidSudoku(char[][] board) {
+    // init data
+      Set<Integer>[] rows = new HashSet[9];
+      Set<Integer>[] cols = new HashSet[9];
+      Set<Integer>[] boxes = new HashSet[9];
+
+      for(int i=0;i < 9;i++)
+      {
+          rows[i] = new HashSet<Integer>();
+          cols[i] = new HashSet<Integer>();
+          boxes[i] = new HashSet<Integer>();
+      }
+      
+      for(int y=0;y < board.length;y++)
+      {
+          for(int x=0;x < board[0].length;x++)
+          {
+             if(board[y][x]!='.')
+              {
+                  int num = Integer.valueOf(board[y][x]);
+                  int boxIndex = (y/3) * 3 + (x/3);
+                  
+                  if(rows[y].contains(num)) return false;
+                  if(cols[x].contains(num)) return false;
+                  if(boxes[boxIndex].contains(num)) return false;
+                  
+                  rows[y].add(num);
+                  cols[x].add(num);
+                  boxes[boxIndex].add(num);
+
+              }
+          }
+      }
+          
+    return true;
+  }
+
+  Jewels and Stones
+      public int numJewelsInStones(String jewels, String stones) {
+        int[] m = new int[256]; int count = 0;
+        
+        // time: O(N+M), space: O(256)->O(c)->O(1)
+        for(int i=0;i<jewels.length();i++) 
+            m[jewels.charAt(i)]++;
+        }
+        
+        for(int i=0;i<stones.length();i++)
+        {
+            if(m[stones.charAt(i)]==1) count++;
+        }
+        
+        return count;
+    }
+
+3. Longest Substring Without Repeating Characters
+
+        public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int i =0, j =0;
+        int n = s.length(); int max = 0;
+        while(i < n && j < n) // 這條件是直覺上可寫出來的，其實可用 j<n.但建議使用直覺式,不用記憶.
+        {
+            if(!set.contains(s.charAt(j)))
+            {
+                set.add(s.charAt(j++));
+                max = Math.max(max, j-i);
+            }
+            else
+            {
+                set.remove(s.charAt(i++));
+            }
+        }
+        
+        return max;
+    }
+
+Two Sum III - Data structure design
+    class TwoSum {
+    HashMap<Integer, Integer> m = new HashMap<>();
+    /** Initialize your data structure here. */
+    public TwoSum() {
+        
+    }
+    
+    /** Add the number to an internal data structure.. */
+     public void add(int number) { //預存map來加速.
+         m.put(number, m.getOrDefault(number,0)+1);
+    }
+    
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int target) { 
+        
+ 
+        for(Map.Entry<Integer, Integer> e : m.entrySet() )
+        {
+            int value = e.getKey();
+            int complement = target - value;
+            
+          if (complement != value) {
+            if (this.m.containsKey(complement))
+              return true;
+          } else {
+            if (m.get(value)> 1)
+              return true;
+          }
+            
+        }
+        
+        return false;
+    }
+}
+
+454. 4Sum II
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {      
+        Map<Integer,Integer> m = new HashMap<>();
+        int count = 0;
+        
+        for(int a: A)
+            for(int b: B)
+                m.put(a+b, m.getOrDefault(a+b,0)+1);
+        
+        for(int c: C)
+            for(int d: D)
+                count += m.getOrDefault(-(c+d), 0);
+        
+        return count;
+    }
+
+347: Top K Frequent Element
+用 bucket sort 來解比較簡單，而且可以達到 O(N) QuickSelect 的 Time Complexity。
+    public int[] topKFrequent(int[] nums, int k) 
+    {
+        Map<Integer,Integer> m = new HashMap<>();
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        
+        for(int value : nums) 
+        {
+            m.put(value, m.getOrDefault(value,0)+1);
+            int count = m.get(value);
+            max = Math.max(count, max);
+            min = Math.min(count, min);
+        }
+    
+        int size =max-min+1;
+        List<Integer>[] countBuckets = new LinkedList[size];
+        
+        for(Map.Entry<Integer,Integer> e : m.entrySet())
+        {
+            int number = e.getKey();
+            int count = e.getValue();
+            int index = count-min;
+            if(countBuckets[index]==null) countBuckets[index]= new LinkedList<Integer>();
+            countBuckets[index].add(number);
+        }
+        
+        int[] res = new int[k];
+        for(int i= countBuckets.length-1, j=0; i >=0 && j < k;i--)
+        {
+            if(countBuckets[i]==null) continue;
+           for(Integer number: countBuckets[i]) res[j++] = number;
+        }
+        
+        return res;
+    }
+
+Unique Word Abbreviation
+    class ValidWordAbbr {
+        Map<String, Set<String>> m = new HashMap<>();
+
+    public ValidWordAbbr(String[] dictionary) {
+        
+        for(String s: dictionary)
+        {
+            String key = createKey(s);
+            m.putIfAbsent(key,new HashSet<String>() );
+            m.get(key).add(s);
+        }
+        System.out.println(m);
+    }
+    
+    public String createKey(String word)
+    {
+        int l = 1;
+        int r = word.length()-2;
+                
+        Integer count = 0;
+        while(l<=r)
+        {
+            l++;
+            count++;
+        }
+        
+        return word.charAt(0) + count.toString() + word.charAt(word.length()-1);
+    }
+    public boolean isUnique(String word) {
+            String key = createKey(word);
+        
+            if(m.containsKey(key))
+            {
+                if(m.get(key).contains(word) && m.get(key).size()==1) return true;
+            }
+            else
+            {
+                return true;
+            }
+            
+        return false;
+    }
+}
+
+380. Insert Delete GetRandom O(1)
+class RandomizedSet {
+    List<Integer> ls = new ArrayList<>(); // a list of vlaue
+    Map<Integer,Integer> m = new HashMap(); // value-to-arrayListIndex map
+    Random rand = new Random();
+    
+    /** Initialize your data structure here. */
+    public RandomizedSet() {        
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if(m.containsKey(val)) return false;
+        m.put(val, ls.size());
+        ls.add(ls.size(), val);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if(!m.containsKey(val)) return false;
+        
+        int index = m.get(val);        
+        int lastElementValue = ls.get(ls.size()-1);
+        
+        ls.set(index, lastElementValue);
+        m.put(lastElementValue, index);
+        
+        ls.remove(ls.size()-1);        
+        m.remove(val);
+        
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        return ls.get(rand.nextInt(ls.size()));
+    }
+}
