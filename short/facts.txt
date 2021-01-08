@@ -1,3 +1,6 @@
+排序:
+如果要先排序的話，除了 Arrays.sort 外，可以考慮用 BucketSort或 CountingSort.
+如果排序後的解是小於 n*log(n) 可以用 Counting Sort 來代替 Arrays.sort
 數學:
 custom Math.ceil 無條件四捨無入.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
 

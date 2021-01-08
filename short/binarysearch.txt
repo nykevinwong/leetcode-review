@@ -25,27 +25,27 @@ l 最後落在最後的mid+1,r落在最後mid-1.
 
 (2) Guess Number Higher or Lower
 (3) Search in Rotated Sorted Array (no duplicate), Search in Rotated Sorted Array (with duplicate)
-在旋转排序数组搜尋目標值
-- 標準二元搜尋在有或無重覆數的旋转排序数组找目標值的兩種情況中都可有效使用.
-- 在旋转排序数组找目標值要先判斷哪一段是有序區間，哪一段是旋轉區間。整段都是有序區間情況只適用在找最小或最大值。
-    # 以左元素做為主要元素來判斷的程式碼最佳，可適用上述兩種情況。
-    # 旋转排序数组左元素值小於中元素值時(nums[left] < nums[mid])，代表左中區間[l,mid]是有序間區，中右區[mid,r]是旋轉區間。
-    # 旋转排序数组左元素值大於中元素值時(nums[left] > nums[mid])，代表中右區間[mid,r]是有序間區，左中區[l,mid]是旋轉區間。
-    # 旋转排序数组左元素值等於中元素值時，代表此兩左中元素是同一數字。可以將左值加一，判斷是否左中兩元素中間[l,?,mid]
-    是否也是同一元素。
-    # 旋转排序数组中元素值小於右元素值的判斷只能用在重覆數的旋转排序数组。上面的方式，都適用兩種情況。
-    # 旋转排序数组的判斷程式碼. 注意，程式碼都用else-if-else形式 
-        if(nums[left] < nums[mid])  [left,mid]  [左點，中點] 就是有序區間 ( < :有重覆, <= :無重覆)
-        else if(nums[left] > nums[mid]) [mid,right] [中點，右點] 就是有序區間. 
-        else left++; // when nums[left]==nums[mid].
-    #  有重覆數字的條件: (nums[left] < nums[mid]). 無重覆數的條件: (nums[left] <= nums[mid]). 可知 <= :無重覆， < :有重覆.
 
-- 另外，需要特別處理要尋找的目標值target是否在符合區間內.
+Search in Rotated Array I & II (在旋转排序数组搜尋目標值)
+
+關鍵程式碼，重覆數、無重覆數的兩種清況都適用:
+if(nums[left] < nums[mid])  // [left,mid]  [左點，中點] 就是有序區間 ( < :有重覆, <= :無重覆)
+else if(nums[left] > nums[mid]) // [mid,right] [中點，右點] 就是有序區間. 
+else left++; // when nums[left]==nums[mid], 沒用這行，會在[3,1,3] 時出錯
+
+(1) 標準二元搜尋找目標值寫法。找不到可選擇傳回-1.	
+(2) 二分法判斷左中區間是否為有序，若左中區間是有序區間，則中右區間是旋轉區間。 反之
+(3) 用 nums[left] < nums[right] 的方式可判斷整段區間是否為有序區間，這只適用在找最大值或最小值的情況下。
+(3) 左元素 nums[left] 小於等於 <= 中元素 nums[mid]，左中區間為無重覆數的有序區間。 有重覆數在else中加 left++，必須將等號拿下來。
+(4) 左元素 nums[left] 大於 > nums[mid] 及中元素 nums[mid] 小於 nums[right] 都可用來判斷中右區間是否為有序區間。
+但nums[left] > nums[mid] 判斷在重覆數字及無重覆數字的清況下都不會出錯。
+nums[mid] < nums[right] 會在重覆數清況下，如[3,1,1] 找 3 時，出現錯誤.
+nums[mid] <= nums[right] 會在重覆數清況下，如[1,1,3,1] 找 3 時，出現錯誤.
+(5) 需要特別處理要尋找的目標值target是否在符合區間內.
     # 判斷出有序區間[l,mid]或[mid,r]後，套入 ( <= target <= ) 條件公式中,排除條件裡中元素值nums[mid]的等號(=).
     # 砍短左右邊界時，用標準二元搜尋的方法.
       @ 目標值 target 在中右元素區間[mid,r]內，代表在右邊，砍短左邊界。left=mid+1;
       @ 目標值 target 在左中元素區間[l,mid]內，代表在左邊，砍短右邊界。right=mid-1;
-
 
 (4) First Bad Version 第一個壞掉的程式版本
 - 標準的最左值(左邊界/下邊界)二元搜尋
@@ -58,8 +58,10 @@ l 最後落在最後的mid+1,r落在最後mid-1.
    - 標準二元搜尋。
       * iterative 用 while(l < r) { } reutrn l; // 最後傳回 l 索引位置
       * recursive 用 if(l==r) return l; 
+      * 要比較nums[mid]及 nums[mid+1]，無法使用 l <=r.
       * 不用上述條件，有時候就是無限迴圈找不到答案.
-   - 中元素值大於下個元素值(nums[mid] > nums[mid+1])，代表有序數值遞減。
+      * 由於使用 while(l<r). l==r 時，才停止。 return l or r 都是同一值。
+   - 中元素值大於下個元素值(nums[mid] > nums[mid+1])，代表有序數值遞減，走下坡。
      # 峰值可能在左中區間[l,mid]，搜尋該區間用r=mid，由於中元素可能是最大峰值，這樣可再搜尋一次此元素確認.
    - 中元素值小於等於下個元素值(nums[mid]<=nums[mid+1])，代表有序數值遞增或相等。mid+1可能是最大峰值，峰值可能在[mid+1,r]區間.
 
@@ -79,7 +81,7 @@ Find Minimum in Rotated Sorted Array (with duplicate)
    {  l = mid+1; // 最小值在旋转區間, mid元素值是最大值,在有序區間，不是在旋转區間內. }
    else {  r = mid; } // 最小值在旋转區間，(nums[l] > nums[mid]) 代表旋转區間[l,mid],
    且由於mid元素值也在旋转區間，也得檢查確認一下。
- - nums[l] <= nums[r] 用在找旅轉陣列找最小值的有無重覆數字的兩種情況，及無重覆數字的找目標值。
+ - nums[l] <= nums[r] 用在找旅轉陣列找最小值的有無重覆數字的兩種情況。
 
 (7) Search for a Range [get lowerbound & upperbound of a duplicate value]
 搜尋某重覆數值在數組上的左右範圍索引
@@ -249,7 +251,7 @@ nums = [1,3,1], k = 1. output = 0.
     public int getLessEqualMidDistance_PairCount(int[] nums, int midDistance)
     { //用的是排除法
         int count = 0;
-        for(int r=1,l=0; i < nus.length;i++)  
+        for(int r=1,l=0; r < nus.length;r++)  
         {
             //找出當前[l,r]之間,所有距離大於中值距離的數對，計數
             while(l < r && nums[r]-nums[l] > midDistance) l++;
@@ -295,3 +297,5 @@ If the divisor is 4 we can get a sum to 7 (1+1+2+3) and if the divisor is 5 the 
 搜尋條件為，當前除數或當前中值除數所得到的陣列總和值大於臨界值，則往左邊找。這樣可得到小於等於(最接近)臨界值的除數。
 # custom Math.ceil 無條件四捨無入的程式碼.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
 # int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
+
+(21) Two Sum Less Than K. good question with counting sort.

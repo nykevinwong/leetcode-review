@@ -1,0 +1,115 @@
+===================================================================================
+(在旋转排序数组搜尋目標值)
+Search in Rotated Array I   (with no duplicate) 
+Search in Rotated Array II  (with duplicate)
+Find Minimum in Rotated Sorted Array (no duplicate)
+Find Minimum in Rotated Sorted Array (with duplicate)
+
+ l   m   r        a[l] <=  a[m]   | a[l] > [m]  | a[m] < [r] |   min      |    max   | rotated | L sorted | R sorted
+    [1]                T               F              F         a[l]        a[r]          N         Y         Y
+[1,2,3,4,5]            T               F              T*        [l,m]       [m,r]         N         Y         Y
+[2,3,4,5,1]            T               F              F         [m,r]       [m,r]         Y         Y         N
+[3,4,5,1,2]            T               F              F         [m,r]       [m,r]         Y         Y         N
+[4,5,1,2,3]            F               T              T         [l,m]       [l,m]         Y         N         Y
+[5,1,2,3,4]            F               T              T         [l,m]       [l,m]         Y         N         Y
+
+
+Conclusion of the pattern: 
+        a[l] <= a[m]             [l,m] => sorted when true.  equal sign is appended for non-duplicate problems.
+        a[l] > [m]               [m,r] => sorted when true only when the whole array is rotated.
+        a[m] < [r]               [m,r] => 在重覆數清況下，如[3,1,1] 找 3 時，出現錯誤.
+T* : a[m] < a[r] gives same infromation as a[l] <= a[m], which is ambugious information when using if-else statemnt paried with a[l] <= a[m].
+
+When involing with Target parameter:
+Determining which interval the target value shall be.
+(a[l] <= a[m]) -> ( a[l] <= target <= a[m]) -> ( a[l] <= target < a[m])  -> ( a[l] <= target && target < a[m])
+(a[l] >  a[m]) -> ( a[m] <= target <= a[r]) -> ( a[m] < target <=  a[r])  -> ( a[m] < target && target <= a[r])
+
+在旋转排序数组找目標值的程式碼:
+關鍵程式碼，重覆數、無重覆數的兩種清況都適用:
+if(nums[left] < nums[mid])  // [left,mid]  [左點，中點] 就是有序區間 ( < :有重覆, <= :無重覆)
+else if(nums[left] > nums[mid]) // [mid,right] [中點，右點] 就是有序區間. 
+else left++; // when nums[left]==nums[mid], 沒用這行，會在[1,1,3] 時出錯
+
+When searching for minimum or maximum.
+There is no rotated side if the whole array is asecnding/descending.
+
+The minimum/maximum is always on the rotated side.
+(num[l] <= nums[mid]) // rotated side on [mid+1,r]. l=mid+1. 等號(=)用來處理無重覆數字的情況.
+(nums[l] > nums[mid]) // rotated side on [l, mid].  r=mid.
+在旋转排序数组找最大最小值題，處理重覆數字的方法   while(nums[l]==nums[r] && l!=r) l++;
+
+===================================================================================
+
+(2) Sqrt(x) | Valid Perfect Square
+- 長整數標準二元搜尋. 搜尋範圍在 [1,x]. 
+  搜尋範圍及長整數的使用也暗示，這解法無法算 [0,1] 之間的小數答案。
+  題目答案只要整數部份，要去掉小數點部份.
+  中元素值是 long midValue = mid * mid; 
+- 雙精度浮點數不可行，即使調整目標值與中值的絕對誤差也得不到正確答案。
+  Math.abs(target-x) <= 0.001 //誤差調整的方法也得不到正確答案
+- 傳回左或右值判斷: 若x=8,8開根號，應是2.82.. 二元搜尋迴圈最後[r,l] 落在 [3,2]. r 為較小值，右值就是正確答案。
+  return (int)right. 
+(18) Find Kth Smallest Pair distance (第K個最小的兩數距離)
+nums = [1,3,1], k = 1. output = 0.
+(1,3) -> 2 , (1,1)-> 0, (3,1) -> 2
+- 一組數組中，任意二數可組成一數對. 在數組中所有二數組合的數對距離的第K個最小兩數距離是哪兩數?
+- 暴力解可算出所有二數距離值.
+- 排序解可用距離公式排序數組,排序後的第K個最小的就是答案.
+- 推算可搜尋範圍. 數組排序後,兩數的距離最小可能為 0,最大距離為數組最大數減最小數,也就是有序數組最後一位減第一位.
+- 可用二搜尋當前中值距離是否剛好在第k位(>=K)，也就是有k個小於等於中值距離的數對。若至少有k個，繼續為左找較小距離，直到
+  找到最後一個符合條件的最小距離。
+- return left; // 搜尋的是至少(>=)K個才是答案. r 最後落較小值 < K的區間尾位，l是落在較大值 >= K 的區間首位.  
+
+    public int getLessEqualMidDistance_PairCount(int[] nums, int midDistance)
+    { //用的是排除法
+        int count = 0;
+        for(int r=1,l=0; r < nums.length;r++)  
+        {
+            //找出當前[l,r]之間,所有距離大於中值距離的數對，計數
+            while(l < r && nums[r]-nums[l] > midDistance) l++;
+            count+= r-l; // 減去所有距離大於中值距離的數對量，就得到小於等於中值距離的數對的數量.
+        }
+        return count;//傳回所有小於等於中值距離的數對的數量.
+    }
+
+(19) Split Array Largest Sum 分割數組的最大值(求全域最小最大值)
+
+Input: nums = [7,2,5,10,8], m = 2, Output: 18
+The best way is to split it into [7,2,5] and [10,8].
+- 推算可搜尋範圍: m=1 時， max是10. m = 陣列長度 5 時， max = 7+2+5+10+8 = 32 
+- left = max(nums[...]) 陣列元素最大值 , right = sum(nums[...]) 陣列總和
+- if(isValidSplit(nums, m, mid)) r= mid-1; // for valid 
+    // 10,11,12,13,14...18......30,31,32.
+    // not possible     | possible for m =2
+    // 找出所有符合條件的合理分割數組
+    public boolean isValidSplit(int[] nums, int m, int midMaxSubarrySum)
+    {
+        int curSum = 0; int count = 1;
+        for(int i=0;i < nums.length;i++)
+        {   //當前分割數組和
+            curSum += nums[i];
+            if(curSum > midMaxSubarrySum) //當前子陣列總和是否為當前子陣列最大值範圍內，大於則不合理. 
+            {   // 分割的目地是要排除大於最大值的子陣列，大於最大值的子陣列並不屬於當前最大值的子陣列組合中。             
+                // 當前分割數組和大於當前最大考慮值，不考慮該組及當前元素.看下一組分割是否合理。
+                // [7+2+5+10] 大過中值，太大. [7+2+5] 小於當前最大值，合理。下個分割從 [10] 開始.
+                curSum = nums[i];
+                count+=1; //當前分割數量
+                if(count > m) return false; //超過題目要求分割數量，不合理。               
+            }
+        }
+        return true;s
+    }
+
+(20) Find the Smallest Divisor Given a Threshold (<=Threshold)
+Input: nums = [1,2,5,9], threshold = 6, Output: 5
+Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. 
+If the divisor is 4 we can get a sum to 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
+題目要找出能讓陣列各數被除後的總和最接近給定臨界值的最小除數. 
+推算搜尋範圍。 當除數為1時，陣列總和最大。除數等於陣列最大值時，陣列總和為最小.
+搜尋對像為除數，除數範圍應該由1至陣列最大值。
+搜尋條件為，當前除數或當前中值除數所得到的陣列總和值大於臨界值，則往左邊找。這樣可得到小於等於(最接近)臨界值的除數。
+# custom Math.ceil 無條件四捨無入的程式碼.  (a / b) + ( (a % b) == 0 ? 0 : 1); 
+# int value = nums[i]/curMidDivisor + ( ((double)nums[i]%curMidDivisor) > 0 ? 1:0 );
+
+(21) Two Sum Less Than K. good question with counting sort.

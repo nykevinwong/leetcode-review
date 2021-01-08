@@ -1,0 +1,15 @@
+(18) Find Kth Smallest Pair distance (第K個最小的兩數距離)
+
+k-th smallest absolute difference of two elements in an array
+數組中第K個最小的兩數差
+
+(19) Split Array Largest Sum 分割數組中(最小)最大值(求全域最小最大值)
+
+Split the given array into K sub-arrays such that maximum sum of all sub arrays is minimum
+分割給定一數組成 k 個子數組使得所有K分子組數群的最大和值是最小的.
+Input: nums = [7,2,5,10,8], m = 2, Output: 18
+四種分割方式，符合條件的分割方式為 [7,2,5] and [10,8].
+
+(20) Find the Smallest Divisor Given a Threshold 
+找出最接近給定臨界值的最小除數
+Input: nums = [1,2,5,9], threshold = 6, Output: 5
