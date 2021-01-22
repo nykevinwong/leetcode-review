@@ -165,12 +165,12 @@ pow(x, n) {
     else if(n%2==0) { y = pow(x, n/2); return y*y; } // EVEN case
     return x * pow(x, n -1); // ODD case
 }
-    /// 6 個條件
+    /// 次方函式 Pow(x) 六條件: 負、零、一、奇、偶、最小負整數. 
     // n = Integer.MIN_VALUE (it's a even number. -2147483648 (兒醫死妻死爸三流死吧)
     // n < 0  | x^(-n) = 1 / x^n
     // n == 0 | x^0  = 1
     // n == 1 | x^1  = x
-    // n == even | pow(x, n/2) * pow(x, n/2)
+    // n == even | pow(x, n/2) * pow(x, n/2). 二分法
     // n == odd | pow(x, n - 1) * x
     public double myPow(double x, int n) {
         if(n < 0) {
