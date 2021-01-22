@@ -165,7 +165,42 @@ pow(x, n) {
     else if(n%2==0) { y = pow(x, n/2); return y*y; } // EVEN case
     return x * pow(x, n -1); // ODD case
 }
-
+    /// 6 個條件
+    // n = Integer.MIN_VALUE (it's a even number. -2147483648 (兒醫死妻死爸三流死吧)
+    // n < 0  | x^(-n) = 1 / x^n
+    // n == 0 | x^0  = 1
+    // n == 1 | x^1  = x
+    // n == even | pow(x, n/2) * pow(x, n/2)
+    // n == odd | pow(x, n - 1) * x
+    public double myPow(double x, int n) {
+        if(n < 0) {
+            double y = 0; 
+            
+            if(n==Integer.MIN_VALUE)
+            {
+                n=-(n/2);
+                y = myPow(x,n);
+                y *=y;
+            }
+            else
+            {
+                y= myPow(x,-n);
+            }
+            
+            return 1/y;
+        }
+        
+        if(n==0) return 1;
+        if(n==1) return x;
+        
+        if(n%2==0) {
+            double y =  myPow(x, n/2);
+            return y*y;
+        }
+         
+        return myPow(x, n - 1) * x;
+    }
+    
 (12)  Find Smallest Letter Greater than Target. Letter also wrap around.
 找下個大於目標值的字母。 查找到索引過了陣列邊界可以環繞(wrap around)到前頭。
 - 題目的數組是有序遞增的，而且字母可能出現重覆字母。找右邊界的字母目標值的索引，就能推算下個字母值。
