@@ -1,12 +1,22 @@
-#bubble sort
+# Bubble sort
+``` 
+in-place algoirthm
+O(N^2) quadratic time
+O(1) constant space
+stable sort when euqality operator is NOT used for comparision.
+```
 
-parition array into two parts.
-one is unsorted array on the left.
+# partition array into two parts.
+we define unsorted interval on the left and sorted interval on the right.
 
-sorted parition interval starts from the right-most: index = last index of the arrray.
-unsorted parition interval starts from the left-most: 0
+sorted partition interval starts from the right-most:
+'''
+index = last index of the arrray.
+'''
+unsorted partition interval starts from the left-most: 0
 
-sort algorithm during interation of ascending buble sort:
+# iteration of bubble sort
+
 starting from index 0. 
 compare current index item and next index item. (or compare current index with the previous index item)
 we can swap the smaller one to the left for ascending order.
@@ -18,8 +28,3 @@ we then increase current index by 1, and continue this process until current/nex
 
 once a iteration is done, we are sure that the right-most parition interval now contains the sorted data.
 we can now see that sorted partition or right interval starts to grow, and the unsorted partition or left interval starts to shrink.
-
- 
-inplace algoirthm
-O(N^2) quadratic time
-O(1) constant space
