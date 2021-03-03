@@ -87,6 +87,9 @@ swap the largest element with the element in lastUnsortedIndex if they're not th
 <hr>
 
 # Stable vs UnStable
+stable sort means never swap when two element values are considered the same.
+unstable sort means swap happens when two elemnets values are considered the same and this behavior changes the original ordering or relative ordering of duplicate items.
+
 unstable sort algorithm doesn't reserve the original/relative ordering of duplicate items.
 stable sort algorithm reserves the original/relative ordering of duplicate items.
 this makes a big difference if we store objects by duplicate keys such as names, ages and etc.
