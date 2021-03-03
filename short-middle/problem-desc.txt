@@ -1,15 +1,81 @@
+(1) 二元搜尋 Binary Search
+- 防整數溢位的中點公式為 mid = l+(r-l)/2; 
+- Java 內建兩個二元搜尋函式為Arrays.binarySearch(arr, target) 及 Collections.binarySearch(arr, target),
+(index < 0) index= -index-1; // 轉成不存在值的插入位置
+
+(2) Sqrt(x) | Valid Perfect Square
+- 長整數標準二元搜尋. 搜尋範圍在 [1,x]. 
+
+(2) Guess Number Higher or Lower
+(3) Search in Rotated Sorted Array (no duplicate), Search in Rotated Sorted Array (with duplicate)
+(4) First Bad Version 第一個壞掉的程式版本
+- 假設搜尋的範圍為 [true,...true,ture,...[false],false....
+
+(5) Find Peak Element 尋找峰值元素
+      * iterative 用 while(l < r) { } reutrn l; // 最後傳回 l 索引位置
+      * recursive 用 if(l==r) return l; 
+(6) Find Minimum in Rotated Sorted Array (no duplicate)
+
+(7) Search for a Range [get lowerbound & upperbound of a duplicate value]
+
+(8) Find K Closet Element 離某數 x 最接近的K個數.
+- 暴力解，即是將求陣列每數m與x的絕對值，最小絕對值就是答案。有多個同等最小絕對值，就取最小的m.
+
+(9) Cloest Binary Search Tree Value
+  if( Math.abs(target-root.val) > minDiff) //全域最小值，記錄該節點 
+
+(10) Search in a Sorted Array of Unknown size
+- 標準二元搜尋，將搜尋範圍的 right 設成 Integer.MAX_VALUE; (right = Integer.MAX_VALUE;)
+- 無限大小其實是有限的，畢竟數組元素的範圍是儲存資料決定，而超過邊界值時，也必定有某最大最小值代表。
+
+(11) Power(x,n)
+X^n => (1) X^(n/2) * X^(n/2) | if n is EVEN -> O(log(n)) condition 
+       (2) X * X^(n-1)       | if n is odd
+       (3) 1                 | if n = 0
+
+pow(x, n) {
+    if(n==0) return 0; // zero case
+    else if(n%2==0) { y = pow(x, n/2); return y*y; } // EVEN case
+    return x * pow(x, n -1); // ODD case
+}
+
+(12)  Find Smallest Letter Greater than Target. Letter also wrap around.
+找下個大於目標值的字母。 查找到索引過了陣列邊界可以環繞(wrap around)到前頭。
+- 題目的數組是有序遞增的，而且字母可能出現重覆字母。找右邊界的字母目標值的索引，就能推算下個字母值。
+- 二元尋搜的不存在目標的索引值為負數時，要轉成插入位置用: (index < 0) index = -index - 1;
+- 處理可環繞(warp-around)索引的方法: index %= letters.length;
+
+(13) Intersection of Two Arrays. 兩個數組中相等的數字。
+(14) Intersection of Two Arrays II. [同上，但陣列早已有序, FACKBOOK 面試題]
+- nlog(n) 解。先排序一數組，然後遍歷另一數組的元素來二元搜尋有序數組中是否有相等值，有則存入HashSet. 
+  Hashset已有的值就不再查詢。
+- 如果數組本來就是有序的，我們對兩數組使用two pointer O(n)解，兩點從同一索引零開始. 
+
+(15) Two Sum II (input array is sorted)
+- nlog(n)解: 用遍歷所有元素，針對各個元素找不是相同位置的相差補數。
+- o(n)解: 用 two pointer  
+
+(16) Find the Duplicate Number (一組數組中找出唯一重覆數字 duplicate)
+- nlog(n) 解: 排序數組，然後比較當前元素值是否等於前元素值. Arrays.sort(nums): i > 0 && nums[i]==nums[i-1] 
+- O(n) 解: 對陣列用鍊表還起點偵測法: slow fast cycle detection: *** range MUST BE from 1 to n
+
+(17) Median of Two Sorted Arrays
+- O(m+n) 解: (merge sort) 合併排序法合併兩陣列，求出中數. 
+- 二分法: 排除兩有序陣列不需要搜尋的部份。如排除一陣列的前半部及另一陣列的後半部，繼續用此二分法
+
 (18) Find Kth Smallest Pair distance (第K個最小的兩數距離)
+k-th smallest absolute difference of two elements in an array (數組中第K個最小的兩數差)
+nums = [1,3,1], k = 1. output = 0.
+(1,3) -> 2 , (1,1)-> 0, (3,1) -> 2
 
-k-th smallest absolute difference of two elements in an array
-數組中第K個最小的兩數差
-
-(19) Split Array Largest Sum 分割數組中(最小)最大值(求全域最小最大值)
-
+(19) Split Array Largest Sum 分割數組的最大值(求全域最小最大值)
 Split the given array into K sub-arrays such that maximum sum of all sub arrays is minimum
 分割給定一數組成 k 個子數組使得所有K分子組數群的最大和值是最小的.
 Input: nums = [7,2,5,10,8], m = 2, Output: 18
-四種分割方式，符合條件的分割方式為 [7,2,5] and [10,8].
+The best way is to split it into [7,2,5] and [10,8].
 
-(20) Find the Smallest Divisor Given a Threshold 
-找出最接近給定臨界值的最小除數
-Input: nums = [1,2,5,9], threshold = 6, Output: 5
+(20) Find the Smallest Divisor Given a Threshold (<=Threshold)
+找出最接近給定臨界值的最小除數. Input: nums = [1,2,5,9], threshold = 6, Output: 5
+
+(21) Two Sum Less Than K. good question with counting sort.
+
