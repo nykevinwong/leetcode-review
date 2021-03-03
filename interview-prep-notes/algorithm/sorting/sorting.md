@@ -6,7 +6,7 @@ O(1) constant space
 stable sort when euqality operator is NOT used for comparision.
 ```
 
-# partition array into two parts.
+## partition array into two parts.
 we define unsorted interval on the left and sorted interval on the right.
 
 sorted partition interval starts from the right-most:
@@ -15,7 +15,7 @@ index = last index of the arrray.
 ```
 unsorted partition interval starts from the left-most: 0
 
-# iteration of bubble sort
+## iteration of bubble sort
 
 ```java
   for(int lastUnsortedIndex = arr.length-1; lastUnsortedIndex>=0; lastUnsortedIndex--)
@@ -44,3 +44,13 @@ we then increase current index by 1, and continue this process until current/nex
 
 once a iteration is done, we are sure that the right-most parition interval now contains the sorted data.
 we can now see that sorted partition or right interval starts to grow, and the unsorted partition or left interval starts to shrink.
+
+# Stable vs UnStable
+unstable sort algorithm doesn't reserve the original/relative ordering of duplicate items.
+stable sort algorithm reserves the original/relative ordering of duplicate items.
+this makes a big difference if we store objects by duplicate keys such as names, ages and etc.
+
+a stable sort is perferable.
+
+bubble sort is a stable sort since we only swap items when one is greather or smaller than the other. 
+Never swap two duplicate items when they're equal. We can accidently turn a stable sort into unstable swap if we swap two duplicate items when they're equal.
