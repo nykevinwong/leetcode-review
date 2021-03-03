@@ -16,3 +16,8 @@ public int count = 0;
 // Static member/method/variable can be accessed from the class. one instance per class.
 public static int count = 0; // always place static keyword after the access modifier
 ```
+# Common Exception related to OOP
+
+| C# | Java |  Description |
+| - | - | - |
+| System.NotImplementedException     |   java.lang.UnsupportedOperationException     | |
