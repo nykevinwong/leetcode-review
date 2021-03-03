@@ -10,9 +10,9 @@ stable sort when euqality operator is NOT used for comparision.
 we define unsorted interval on the left and sorted interval on the right.
 
 sorted partition interval starts from the right-most:
-'''
+```
 index = last index of the arrray.
-'''
+```
 unsorted partition interval starts from the left-most: 0
 
 # iteration of bubble sort
@@ -22,9 +22,11 @@ compare current index item and next index item. (or compare current index with t
 we can swap the smaller one to the left for ascending order.
 we then increase current index by 1, and continue this process until current/next index hit/equals to last index. 
 
-[ with two loops, first loop indciates the current last index, second loop only stop after last second index,
+---
+**NOTE**
+  with two loops, first loop indciates the current last index, second loop only stop after last second index,
   we don't need to write if statement to check since second for-loop conditional statement is already checking.
-]
+---
 
 once a iteration is done, we are sure that the right-most parition interval now contains the sorted data.
 we can now see that sorted partition or right interval starts to grow, and the unsorted partition or left interval starts to shrink.
