@@ -20,4 +20,4 @@ public static int count = 0; // always place static keyword after the access mod
 
 | C# | Java |  Description |
 | - | - | - |
-| System.NotImplementedException     |   java.lang.UnsupportedOperationException     | |
+| System.NotImplementedException     |   java.lang.UnsupportedOperationException     |  Not implementing a method of a abstract class or interface leads to a runtime error.  The exeption is usually thrown by the default implemention of methods that are supposed to be overridden. |
