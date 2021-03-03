@@ -15,7 +15,7 @@ index = last index of the arrray.
 ```
 unsorted partition interval starts from the left-most: 0 </br>
 lastUnsortedIndex = arr.length-1.
-the sorted parition grow from the right to left.
+the sorted partition grows from the right to left.
 
 |unsorted interval   | sorted interval |
 |    :----:   |          :---: |
@@ -58,11 +58,11 @@ stable sort when euqality operator is NOT used for comparision & never swap when
 ```
 ## partition array into two parts.
 the same as bubble sort with lastUnsortedIndex = arr.length-1.
-the sorted parition grow from the right to left.
+the sorted partition grows from the right to left.
 |unsorted interval   | sorted interval |
 |    :----:   |          :---: |
 
-## iteration of shell sort
+## iteration of selection sort
 outter loop is the same as bubble sort.
 
 ```java
@@ -98,3 +98,29 @@ a stable sort is perferable.
 
 bubble sort is a stable sort since we only swap items when one is greather or smaller than the other. 
 Never swap two duplicate items when they're equal. We can accidently turn a stable sort into unstable swap if we swap two duplicate items when they're equal.
+
+<hr>
+
+# Insertion Sort
+``` 
+in-place algoirthm
+O(N^2) quadratic time
+O(1) constant space
+stable sort when euqality operator is NOT used for comparision & never swap when two elments values are considered the same.
+```
+
+## partition array into two parts.
+the opposite of bubble sort's partition location. 
+the sorted partition is on the left and the unsorted partition is on the right.
+lastUnsortedIndex = 1. 
+the sorted partition grows from the LEFT to Right.
+
+| SORTED interval   | UNSORTED interval |
+|    :----:   |          :---: |
+
+## iteration of selection sort
+outter loop is the opposite as bubble sort and lastUnsortedIndex starts with 1 assuming the left interval is sorted when there is only one element on the left. 
+
+```java
+  for(int lastUnsortedIndex = 1; lastUnsortedIndex < arr.length; lastUnsortedIndex++) { ... }
+```
