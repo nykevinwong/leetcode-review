@@ -27,6 +27,11 @@ unsorted partition interval starts from the left-most: 0
         arr[j+1]=temp;
       }
 ```
+
+|unsorted interval   | sorted interval |
+|    :----:   |          :---: |
+| 0,1,2,3, ...,lastUnsortedIndex | firstSortedIndex, firstSortedIndex+1,... |
+
 starting from index 0. 
 compare current index item and next index item. (or compare current index with the previous index item)
 we can swap the smaller one to the left for ascending order.
