@@ -17,10 +17,10 @@ unsorted partition interval starts from the left-most: 0
 
 # iteration of bubble sort
 
-```
+```java
   for(int lastUnsortedIndex = arr.length-1; lastUnsortedIndex>=0; lastUnsortedIndex--)
     for(int j=0; j < lastUnsortedIndex;j++)
-      if(arr[j] > arr[j+1]) 
+      if(arr[j] > arr[j+1]) // >: ascending, <: descending, >= or <=: unstable sort
       {
         int temp = arr[j];
         arr[j]=arr[j+1];
