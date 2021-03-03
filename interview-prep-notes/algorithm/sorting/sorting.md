@@ -3,7 +3,7 @@
 in-place algoirthm
 O(N^2) quadratic time
 O(1) constant space
-stable sort when euqality operator is NOT used for comparision.
+stable sort when euqality operator is NOT used for comparision & never swap when two elments values are considered the same.
 ```
 
 ## partition array into two parts.
@@ -54,7 +54,7 @@ we can now see that sorted partition or right interval starts to grow, and the u
 in-place algoirthm
 O(N^2) quadratic time
 O(1) constant space
-stable sort when euqality operator is NOT used for comparision.
+stable sort when euqality operator is NOT used for comparision & never swap when two elments values are considered the same.
 ```
 ## partition array into two parts.
 the same as bubble sort with lastUnsortedIndex = arr.length-1.
