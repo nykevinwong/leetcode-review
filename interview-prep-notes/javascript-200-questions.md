@@ -47,7 +47,7 @@ sum(10,20, [1,2,3]); // output:  Array [1, 2, 3]
 ```
 
 ## Spread operator (ES6)
-Spread operator can decompse an array into mulitple variables representation, and we can use this representation inside another array decalartion, a function call, a new-operator construtor call, or create key-value pairs inside an object decalartion.
+Spread operator can decompse an array into mulitple variables representation, and we can use this representation inside a new array decalartion to operatio array clone opeartion or join operation, a function call, a new-operator construtor call, or create key-value pairs inside an object decalartion.
 
 
 ## The arguments object (ES5)
