@@ -50,7 +50,7 @@ The arguments object is a local variable available within all non-arrow function
 
 ```javascript
 var bar = x => console.log(arguments) // Uncaught ReferenceError: arguments is not defined
-var bar = (...arguments) => console.log(arguments); // use spread operator instead and create your own agruments variable.
+var bar = (...arguments) => console.log(arguments); // use rest operator instead and create your own agruments variable.
 ```
 
  The arguments holds every parameters passed to current function call.
