@@ -118,9 +118,20 @@ the sorted partition grows from the LEFT to Right.
 | SORTED interval   | UNSORTED interval |
 |    :----:   |          :---: |
 
-## iteration of selection sort
+## iteration of insertion sort
 outter loop is the opposite as bubble sort and lastUnsortedIndex starts with 1 assuming the left interval is sorted when there is only one element on the left. 
 
 ```java
   for(int lastUnsortedIndex = 1; lastUnsortedIndex < arr.length; lastUnsortedIndex++) { ... }
+```
+```java
+  for(int lastUnsortedIndex = 1; lastUnsortedIndex < arr.length; lastUnsortedIndex++)
+  {
+     int temp = arr[lastUnsortedIndex];
+     
+     int i;
+     for(i=lastUnsortedIndex;i > 0 && arr[i-1] > temp ;i--) arr[i]=arr[i-1];
+     
+     arr[i]=temp;
+  }
 ```
