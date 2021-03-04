@@ -38,7 +38,8 @@ let x = undefined;
 # ES6 Rest Operator vs ES5 the arguments object.
 
 ## Rest opeartor (ES6)
-Rest opertor ... must be at the last position.
+The rest opertor ... must be at the last position.
+The rest parameter syntax allows a function to accept unlimited arguments as an array.
 ```javascript
 // in ES6, you use "..." rest operator and followed by variable name you want.
 function sum(a,b,...theArgs)  {  console.log(theArgs); } 
