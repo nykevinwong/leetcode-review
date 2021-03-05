@@ -135,3 +135,40 @@ outter loop is the opposite as bubble sort and lastUnsortedIndex starts with 1 a
      arr[i]=temp;
   }
 ```
+
+# Shell Sort
+``` 
+in-place algoirthm
+O(N^2) quadratic time
+O(1) constant space
+unstable sort
+```
+
+Shell sort is a variation of insertion sort.
+Shell sort introduces a gap variable and gap calculation.
+lastUnsortedIndex starts with gap value.
+
+## partition array into two parts.
+the same as insertion sort but introduced a outter loop handling gap calculation
+
+## iteration of insertion sort
+
+the most outter loop handles gap calcuation
+```java
+  for (int gap = arr.length / 2; gap > 0; gap /= 2) // calculation the gap value
+  {
+   ...
+  }  
+```
+the inner loops are the same as insertion sort but replacing value 1 with gap variable insde the most inner loop.
+```java
+  for(int lastUnsortedIndex = gap; lastUnsortedIndex < arr.length; lastUnsortedIndex++)
+  {
+     int temp = arr[lastUnsortedIndex];
+     
+     int i;
+     for(i=lastUnsortedIndex;i >= gap && arr[i-gap] > temp ;i-=gap) arr[i]=arr[i-gap];
+     
+     arr[i]=temp;
+  }
+```
