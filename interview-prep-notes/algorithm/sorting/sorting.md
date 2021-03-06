@@ -190,8 +190,14 @@ if the array length is odd, the extra element will go to the right array after s
 always sort two split arrays int one to merge the arrays.
 split the current array by mid point recursively until only one element exists in the split array.
 merge splitted array pair into one array by sorting. then recursively merge remaining splitted array pairs until all splitted pairs are merged back into one array with the orignal length.
-# Merge sort as External Sort to handle massive amount of data via hard drive space.
 
+# Applications/Interview Problems
+- Merge sort is often preferred for sorting a linked list.
+-- The slow random-access performance of a linked list makes some other algorithms (such as quicksort) perform poorly, and others (such as heapsort) completely impossible.
+- 
+- Merge sort as External Sort to handle massive amount of data via hard drive space.
+- Count Inversions Problem (https://www.geeksforgeeks.org/counting-inversions/)
+- 
 
 # How to test and dry run your sort algorithm quickly.
 Always use an array of length 4 and an array of length 5 to quickly dry run your sort algorithm.
