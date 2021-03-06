@@ -194,6 +194,7 @@ merge splitted array pair into one array by sorting. then recursively merge rema
 # How to test and dry run your sort algorithm quickly.
 Always use an array of length 4 and an array of length 5 to quickly dry run your sort algorithm.
 - Potential corner cases to test certain sort algorithm.
--- an empty array
--- an odd-length array and an even-length array.
+  - an empty array or null.
+  - an odd-length array and an even-length array.
+  - an array with duplicate keys or duplicate items.
 
