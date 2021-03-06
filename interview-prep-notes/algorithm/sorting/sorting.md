@@ -179,9 +179,13 @@ out-of-place (not-in-place) algoirthm
 O(?) quadratic time
 O(N) constant space
 ```
+#partition array into multiple split parts and recursively merge the split pairs into one by sorting.
+
+|unsorted interval   | unsorted interval | ... |  ... | unsorted interval |
+|    :----:   |          :---: |  :---: |   :---: |   :---: |
 
 split the array and then merge them. always sort two split arrays int one to merge the arrays.
 if the array length is odd, the extra element will go to the right array after spliting array.
 split the current array by mid point recursively until only one element exists in the split array.
-merge the split array into one array by sorting. then merge recursively remaining pairs of the array until all split arrays are merged.
+merge the split array into one array by sorting. then recursively merge  remaining pairs of the array until all split arrays are merged.
 
