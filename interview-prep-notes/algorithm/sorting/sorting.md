@@ -190,6 +190,8 @@ if the array length is odd, the extra element will go to the right array after s
 always sort two split arrays int one to merge the arrays.
 split the current array by mid point recursively until only one element exists in the split array.
 merge splitted array pair into one array by sorting. then recursively merge remaining splitted array pairs until all splitted pairs are merged back into one array with the orignal length.
+# Merge sort as External Sort to handle massive amount of data via hard drive space.
+
 
 # How to test and dry run your sort algorithm quickly.
 Always use an array of length 4 and an array of length 5 to quickly dry run your sort algorithm.
