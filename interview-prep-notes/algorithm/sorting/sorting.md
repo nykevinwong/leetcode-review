@@ -179,7 +179,7 @@ out-of-place (not-in-place) algoirthm
 O(?) quadratic time
 O(N) constant space
 ```
-#partition array into multiple split parts and recursively merge the split pairs into one by sorting.
+# partition array into multiple split parts and recursively merge the split pairs into one by sorting.
 
 |unsorted interval   | unsorted interval | ... |  ... | unsorted interval |
 |    :----:   |          :---: |  :---: |   :---: |   :---: |
