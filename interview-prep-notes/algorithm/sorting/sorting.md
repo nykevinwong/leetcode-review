@@ -184,8 +184,9 @@ O(N) constant space
 |unsorted interval   | unsorted interval | ... |  ... | unsorted interval |
 |    :----:   |          :---: |  :---: |   :---: |   :---: |
 
-split the array and then merge them. always sort two split arrays int one to merge the arrays.
+## split the array by mid point and then recursively merge splited array pairs by sorting. 
+always sort two split arrays int one to merge the arrays.
 if the array length is odd, the extra element will go to the right array after spliting array.
 split the current array by mid point recursively until only one element exists in the split array.
-merge the split array into one array by sorting. then recursively merge  remaining pairs of the array until all split arrays are merged.
+merge splited array pair into one array by sorting. then recursively merge remaining splited array pairs until all splited pairs are merged back into one array with the orignal length.
 
