@@ -197,4 +197,5 @@ Always use an array of length 4 and an array of length 5 to quickly dry run your
   - an empty array or null.
   - an odd-length array and an even-length array.
   - an array with duplicate keys or duplicate items.
+  - Maximum/Minimum Integer/Double/etc for the chosen data type.
 
