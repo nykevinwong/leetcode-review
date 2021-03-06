@@ -172,3 +172,10 @@ the inner loops are the same as insertion sort but replacing value 1 with gap va
      arr[i]=temp;
   }
 ```
+
+# Merge Sort
+
+split the array and then merge them. sort two split arrays int one to merge the arrays.
+if the array length is odd, the extra element will go to the right array after spliting array.
+split by mid point recursively until only one element exists in the split array.
+
