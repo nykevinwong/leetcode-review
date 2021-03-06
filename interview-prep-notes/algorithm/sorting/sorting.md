@@ -184,7 +184,7 @@ O(N) constant space
 |unsorted interval   | unsorted interval | ... |  ... | unsorted interval |
 |    :----:   |          :---: |  :---: |   :---: |   :---: |
 
-<b> split the array by mid point and then recursively merge splited array pairs by sorting. </b>
+<b> split the array by mid point and then recursively merge splited array pairs into one array by sorting. </b>
 always sort two split arrays int one to merge the arrays.
 if the array length is odd, the extra element will go to the right array after spliting array.
 split the current array by mid point recursively until only one element exists in the split array.
