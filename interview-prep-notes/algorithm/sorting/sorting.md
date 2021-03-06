@@ -174,8 +174,14 @@ the inner loops are the same as insertion sort but replacing value 1 with gap va
 ```
 
 # Merge Sort
+``` 
+out-of-place (not-in-place) algoirthm
+O(?) quadratic time
+O(N) constant space
+```
 
-split the array and then merge them. sort two split arrays int one to merge the arrays.
+split the array and then merge them. always sort two split arrays int one to merge the arrays.
 if the array length is odd, the extra element will go to the right array after spliting array.
-split by mid point recursively until only one element exists in the split array.
+split the current array by mid point recursively until only one element exists in the split array.
+merge the split array into one array by sorting. then merge recursively remaining pairs of the array until all split arrays are merged.
 
