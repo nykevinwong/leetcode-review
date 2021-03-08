@@ -100,6 +100,45 @@ console.log(x); // x is declared and defined. output: "undefined"
 var x = 10; // only declration is hoisited by JS Compiler. the value assignment is not hoisited.
 ```
 
+# Automatic Semicolon Insertion  (ASI)
+it's good practice to add semicolon at the end of each line, but semicolon in javascript is optional. 
+JS compiler automatically adds a semicolon before the new line character when necessary.
+
+```javascript
+console.log(10)   // ASI
+console.log(20);
+```
+
+``` javascript
+let a= 4*      // ASI
+5              // ASI
+console.log(a); //output 20.
+```
+Automatic semicolon insertion does not alway work well. sometimes you will get unexpected result if you use opening curly bracket with return keyword incorrectly.
+``` javascript
+function getTest()
+{
+ return      // ASI is performed here. you need to bring opening curly bracket next to return keyword to fix this issue.
+ {
+   x: 5
+ }
+}
+
+function getTest2()
+{
+ return {
+  y: 15
+ }
+}
+
+const obj = getTet();
+console.log(obj); // output: undefined
+
+const obj2 =getTest2();
+console.log(obj2); // output: { y:15 }  
+```
+
+
 # ES6 Rest Operator vs ES5 the arguments object.
 
 ## Rest opeartor (ES6)
