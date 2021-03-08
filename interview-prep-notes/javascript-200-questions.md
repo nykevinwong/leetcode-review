@@ -36,10 +36,11 @@ let x = undefined;
 ```
 
 # Function Scope vs Block Scope
+
+## Question 1: What is function scope?
 Javascript has a function scope. A variable declared with var/let keyword insid a javascript function can only be accessed inside the function, not outisde the function.
 if a variable name declared insde a function is also delcared outside the function, both outside block and function block have their own copies of the variable with the same name.
 
-## Function Scope
 ```javascript
 funciton a() { let/var x= 10; }
 function b() { console.log(x); } 
@@ -55,10 +56,11 @@ a();
 b(); // output: 15 
 ```
 
+## Question 2: What is hoistinng ?
+- Hoisiting is a process which is happening behind the scene, internally JS Compiler is bringing all VAR decalartions on top.
 - ES5 has function scope because of hoisting.
 - ES6 has block scope because it does not have hoisiting.
 - if you delcare a variable using "var" keyword, hoisiting will be there.
-- Hoisiting is a process which is happening behind the scene, internally JS Compiler is bringing all VAR decalartions on top.
 
 ```javascript
 // Hositing Example 1:
@@ -75,7 +77,7 @@ console.log(x);
 let x;
 ```
 
-# Question 1 : What is block scope?
+## Question 3 : What is block scope?
 Block scope is nothing but curly brackets.
 for example, if condition, for loop, do-while loop or anything that uses curly brackets. 
 
