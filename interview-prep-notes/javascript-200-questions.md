@@ -38,7 +38,7 @@ let x = undefined;
 # Function Scope vs Block Scope
 
 ## Question 1: What is function scope?
-Javascript has a function scope. A variable declared with var/let keyword insid a javascript function can only be accessed inside the function, not outisde the function.
+Javascript has function scope. A variable declared with var/let keyword insid a javascript function can only be accessed inside the function, not outisde the function.
 if a variable name declared insde a function is also delcared outside the function, both outside block and function block have their own copies of the variable with the same name.
 
 ```javascript
