@@ -41,15 +41,15 @@ if a variable name declared insde a function is also delcared outside the functi
 
 ## Function Scope
 ```javascript
-funciton a() { let x= 10; }
+funciton a() { let/var x= 10; }
 function b() { console.log(x); } 
 a(); 
 b(); //  "uncaught ReferenceError: x is not defined."
 ```
 
 ```javascript
-let x= 10; // x is now a global variable within current block.
-funciton a() { let x += 5; }
+let/var x= 10; // x is now a global variable within current block.
+funciton a() { let/var x += 5; }
 function b() { console.log(x); } 
 a(); 
 b(); // output: 15 
