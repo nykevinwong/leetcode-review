@@ -54,7 +54,8 @@ b(); // output: 15
 - ES5 has function scope because of hoisting.
 - ES6 has block scope because it does not have hoisiting.
 - if you delcare a variable using "var" keyword, hoisiting will be there.
- 
+- Hoisiting is a process which is happening behind the scene, internally JS Compiler is bringing all VAR decalartions on top.
+
 ```javascript
 // Hositing Example 1:
 console.log(y); // y is not delcared and not hoisitied. output: "uncaught ReferenceError: y is not defined."
