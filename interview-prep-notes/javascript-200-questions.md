@@ -101,6 +101,8 @@ var x = 10; // only declration is hoisited by JS Compiler. the value assignment 
 ```
 
 # Automatic Semicolon Insertion  (ASI)
+
+## Question 1: Should you terminate all lines by a semicolon? 
 it's good practice to add semicolon at the end of each line, but semicolon in javascript is optional. 
 JS compiler automatically adds a semicolon before the new line character when necessary.
 
@@ -114,30 +116,29 @@ let a= 4*      // ASI
 5              // ASI
 console.log(a); //output 20.
 ```
+## Question 2: Why will you get "undefined" with return keyword without opening curly bracket on the same line?
+
 Automatic semicolon insertion does not alway work well. sometimes you will get unexpected result if you use opening curly bracket with return keyword incorrectly.
 ``` javascript
-function getTest()
-{
+function getTest() {
  return      // ASI is performed here. you need to bring opening curly bracket next to return keyword to fix this issue.
  {
    x: 5
  }
 }
 
-function getTest2()
-{
+function getTest2() {
  return {
   y: 15
  }
 }
 
-const obj = getTet();
+const obj = getTet(); const obj2 =getTest2();
 console.log(obj); // output: undefined
-
-const obj2 =getTest2();
 console.log(obj2); // output: { y:15 }  
 ```
-
+## Can strict mode; 'use strict', affect the ASI behavior? 
+No
 
 # ES6 Rest Operator vs ES5 the arguments object.
 
