@@ -30,7 +30,7 @@ console.log(x===y) // false with Strict Equality opeartor
 ```
 
 ## Question 3:
-you explicitly assign undefined to a variable since undefined is a JS keyword.
+you can explicitly assign undefined to a variable since undefined is a JS keyword.
 ```javascript
 let x = undefined;
 ```
