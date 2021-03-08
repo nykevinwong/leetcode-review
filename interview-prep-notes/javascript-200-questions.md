@@ -71,6 +71,12 @@ console.log(x);
 let x;
 ```
 
+# Question 1 : What is block scope?
+Block scope is nothing but curly brackets.
+for example, if condition, for loop, do-while loop or anything that uses curly brackets. 
+
+Block Scope creates a seperate scope or a seperate world for the declarations existing in that block. 
+the variable life time usually begins with declarations within that block and ends with closing curly bracket in that block.
 
 ```javascript
 // Block scope example
