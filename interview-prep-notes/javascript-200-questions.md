@@ -137,7 +137,7 @@ const obj = getTet(); const obj2 =getTest2();
 console.log(obj); // output: undefined
 console.log(obj2); // output: { y:15 }  
 ```
-## Can strict mode; 'use strict', affect the ASI behavior? 
+## Question 3: Can strict mode; 'use strict', affect the ASI behavior? 
 No
 
 # ES6 Rest Operator vs ES5 the arguments object.
@@ -151,8 +151,27 @@ function sum(a,b,...theArgs)  {  console.log(theArgs); }
 sum(10,20, [1,2,3]); // output:  Array [1, 2, 3]
 ```
 
+## Question: How can you handle 'n' number of, multiple, or any number of parameters passed to a function?
+Rest opeator (...) can handle any number of parameters by declaring a rest variable name at the last position of your function's parameter list.   
+
+<b> parameters vs argumetns </b>
+'''
+ Function parameters are the names listed in the function's definition. Function arguments are the real values passed to the function. Parameters are initialized to the values of the arguments supplied.
+'''
 ## Spread operator (ES6)
 Spread operator can decompse an array into mulitple variables representation, and we can use this representation inside a new array decalartion to operatio array clone opeartion or join operation, a function call, a new-operator construtor call, or create key-value pairs inside an object decalartion.
+
+```javascript
+let arr1 = [1,2,3];
+let arr2 = [...arr1, 4, 5, 6]; // join the arr1
+let arr3 = [...arr2]; // clone the arr2
+let arr4 = arr3; // 
+
+let arr5 = [[1],[2]];
+let arr6 = [...arr5, 3]; // output: [ [1], [2], 3]
+```
+## Question: what is the best way to create new arrays with assignment (operator) ?
+you can use spread operator (...), which is placed before a variable name to decompose the variable content into individual elements.
 
 
 ## The arguments object (ES5)
@@ -172,4 +191,7 @@ function myConcat(separator) { // arguments[0] holds this seperator value.
 
 myConcat(', ', 'red', 'orange', 'blue');  // returns "red, orange, blue" 
 ```
+## Question: can we use arguments object in arrow function?
+No, it can't.  arguments only works in a regular function, not arrow function. 
+An arrow function doesn’t have its own this value and the arguments object. Therefore, you should not use it as an event handler, a method of an object, a method of a class, or a prototype method, or when you have a function that uses the arguments object.
 
