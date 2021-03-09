@@ -218,3 +218,34 @@ console.log(-Number.MAX_VALUE*2); // -Infinity
 ```
 ## What is the output of 1/0 ?
 Infinity
+
+# When do you get NaN as outoupt?
+Nan represents not-a-number or non-numeric value.
+
+## isNan() vs NaN
+```javascript
+let a = 10;
+let b = "value";
+console.log(a*b); // output: NaN
+
+if(!isNaN(a*b)) // when it's a number. (!isNaN(exp) can also be expressed as isNaN(exp)==false)
+{ console.log("Valid"); } // this is a number
+else 
+{ console.log("Invalid"); } // it's not a number result.
+
+console.log(NaN==NaN); //output: false. you should use isNaN() instead
+```
+## isNaN() vs isFinit()
+we prefer to use isFinit() method, which not only checks for NaN but also check for positive & negative infinity as well.
+we use isFinit() method to check if a variable is a regular number or not.
+```javascript
+let a = 10;
+let b = "value";
+
+console.log(isFinit(a*b)); // false since it is NaN
+console.log(isFinit(4*5)); // true
+console.log(isFinit(Number.MAX_VALUE*2)); // false since it is postive infinity
+console.log(isFinit(-Infinity)); // false sicne it is negative infinity
+
+```
+
