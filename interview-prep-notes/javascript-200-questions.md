@@ -235,16 +235,16 @@ else
 
 console.log(NaN==NaN); //output: false. you should use isNaN() instead
 ```
-## isNaN() vs isFinit()
-we prefer to use isFinit() method, which not only checks for NaN but also check for positive & negative infinity as well.
-we use isFinit() method to check if a variable is a regular number or not.
+## isNaN() vs isFinite()
+we prefer to use isFinite() method, which not only checks for NaN but also check for positive & negative infinity as well.
+we use isFinite() method to check if a variable is a regular number or not.
 ```javascript
 let a = 10;
 let b = "value";
 
-console.log(isFinit(a*b)); // false since it is NaN
-console.log(isFinit(4*5)); // true
-console.log(isFinit(Number.MAX_VALUE*2)); // false since it is postive infinity
+console.log(isFinite(a*b)); // false since it is NaN
+console.log(isFinite(4*5)); // true
+console.log(isFinite(Number.MAX_VALUE*2)); // false since it is postive infinity
 console.log(isFinit(-Infinity)); // false sicne it is negative infinity
 
 ```
