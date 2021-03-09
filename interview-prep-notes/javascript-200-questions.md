@@ -37,7 +37,7 @@ let x = undefined;
 
 # Function Scope vs Block Scope
 
-## Question 1: What is function scope?
+## Question 1: What is function scope in javascript?
 Javascript has function scope. A variable declared with var/let keyword insid a javascript function can only be accessed inside the function, not outisde the function.
 if a variable name declared insde a function is also delcared outside the function, both outside block and function block have their own copies of the variable with the same name.
 
@@ -77,7 +77,7 @@ console.log(x);
 let x;
 ```
 
-## Question 3 : What is block scope?
+## Question 3 : What is block scope in javascript?
 Block scope is nothing but curly brackets.
 for example, if condition, for loop, do-while loop or anything that uses curly brackets. 
 
@@ -151,7 +151,7 @@ function sum(a,b,...theArgs)  {  console.log(theArgs); }
 sum(10,20, [1,2,3]); // output:  Array [1, 2, 3]
 ```
 
-## Question: How can you handle 'n' number of, multiple, or any number of parameters passed to a function?
+## Question: How can you handle 'n' number of, multiple, or any number of parameters passed to a function in javascript?
 Rest opeator (...) can handle any number of parameters by declaring a rest variable name at the last position of your function's parameter list.   
 
 <b> parameters vs argumetns </b>
@@ -159,7 +159,7 @@ Rest opeator (...) can handle any number of parameters by declaring a rest varia
  Function parameters are the names listed in the function's definition. Function arguments are the real values passed to the function. Parameters are initialized to the values of the arguments supplied.
 ```
 
-## Question: Can rest paramter be placed anywhere in the function parameter list?
+## Question: Can rest paramter be placed anywhere in the function parameter list in javascript?
 No, it can only be placed at the end of the fucntion parameter list. Not in the beginning unless there's only rest parameter list as the only function parameter.
 
 
@@ -175,7 +175,7 @@ let arr4 = arr3; //
 let arr5 = [[1],[2]];
 let arr6 = [...arr5, 3]; // output: [ [1], [2], 3]
 ```
-## Question: what is the best way to create new arrays with assignment (operator) ?
+## Question: what is the best way to create new Javascript arrays with assignment (operator) ?
 you can use spread operator (...), which is placed before a variable name to decompose the variable content into individual elements.
 
 
@@ -196,7 +196,7 @@ function myConcat(separator) { // arguments[0] holds this seperator value.
 
 myConcat(', ', 'red', 'orange', 'blue');  // returns "red, orange, blue" 
 ```
-## Question: can we use arguments object in arrow function?
+## Question: can we use arguments object inside arrow function in Javascript?
 No, it can't.  arguments only works in a regular function, not arrow function. 
 An arrow function doesn’t have its own this value and the arguments object. Therefore, you should not use it as an event handler, a method of an object, a method of a class, or a prototype method, or when you have a function that uses the arguments object.
 
