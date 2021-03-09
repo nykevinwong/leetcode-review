@@ -200,3 +200,6 @@ myConcat(', ', 'red', 'orange', 'blue');  // returns "red, orange, blue"
 No, it can't.  arguments only works in a regular function, not arrow function. 
 An arrow function doesn’t have its own this value and the arguments object. Therefore, you should not use it as an event handler, a method of an object, a method of a class, or a prototype method, or when you have a function that uses the arguments object.
 
+# Number.NEGATIVE_INFINITY vs Number.POSITIVE_INFINITY
+any Javascript value which cannot fit in 64-bit format will return infinity. 
+It cannot hold the value. The value is larger than 64-bit.
