@@ -203,3 +203,18 @@ An arrow function doesn’t have its own this value and the arguments object. Th
 # Number.NEGATIVE_INFINITY vs Number.POSITIVE_INFINITY
 any Javascript value which cannot fit in 64-bit format will return infinity. 
 It cannot hold the value. The value is larger than 64-bit.
+```javascript
+console.log(1e3); // output: 1000
+console.log(9e3); // output: 9000
+console.log(9e400); // Infinity
+console.log(-9e400); // -Infinity
+console.log(Number.MAX_VALUE*2); // Infinity 
+console.log(-Number.MAX_VALUE*2); // -Infinity 
+```
+## How will you validate positive or negative infinity ?
+```javascript
+ if(value==Number.POSITIVE_INFINITY) return "positive infinity number";'
+ return number; // correct and valid number.
+```
+## What is the output of 1/0 ?
+Infinity
