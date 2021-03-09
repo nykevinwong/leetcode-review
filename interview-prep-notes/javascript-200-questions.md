@@ -234,7 +234,16 @@ else
 { console.log("Invalid"); } // it's not a number result.
 
 console.log(NaN==NaN); //output: false. you should use isNaN() instead
+console.log(NaN===NaN); // output: false.
+console.log(isNaN(true)); // false since it's a boolean value
+console.log(isNaN(false)); // false since it's a boolean value.
+
 ```
+## Question: What is the output of NaN==NaN or NaN===NaN (strict Equality opeartor) ?
+both are false since NaN means it's not a number. it can be an object, string, boolean and etc.
+The IEEE 754 spec for floating-point numbers (which is used by all programming languages for floating-point) says that NaNs are never equal.
+
+
 ## isNaN() vs isFinite()
 we prefer to use isFinite() method, which not only checks for NaN but also check for positive & negative infinity as well.
 we use isFinite() method to check if a variable is a regular number or not.
