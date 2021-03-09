@@ -155,9 +155,14 @@ sum(10,20, [1,2,3]); // output:  Array [1, 2, 3]
 Rest opeator (...) can handle any number of parameters by declaring a rest variable name at the last position of your function's parameter list.   
 
 <b> parameters vs argumetns </b>
-'''
+```
  Function parameters are the names listed in the function's definition. Function arguments are the real values passed to the function. Parameters are initialized to the values of the arguments supplied.
-'''
+```
+
+## Question: Can rest paramter be placed anywhere in the function parameter list?
+No, it can only be placed at the end of the fucntion parameter list. Not in the beginning unless there's only rest parameter list as the only function parameter.
+
+
 ## Spread operator (ES6)
 Spread operator can decompse an array into mulitple variables representation, and we can use this representation inside a new array decalartion to operatio array clone opeartion or join operation, a function call, a new-operator construtor call, or create key-value pairs inside an object decalartion.
 
