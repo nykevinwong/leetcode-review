@@ -191,6 +191,36 @@ always sort two split arrays int one to merge the arrays.
 split the current array by mid point recursively until only one element exists in the split array.
 merge splitted array pair into one array by sorting. then recursively merge remaining splitted array pairs until all splitted pairs are merged back into one array with the orignal length.
 
+## iteration of insertion sort
+
+```java
+   public int[] mergeSort(int[] arr, int l, int r)
+   {  int size = r-l+1;
+   
+      if( size < 0 ) reutrn null;
+      if( size == 1) return arr[l];
+      
+      int mid = l+ (r-l) / 2;
+      int[] left = mergeSort(arr, l, mid);
+      int[] right = mergeSort(arr, mid+1, r);
+      return merge(left, right, l, mid, mid+1, r);
+   }
+   
+   public int merge(int[] a, int[] b, int la, int ra, int lb, int rb)
+   {
+      if(a==null || b== null) return (a==null) ? b:a;
+      int size = (ra-la)+1  +  (rb-lb) + 1;
+      int[] m = new int[size];
+      int k = 0;
+      
+      while(la <= ra && lb <= rb) m[k++] = (a[la] < b[lb]) ? a[la++]:b[lb++];
+      while(la <= ra) m[k++] = a[la++];
+      while(lb <= rb) m[k++] = b[lb++];
+      return m;
+   }
+   
+```
+
 # Applications/Interview Problems
 - Merge sort is often preferred for sorting a linked list.
 -- The slow random-access performance of a linked list makes some other algorithms (such as quicksort) perform poorly, and others (such as heapsort) completely impossible.
