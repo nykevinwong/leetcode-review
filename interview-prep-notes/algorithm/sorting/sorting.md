@@ -197,7 +197,7 @@ merge splitted array pair into one array by sorting. then recursively merge rema
    public int[] mergeSort(int[] arr, int l, int r)
    {  int size = r-l+1;
    
-      if( size < 0 ) reutrn null;
+      if( size < 1 ) reutrn null;
       if( size == 1) return arr[l];
       
       int mid = l+ (r-l) / 2;
